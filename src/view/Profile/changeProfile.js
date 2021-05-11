@@ -116,9 +116,7 @@ export default function ChangeProfile() {
               <TextField
                 id="name"
                 label="Họ và tên"
-                //style={{ margin: 8 }}
-                placeholder="Placeholder"
-                helperText="Full width!"
+                //style={{ margin: 8 }}       
                 fullWidth
                 margin="normal"
                 InputLabelProps={{
@@ -162,7 +160,7 @@ export default function ChangeProfile() {
               />
             </GridItem>
 
-            <GridItem xs={12} sm={12} md={12}>
+            {/* <GridItem xs={12} sm={12} md={12}>
             <TextField
                 id="cmnd"
                 label="Số CMND"
@@ -191,7 +189,7 @@ export default function ChangeProfile() {
                 defaultValue={address}
                 onChange={(e) => setAddress(e.target.value)}
               />
-            </GridItem>
+            </GridItem> */}
 
             
           </GridContainer>
@@ -200,7 +198,7 @@ export default function ChangeProfile() {
             Lưu lại
           </Button>
         </GridItem>
-        <Alert severity="error">This is an error alert — check it out!</Alert>
+       
       </GridContainer>
     </div>
   );

@@ -88,7 +88,6 @@ export default function Login() {
         password: password,
       };
       console.log(body);
-      // const res = await fetch(url + `users/signup`, {
       const res = await fetch(
         process.env.REACT_APP_API_LINK + `/api/auth/login`,
         {
@@ -112,7 +111,7 @@ export default function Login() {
           const action = addUser(result.infoUser,result.token);
           dispatch(action);
   
-          history.push("/");
+          history.push("/admin");
         } else if (res.status === 401) {
           setContent("Tên đăng nhập hoặc mật khẩu sai");
           setOpen(true);

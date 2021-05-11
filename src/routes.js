@@ -26,7 +26,11 @@ import UserProfile from "./view/Profile/profile";
 import ListApart from "./view/ListApart/ListApart.js"
 import UserAccount from "./view/UserAccount/UserAccount";
 import AdminAccount from "./view/AdminAccount/AdminAccount";
+import DetailUser from "./view/UserAccount/DetailUser/DetailUser";
+import ImportBill from "./view/Bill/ImportBill/ImportBill.js"
 import Bill from "./view/Bill/Bill.js";
+import ReportBill from "./view/Bill/ReportBill/ReportBill.js";
+import DetailReport from "./view/Bill/ReportBill/DetailReport";
 //import NotificationsPage from "views/Notifications/Notifications.js";
 // core components/views for RTL layout
 
@@ -38,15 +42,43 @@ const dashboardRoutes = [
     rtlName: "لوحة القيادة",
     icon: Dashboard,
     component: ListApart,
-    layout: ""
+    layout: "/admin"
   },
   {
-    path: "/admin_account",
+    path: "/bill/importbill",
+    name: "Nhập hóa đơn",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: Person,
+    component:ImportBill ,
+    layout: "/admin",
+    private: true
+  },
+  
+  
+  {
+    path: "/bill",
     name: "Quản lý hóa đơn",
     rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
     component:Bill ,
-    layout: ""
+    layout: "/admin"
+  },
+  {
+    path: "/reportbill/:id",
+    name: "Khiếu nại hóa đơn",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: Person,
+    component:DetailReport ,
+    layout: "/admin",
+    private: true
+  },
+  {
+    path: "/reportbill",
+    name: "Khiếu nại hóa đơn",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: Person,
+    component:ReportBill ,
+    layout: "/admin",
   },
   {
     path: "/profile",
@@ -54,7 +86,16 @@ const dashboardRoutes = [
     rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
     component:UserProfile,
-    layout: ""
+    layout: "/admin"
+  },
+  {
+    path: "/user_account/:id",
+    name: "Chi tiet người dùng",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: Person,
+    component: DetailUser ,
+    layout: "/admin",
+    private: true
   },
   {
     path: "/user_account",
@@ -62,7 +103,7 @@ const dashboardRoutes = [
     rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
     component:UserAccount ,
-    layout: ""
+    layout: "/admin"
   },
   {
     path: "/admin_account",
@@ -70,7 +111,7 @@ const dashboardRoutes = [
     rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
     component:AdminAccount ,
-    layout: ""
+    layout: "/admin"
   },
 
   

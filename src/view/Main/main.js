@@ -1,8 +1,7 @@
 import React  from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "../Login/login";
 import Admin from "../../layouts/Layout";
-import AddApart from '../ListApart/AddApart/AddApart';
 
 
 export default function Main()
@@ -18,9 +17,12 @@ export default function Main()
       
        const DefaultContainer = () => (
           <div>
-                <Admin/> 
-               <Route exact path="/" render={() => <Redirect to="/home" />} />     
-               <Route path="/add/apart" component={AddApart} />
+               <Admin/>
+               {/* <Route path="/user/detail/:id" component={DetailUser}/>
+               <Route path="/add/apart" component={AddApart} /> 
+               <Route exact path="/" render={() => <Redirect to="/home" />} /> */}
+               
+               
           </div>
        )
     return (

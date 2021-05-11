@@ -23,7 +23,7 @@ let ps;
 // const switchRoutes = (
 //   <Switch>
 //     {routes.map((prop, key) => {
-//       if (prop.layout === "/admin") {
+//       if (prop.layout === "/admin" && !prop.private) {
 //         return (
 //           <Route
 //             path={prop.layout + prop.path}
@@ -34,7 +34,7 @@ let ps;
 //       }
 //       return null;
 //     })}
-//     <Redirect from="/admin" to="/admin/dashboard" />
+//     {/* <Redirect from="/admin" to="/admin/dashboard" /> */}
 //   </Switch>
 // );
 
@@ -104,12 +104,12 @@ export default function Admin({ ...rest }) {
         color={color}
         {...rest}
       />
-      <div className={classes.mainPanel} ref={mainPanel}>
-        <Navbar
+      {/* <div className={classes.mainPanel} ref={mainPanel}> */}
+        {/* <Navbar
           routes={routes}
           handleDrawerToggle={handleDrawerToggle}
           {...rest}
-        />
+        /> */}
         {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
         {/* {getRoute() ? (
           <div className={classes.content}>
@@ -127,7 +127,7 @@ export default function Admin({ ...rest }) {
           handleFixedClick={handleFixedClick}
           fixedClasses={fixedClasses}
         /> */}
-      </div>
+      {/* </div> */}
     </div>
   );
 }

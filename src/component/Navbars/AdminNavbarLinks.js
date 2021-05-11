@@ -20,7 +20,7 @@ import CustomInput from "../CustomInput/CustomInput.js";
 import Button from "../CustomButtons/Button.js";
 
 import styles from "../../asset/jss/material-dashboard-react/components/headerLinksStyle.js";
-import { addUser, deleteUser } from "../../redux/action/userAction.js";
+import { addUser } from "../../redux/action/userAction.js";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 

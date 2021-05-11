@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -9,9 +9,8 @@ import GridItem from "../../../component/Grid/GridItem.js";
 import GridContainer from "../../../component/Grid/GridContainer.js";
 
 import Button from "../../../component/CustomButtons/Button.js";
-import { checkUser } from "./ServiceAddApart.js"
-import TextField from "@material-ui/core/TextField";
 
+import TextField from "@material-ui/core/TextField";
 
 
 
@@ -42,57 +41,61 @@ const useStyles = makeStyles((theme) => ({
       width: "25ch",
     },
   }));
-export default function AddApart() {
+export default function InfoBill(props) {
   const dispatch=useDispatch();
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
-  const [content, setContent] = useState("");
-  const userInfo = useSelector((state) => state.user.info);
-  const token = useSelector((state) => state.user.token);
+    const {data}=props;
+//   const token = useSelector((state) => state.user.token);
+  
 
   
-  const handleSubmit = async () => {
-    if (true) {
-      const body = {
-        
-      };
-      console.log(body);
-      try {
-        const res = await fetch(
-          process.env.REACT_APP_API_LINK + `/api/auth/update-info`,
-          {
-            method: "GET",
-            mode: "cors",
-            headers: {
-              Authorization: "Bearer " + `${token}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(body),
-          }
-        );
-        if (res.status === 200) {
-          const result = await res.json();
+//   const handleSubmit = async () => {
+//     if (checkUser) {
+//       const body = {
+//         user_id: userInfo.id,
+//         name: name,
+//         phone: phone,
+//         email: email,
+//         //identify_card: cmnd,
+//         //native_place: address,
+//       };
+//       console.log(body);
+//       try {
+//         const res = await fetch(
+//           process.env.REACT_APP_API_LINK + `/api/auth/update-info`,
+//           {
+//             method: "PUT",
+//             mode: "cors",
+//             headers: {
+//               Authorization: "Bearer " + `${token}`,
+//               "Content-Type": "application/json",
+//             },
+//             body: JSON.stringify(body),
+//           }
+//         );
+//         if (res.status === 200) {
+//           const result = await res.json();
           
           
-          // push in redux
-          // const newInfo = result;
-          // let action = addUser(newInfo);
-          // await dispatch(action);
-          // // delete in redux
-          // action= deleteUser(0);
-          // await dispatch(action);
-          console.log("success");
-          console.log(result);
-        } else if (res.status === 500) {
-        } else console.log("SOMETHING WENT WRONG");
-      } catch (err) {
-        console.log(err);
-      }
-    } else {
-      setContent("Thay đổi không thành công");
-      setOpen(true);
-    }
-  };
+//           // push in redux
+//           const newInfo = result;
+//           let action = addUser(newInfo);
+//           await dispatch(action);
+//           // // delete in redux
+//           // action= deleteUser(0);
+//           // await dispatch(action);
+//           console.log("success");
+//           console.log(result);
+//         } else if (res.status === 500) {
+//         } else console.log("SOMETHING WENT WRONG");
+//       } catch (err) {
+//         console.log(err);
+//       }
+//     } else {
+//       setContent("Thay đổi không thành công");
+//       setOpen(true);
+//     }
+//   };
 
   return (
     <div>
@@ -105,10 +108,8 @@ export default function AddApart() {
             <GridItem xs={12} sm={12} md={12}>
               <TextField
                 id="name"
-                label="Họ và tên"
-                //style={{ margin: 8 }}
-                placeholder="Placeholder"
-                helperText="Full width!"
+                label="Căn hộ"
+                //style={{ margin: 8 }}       
                 fullWidth
                 margin="normal"
                 InputLabelProps={{
@@ -122,8 +123,8 @@ export default function AddApart() {
 
             <GridItem xs={12} sm={12} md={12}>
             <TextField
-                id="email"
-                label="Email"
+                id="time"
+                label="Thời gian"
                 //style={{ margin: 8 }}
                 fullWidth
                 margin="normal"
@@ -152,7 +153,7 @@ export default function AddApart() {
               />
             </GridItem>
 
-            <GridItem xs={12} sm={12} md={12}>
+            {/* <GridItem xs={12} sm={12} md={12}>
             <TextField
                 id="cmnd"
                 label="Số CMND"
@@ -163,8 +164,8 @@ export default function AddApart() {
                   shrink: true,
                 }}
                 variant="outlined"
-                //defaultValue={cmnd}
-               // onChange={(e) => setCmnd(e.target.value)}
+                defaultValue={cmnd}
+                onChange={(e) => setCmnd(e.target.value)}
               />
             </GridItem>
 
@@ -178,19 +179,19 @@ export default function AddApart() {
                   shrink: true,
                 }}
                 variant="outlined"
-                //defaultValue={address}
-               // onChange={(e) => setAddress(e.target.value)}
+                defaultValue={address}
+                onChange={(e) => setAddress(e.target.value)}
               />
-            </GridItem>
+            </GridItem> */}
 
             
           </GridContainer>
 
-          <Button color="primary" onClick={(e) => handleSubmit(e)}>
+          {/* <Button color="primary" onClick={(e) => handleSubmit(e)}>
             Lưu lại
-          </Button>
+          </Button> */}
         </GridItem>
-        <Alert severity="error">This is an error alert — check it out!</Alert>
+       
       </GridContainer>
     </div>
   );

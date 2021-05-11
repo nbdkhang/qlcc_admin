@@ -37,7 +37,7 @@ export default function UserAccount() {
         }
       );
       if (res.status === 200) {
-        console.log("Vo 200OK");
+        //console.log("Vo 200OK");
         const result = await res.json();
         setData(await handleData(result.data));
        

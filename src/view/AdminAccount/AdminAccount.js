@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { handleData } from "./ServiceAdminAccount";
-import Button from "@material-ui/core/Button";
+import { handleData } from "./ServiceAdminAccount"; 
 import { makeStyles } from "@material-ui/core/styles";
 import CustomButton from "../../component/CustomButtons/Button.js"
-import { useHistory } from "react-router-dom";
+//import { useHistory } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import GridItem from "../../component/Grid/GridItem.js";
 import GridContainer from "../../component/Grid/GridContainer.js";
@@ -17,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function AdminAccount() {
   const classes = useStyles();
-  const history = useHistory();
+  //const history = useHistory();
   const token = useSelector((state) => state.user.token);
   const [data, setData] = useState([]);
 
