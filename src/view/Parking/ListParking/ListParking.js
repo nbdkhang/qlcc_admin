@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { handleData } from "./ServiceListApart.js";
+import { handleData } from "./ServiceListParking";
 import Button from "@material-ui/core/Button";
-import CustomButton from "../../component/CustomButtons/Button.js"
+import CustomButton from "../../../component/CustomButtons/Button.js"
 import { useHistory } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
-import GridItem from "../../component/Grid/GridItem.js";
-import GridContainer from "../../component/Grid/GridContainer.js";
-export default function ListApart() {
+import GridItem from "../../../component/Grid/GridItem.js";
+import GridContainer from "../../../component/Grid/GridContainer.js";
+
+export default function ListParking(props) {
   const history = useHistory();
-  const userInfo = useSelector((state) => state.user.info);
+  const {type,status}=props;
   const token = useSelector((state) => state.user.token);
   const [data, setData] = useState([]);
 
@@ -37,23 +38,32 @@ export default function ListApart() {
       },
     },
     {
-      name: "name",
-      label: "Tên phòng",
+      name: "user",
+      label: "Người gửi",
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: "block",
-      label: "Toà nhà",
+      name: "time",
+      label: "Ngày tạo",
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: "status",
+      name: "is_read_admin",
+      label: "",
+      options: {
+        display: false,
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: "is_read_admin_value",
       label: "Tình trạng",
       options: {
         filter: true,
@@ -65,28 +75,58 @@ export default function ListApart() {
       options: {
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
-            <Button
+            <CustomButton
               variant="outlined"
-              color="secondary"
-              onClick={() => handleClick(tableMeta.rowData[0])}
+              color="primary"
+              onClick={() => handleClick(tableMeta.rowData[0],tableMeta.rowData[4])}
             >
               Chi tiết
-            </Button>
+            </CustomButton>
           );
         },
       },
     },
   ];
-  const handleClick = (id) => {
+  const handleClick = async(id,is_read_admin) => {
     // e.preventDefault();
-    console.log(id);
-    //history.push(`/userdetails/${id}`);
+    console.log(is_read_admin);
+    if(!is_read_admin) await handleChangeStatus(id);
+    history.push(`/admin/noti_parking/${id}`);
   };
-
+  const handleChangeStatus = async (id) => {
+    try {
+      const body=
+      {
+        notice_id: id
+      }
+    
+      console.log(body);
+      const res = await fetch(
+        process.env.REACT_APP_API_LINK + `/api/noti-parking/change-is-read`,
+        {
+          method: "PUT",
+          mode: "cors",
+          headers: {
+            Authorization: "Bearer " + `${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      );
+      if (res.status === 200) {
+        console.log("ok");
+     
+      } else {
+        console.log("SOMETHING WENT WRONG");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   useEffect(() => {
     const getRes = async () => {
       const res = await fetch(
-        process.env.REACT_APP_API_LINK + `/api/apart/all-aparts`,
+        process.env.REACT_APP_API_LINK + `/api/noti-parking/allreport`,
         {
           // get apart
           method: "GET",
@@ -97,9 +137,9 @@ export default function ListApart() {
         }
       );
       const res1 = await fetch(
-        process.env.REACT_APP_API_LINK + `/api/block/all`,
+        process.env.REACT_APP_API_LINK + `/api/user/all`,
         {
-          // get block
+          // get apart
           method: "GET",
           headers: {
             Authorization: "Bearer " + `${token}`,
@@ -111,6 +151,7 @@ export default function ListApart() {
         console.log("Vo 200OK");
         const result = await res.json();
         const result1 = await res1.json();
+        console.log(result.data);
         setData(await handleData(result.data, result1.data));
       } else {
         const result = await res.json();
@@ -121,25 +162,6 @@ export default function ListApart() {
   }, []);
   return (
     <div>
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={8}>  
-        <CustomButton 
-              variant="outlined"
-              color="success"
-            >
-              Thêm căn hộ
-            </CustomButton>
-        </GridItem>
-      </GridContainer>
-
-      {/* "primary",
-    "info",
-    "success",
-    "warning",
-    "danger",
-    "rose",
-    "white",
-    "transparent" */}
       <MUIDataTable
         title={"Danh sách căn hộ "}
         data={data}

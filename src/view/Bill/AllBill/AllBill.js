@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
 import MyButton from "../../../component/CustomButtons/Button.js";
-//import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import GridContainer from "../../../component/Grid/GridContainer";
 import GridItem from "../../../component/Grid/GridItem";
@@ -14,7 +14,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
+
 const useStyles = makeStyles((theme) => ({
   MyButton: {
     margin: theme.spacing(1),
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function AllBill(props) {
   const classes = useStyles();
-  //const history = useHistory();
+  const history = useHistory();
   const token = useSelector((state) => state.user.token);
   const { selectMonth, selectYear, reLoad } = props;
   const [data, setData] = useState([]);
@@ -159,7 +159,7 @@ export default function AllBill(props) {
   ];
   const handleClick = (id) => {
     console.log(id);
-    //history.push(`/userdetails/${id}`);
+    history.push(`/admin/bill/detail/all/${id}`);
   };
   const handleIsPay = (row) => {
     setSelectRow(row);
@@ -238,8 +238,8 @@ export default function AllBill(props) {
         
         const result = await res.json();
         const result1 = await res1.json();
-       console.log(result);
-        setData(await handleData(result.data, result1.data));
+        console.log(result);
+       setData(await handleData(result.data, result1.data));
         setStatis(calTotal(result.data));
       } else {
         const result = await res.json();
@@ -299,7 +299,5 @@ export default function AllBill(props) {
         </DialogActions>
       </Dialog>
     </GridContainer>
-
-
   );
 }

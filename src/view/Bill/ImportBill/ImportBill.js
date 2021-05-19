@@ -58,7 +58,7 @@ export default function InfoBill() {
   const token = useSelector((state) => state.user.token);
   const [selectType, setSelectType] = useState("Hóa đơn điện");
   const [selectMonth, setSelectMonth] = useState(1);
-  const [selectYear, setSelectYear] = useState(2020);
+  const [selectYear, setSelectYear] = useState(process.env.REACT_APP_YEAR_START);
   const [isHandle, setIsHandle] = useState(false);
   const [fileName, setFileName] = useState("");
   const [fileSource, setFileSource] = useState();

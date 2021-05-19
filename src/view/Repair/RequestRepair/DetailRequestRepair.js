@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 //import InputLabel from "@material-ui/core/InputLabel";
 // core components
 import GridItem from "../../../component/Grid/GridItem.js";
@@ -10,7 +12,7 @@ import CardHeader from "../../../component/Card/CardHeader.js";
 import Button from "../../../component/CustomButtons/Button.js";
 import Card from "../../../component/Card/Card.js";
 import CardAvatar from "../../../component/Card/CardAvatar.js";
-
+import CardBody from "../../../component/Card/CardBody.js"
 import TextField from "@material-ui/core/TextField";
 
 import Dialog from "@material-ui/core/Dialog";
@@ -19,6 +21,9 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useParams, useHistory } from "react-router-dom";
+import {handleData,title,content} from "../ServiceDetail.js"
+
+
 const useStyles = makeStyles((theme) => ({
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -46,13 +51,13 @@ const useStyles = makeStyles((theme) => ({
     width: "25ch",
   },
 }));
-export default function DetailReport(props) {
+export default function DetailRequestRepair(props) {
   //const dispatch = useDispatch();
 
   const classes = useStyles();
   const history = useHistory();
   const token = useSelector((state) => state.user.token);
-  const { id } = useParams();
+  const { notice_id } = useParams();
   const [data, setData] = useState({
     id: "",
     apart_id: "",
@@ -60,71 +65,36 @@ export default function DetailReport(props) {
     electric_bill: 0,
     water_bill: 0,
     year: 0,
+    status_value:"",
+    next_status_value:"",
+    evaluation: {
+      is_evaluate: false,
+      comment: "",
+      image: "",
+      is_like: true
+    }
   });
   const [isError, setIsError] = useState(false);
   const [image, setImage] = useState();
+  const [commentImage,setCommentImage]=useState();
   const [isLoad, setIsLoad] = useState(true);
   const [open, setOpen] = useState(false);
+  const [reload,setReload]=useState(false);
   const [selected, setSelected] = useState(true); // true:chấp nhận|| false:không chấp nhận
   //   const token = useSelector((state) => state.user.token);
 
-  const handleSubmit = async () => {
-    console.log("submit");
-    handleClose();
-    let body = {};
-    try {
-      if (selected)
-        body = {
-          apart_id: data.apart_id,
-          title: "Khiếu nại đã được xử lý",
-          content:
-            "BQL chung cư thông báo, khiếu nại của anh/chị đã được giải quyết. Đề nghị kiểm tra lại.",
-        };
-      else
-        body = {
-          apart_id: data.apart_id,
-          title: "Khiếu nại không được xác nhận",
-          content:
-            "BQL chung cư thông báo, khiếu nại của anh/chị chưa hợp lệ. Đề nghị liên hệ BQL để giải quyết.",
-        };
-      console.log(body);
-      const res = await fetch(
-        process.env.REACT_APP_API_LINK + `/api/bill-noti/create-confirm`,
-        {
-          method: "POST",
-          mode: "cors",
-          headers: {
-            Authorization: "Bearer " + `${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        }
-      );
-      if (res.status === 200) {
-        //const result = await res.json();
-        console.log("ok");
-        setIsError(false);
-        await handleChangeReport();
-        if (selected) handleChangeStatus();
-        else history.push(`/admin/reportbill`)
-        
-      } else {
-        console.log("SOMETHING WENT WRONG");
-        setIsError(true);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  
   const handleChangeStatus = async () => {
-    try {
+    try {   
+      handleClose();
       const body = {
-        bill_id: data.id,
-        status: !data.is_pay,
-      };
+        notice_id: data._id,
+        status: data.next_status
+    };
+    
       console.log(body);
       const res = await fetch(
-        process.env.REACT_APP_API_LINK + `/api/all-bill/change-pay`,
+        process.env.REACT_APP_API_LINK + `/api/repair/update-status`,
         {
           method: "PUT",
           mode: "cors",
@@ -138,9 +108,10 @@ export default function DetailReport(props) {
       if (res.status === 200) {
         //const result = await res.json();
         console.log("ok");
-        setIsError(false);
-        //setReload(!reload);
-        history.push(`/admin/reportbill`);
+       await PushNotification();
+        setIsError(false);  
+        setReload(!reload);
+        //history.push(`/admin/reportbill`);
       } else {
         console.log("SOMETHING WENT WRONG");
         setIsError(true);
@@ -149,41 +120,50 @@ export default function DetailReport(props) {
       console.log(err);
     }
   };
-  const handleChangeReport = async () => {
+  const PushNotification=async()=>
+  {
     try {
-      const body = {
-        bill_id: data.id,
-        status: false,
-      };
-      console.log(body);
-      const res = await fetch(
-        process.env.REACT_APP_API_LINK + `/api/all-bill/change-report`,
-        {
-          method: "PUT",
-          mode: "cors",
-          headers: {
-            Authorization: "Bearer " + `${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
+        const body = {
+          tokens: [data.token_device],
+          title: title,
+          body: content,
+          type: 2,
+        };
+
+        console.log(body);
+        const res = await fetch(
+          process.env.REACT_APP_API_LINK + `/api/push-noti/add-notice`,
+          {
+            method: "POST",
+            mode: "cors",
+            headers: {
+              Authorization: "Bearer " + `${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body),
+          }
+        );
+        if (res.status === 200) {
+          //const result = await res.json();
+          console.log("push noti ok");
+          //history.push(`/admin/reportbill`);
+        } else {
+          console.log("SOMETHING WENT WRONG");
         }
-      );
-      if (res.status === 200) {
-        //const result = await res.json();
-        console.log("ok");
-        setIsError(false);
-        //setReload(!reload);
-        
-      } else {
-        console.log("SOMETHING WENT WRONG");
-        setIsError(true);
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  }
+  const renderButton =()=>
+  { 
+    //let str=returnStatus(data.status)   
+    return(  
+  <Button color="primary" onClick={(e) => handleClickOpen(true)}>
+    {data.next_status_value}
+  </Button>)
+  }
   const getUrl = async (key) => {
-    if (key.length > 0) {
+    if (key.length >=1) {
       try {
         const res = await fetch(
           process.env.REACT_APP_API_LINK + `/api/uploadv2/image-url?key=${key}`,
@@ -199,9 +179,10 @@ export default function DetailReport(props) {
         if (res.status === 200) {
           const result = await res.json();
           console.log("Vo 200OK");
-          setImage(result.imageUrl);
-          //console.log(result.imageUrl);
-          setIsLoad(false);
+
+          return(result.imageUrl);
+          // setImage(result.imageUrl);
+          // setIsLoad(false);
         } else {
           const result = await res.json();
           alert(result.message);
@@ -220,10 +201,49 @@ export default function DetailReport(props) {
   const handleClose = () => {
     setOpen(false);
   };
+  const getUserAndApart = async (data)=>
+  { 
+    const res = await fetch(
+      process.env.REACT_APP_API_LINK + `/api/user/${data.author}`,
+      {
+        // get apart
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + `${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const res1 = await fetch(
+      process.env.REACT_APP_API_LINK + `/api/apart/${data.apart_id}`,
+      {
+        // get apart
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + `${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (res.status === 200&& res1.status === 200) {
+      const result = await res.json();
+      const result1 = await res1.json();
+      console.log("Vo 200OK");
+      setData (handleData(data,result.data,result1.data));
+      //setData(result.data);
+      setIsLoad(false);
+    } else {
+      const result = await res.json();
+      alert(result.message);
+    }
+
+  }
   useEffect(() => {
+    setIsLoad(true);
     const getRes = async () => {
       const res = await fetch(
-        process.env.REACT_APP_API_LINK + `/api/all-bill/${id}`,
+        process.env.REACT_APP_API_LINK + `/api/repair/${notice_id}`,
         {
           // get apart
           method: "GET",
@@ -237,16 +257,21 @@ export default function DetailReport(props) {
       if (res.status === 200) {
         const result = await res.json();
         console.log("Vo 200OK");
-        console.log(result.data);
-        setData(result.data);
-        getUrl(result.data.image);
+       
+        await getUserAndApart(result.data) 
+        if(result.data.image!=="")
+        setImage( await getUrl(result.data.image));
+        if(result.data.evaluation.is_evaluate===true)
+          setCommentImage(await getUrl(result.data.evaluation.image))
+        setIsLoad(false);
+      
       } else {
         const result = await res.json();
         alert(result.message);
       }
     };
     getRes();
-  }, []);
+  }, [reload]);
 
   return (
     <div>
@@ -256,7 +281,7 @@ export default function DetailReport(props) {
             <Card profile>
               <CardAvatar>
                 <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                  <img src={image} alt="..." width="400" height="auto" />
+                  <img src={image} alt="Không có ảnh" width="400" height="auto" />
                 </a>
               </CardAvatar>
             </Card>
@@ -264,13 +289,13 @@ export default function DetailReport(props) {
           <GridItem xs={12} sm={12} md={7}>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>
-                {data.report ? "Khiếu nại chưa xử lý" : "Khiếu nại đã xử lý"}
+                Chi tiết thông báo dịch vụ sửa chữa
               </h4>
             </CardHeader>
             <GridContainer>
               <GridItem xs={12} sm={12} md={12}>
                 <TextField
-                  id="aprt_name"
+                  id="apart_name"
                   label="Tên Phòng"
                   //style={{ margin: 8 }}
                   fullWidth
@@ -293,13 +318,13 @@ export default function DetailReport(props) {
                     shrink: true,
                   }}
                   variant="outlined"
-                  defaultValue={data.month + "/" + data.year}
+                  defaultValue={data.time}
                   //onChange={(e) => setName(e.target.value)}
                 />
 
                 <TextField
-                  id="elec"
-                  label="Hóa đơn điện"
+                  id="author"
+                  label="Người gửi"
                   //style={{ margin: 8 }}
                   fullWidth
                   margin="normal"
@@ -307,12 +332,12 @@ export default function DetailReport(props) {
                     shrink: true,
                   }}
                   variant="outlined"
-                  defaultValue={data.electric_bill}
+                  defaultValue={data.author_name}
                   //onChange={(e) => setName(e.target.value)}
                 />
                 <TextField
-                  id="water"
-                  label="Hóa đơn nước"
+                  id="title"
+                  label="Tiêu đề"
                   //style={{ margin: 8 }}
                   fullWidth
                   margin="normal"
@@ -320,12 +345,12 @@ export default function DetailReport(props) {
                     shrink: true,
                   }}
                   variant="outlined"
-                  defaultValue={data.water_bill}
+                  defaultValue={data.title}
                   //onChange={(e) => setName(e.target.value)}
                 />
                 <TextField
-                  id="other"
-                  label="Hóa đơn khác"
+                  id="content"
+                  label="Nội dung"
                   //style={{ margin: 8 }}
                   fullWidth
                   margin="normal"
@@ -333,25 +358,12 @@ export default function DetailReport(props) {
                     shrink: true,
                   }}
                   variant="outlined"
-                  defaultValue={data.other_bill}
-                  //onChange={(e) => setName(e.target.value)}
-                />
-                <TextField
-                  id="total"
-                  label="Tổng tiền"
-                  //style={{ margin: 8 }}
-                  fullWidth
-                  margin="normal"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  variant="outlined"
-                  defaultValue={data.total_money}
+                  defaultValue={data.content}
                   //onChange={(e) => setName(e.target.value)}
                 />
                 <TextField
                   id="is_pay"
-                  label="Tình trạng"
+                  label="Trạng thái hiện tại"
                   //style={{ margin: 8 }}
                   fullWidth
                   margin="normal"
@@ -359,9 +371,7 @@ export default function DetailReport(props) {
                     shrink: true,
                   }}
                   variant="outlined"
-                  defaultValue={
-                    data.is_pay ? "Đã thanh toán" : "Chưa thanh toán"
-                  }
+                  defaultValue={ data.status_value }
                   //onChange={(e) => setName(e.target.value)}
                 ></TextField>
               </GridItem>
@@ -369,7 +379,7 @@ export default function DetailReport(props) {
           </GridItem>
           <div />
           <GridItem xs={12} sm={12} md={3} />
-          <GridItem xs={12} sm={12} md={3}>
+          <GridItem xs={12} sm={12} md={6}>
             {/* {isHandle && (
             <div style={{ marginTop: "15px" }}>Đang xử lý, vui lòng chờ...</div>
           )}*/}
@@ -377,25 +387,15 @@ export default function DetailReport(props) {
               <div style={{ marginTop: "15px" }}>Vui lòng thử lại</div>
             )}
           </GridItem>
-          <GridItem xs={12} sm={12} md={6}>
-            {data.report ? (
-              <>
-                <Button color="primary" onClick={(e) => handleClickOpen(true)}>
-                  Chấp nhận
-                </Button>
-                <Button color="primary" onClick={(e) => handleClickOpen(false)}>
-                  Không chấp nhận
-                </Button>
-              </>
-            ) : (
-              <div />
-            )}
+          <GridItem xs={12} sm={12} md={3}>          
+               {renderButton()}
           </GridItem>
         </GridContainer>
       ) : (
         <div>Đang xử lý, vui lòng chờ...</div>
       )}
 
+        
       <Dialog
         open={open}
         onClose={handleClose}
@@ -403,23 +403,49 @@ export default function DetailReport(props) {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {selected ? "Xác nhận đã xử lý" : "Xác nhận không xử lý"}
+          Xác nhận chuyển trạng thái
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Căn hộ: {data.apart_name}
-            Tổng tiền: {data.total_money}
+            Chuyển từ {data.status_value} thành {data.next_status_value}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Hủy
           </Button>
-          <Button onClick={handleSubmit} color="primary">
+          <Button onClick={handleChangeStatus} color="primary">
             Xác nhận
           </Button>
         </DialogActions>
       </Dialog>
+      <GridContainer>
+
+     <hr></hr>
+     <hr></hr>
+      <GridItem xs={12} sm={12} md={12}>
+            <CardHeader color="primary">
+              <h4 className={classes.cardTitleWhite}>
+               Đánh giá 
+              </h4>
+            </CardHeader>
+            <CardBody>
+              <GridContainer>
+              <GridItem xs={12} sm={12} md={10}>
+                  Nội dung: {data.evaluation.comment}
+              </GridItem>
+              <GridItem xs={12} sm={12} md={2}>
+                {data.evaluation.is_like ?<ThumbUpIcon/>:<ThumbDownIcon/>}
+              </GridItem>
+              <GridItem xs={12} sm={12} md={12}>
+            { commentImage && <img src={commentImage} alt="Không có ảnh" style={{width:"50px",height:"50px"}}></img>}
+              </GridItem>
+              </GridContainer>
+            </CardBody>
+        </GridItem>
+     
+      </GridContainer>
+     
     </div>
   );
 }

@@ -19,6 +19,9 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useParams, useHistory } from "react-router-dom";
+import { handleData, title,content } from "./ServiceDetailParking.js";
+
+
 const useStyles = makeStyles((theme) => ({
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -46,13 +49,13 @@ const useStyles = makeStyles((theme) => ({
     width: "25ch",
   },
 }));
-export default function DetailReport(props) {
+export default function DetailPublicArea(props) {
   //const dispatch = useDispatch();
 
   const classes = useStyles();
   const history = useHistory();
   const token = useSelector((state) => state.user.token);
-  const { id } = useParams();
+  const { notice_id } = useParams();
   const [data, setData] = useState({
     id: "",
     apart_id: "",
@@ -60,71 +63,29 @@ export default function DetailReport(props) {
     electric_bill: 0,
     water_bill: 0,
     year: 0,
+    status_value: "",
+    next_status_value: "",
   });
   const [isError, setIsError] = useState(false);
   const [image, setImage] = useState();
+  const [commentImage, setCommentImage] = useState();
   const [isLoad, setIsLoad] = useState(true);
   const [open, setOpen] = useState(false);
+  const [reload, setReload] = useState(false);
   const [selected, setSelected] = useState(true); // true:chấp nhận|| false:không chấp nhận
   //   const token = useSelector((state) => state.user.token);
 
-  const handleSubmit = async () => {
-    console.log("submit");
-    handleClose();
-    let body = {};
-    try {
-      if (selected)
-        body = {
-          apart_id: data.apart_id,
-          title: "Khiếu nại đã được xử lý",
-          content:
-            "BQL chung cư thông báo, khiếu nại của anh/chị đã được giải quyết. Đề nghị kiểm tra lại.",
-        };
-      else
-        body = {
-          apart_id: data.apart_id,
-          title: "Khiếu nại không được xác nhận",
-          content:
-            "BQL chung cư thông báo, khiếu nại của anh/chị chưa hợp lệ. Đề nghị liên hệ BQL để giải quyết.",
-        };
-      console.log(body);
-      const res = await fetch(
-        process.env.REACT_APP_API_LINK + `/api/bill-noti/create-confirm`,
-        {
-          method: "POST",
-          mode: "cors",
-          headers: {
-            Authorization: "Bearer " + `${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        }
-      );
-      if (res.status === 200) {
-        //const result = await res.json();
-        console.log("ok");
-        setIsError(false);
-        await handleChangeReport();
-        if (selected) handleChangeStatus();
-        else history.push(`/admin/reportbill`)
-        
-      } else {
-        console.log("SOMETHING WENT WRONG");
-        setIsError(true);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
   const handleChangeStatus = async () => {
     try {
+      handleClose();
       const body = {
-        bill_id: data.id,
-        status: !data.is_pay,
+        notice_id: data._id,
+        status: data.next_status,
       };
+
       console.log(body);
       const res = await fetch(
-        process.env.REACT_APP_API_LINK + `/api/all-bill/change-pay`,
+        process.env.REACT_APP_API_LINK + `/api/noti-parking/change-confirm`,
         {
           method: "PUT",
           mode: "cors",
@@ -137,10 +98,11 @@ export default function DetailReport(props) {
       );
       if (res.status === 200) {
         //const result = await res.json();
-        console.log("ok");
+        console.log(" changestatus ok"); 
+        await createNotification();
         setIsError(false);
-        //setReload(!reload);
-        history.push(`/admin/reportbill`);
+        setReload(!reload);
+       
       } else {
         console.log("SOMETHING WENT WRONG");
         setIsError(true);
@@ -149,41 +111,85 @@ export default function DetailReport(props) {
       console.log(err);
     }
   };
-  const handleChangeReport = async () => {
+  const createNotification= async ()=>
+  {
     try {
-      const body = {
-        bill_id: data.id,
-        status: false,
-      };
-      console.log(body);
-      const res = await fetch(
-        process.env.REACT_APP_API_LINK + `/api/all-bill/change-report`,
-        {
-          method: "PUT",
-          mode: "cors",
-          headers: {
-            Authorization: "Bearer " + `${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
+        const body = {
+            title: "Xác nhận khiếu nại",
+            content: "Báo cáo của anh/chị đã được tiếp nhận. BQL sẽ tiến hành xử lý. Cảm ơn báo cáo của anh/chị.",
+            user_id: data.author
         }
-      );
-      if (res.status === 200) {
-        //const result = await res.json();
-        console.log("ok");
-        setIsError(false);
-        //setReload(!reload);
+
+        console.log(body);
+        const res = await fetch(
+          process.env.REACT_APP_API_LINK + `/api/noti-parking/create`,
+          {
+            method: "POST",
+            mode: "cors",
+            headers: {
+              Authorization: "Bearer " + `${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body),
+          }
+        );
+        if (res.status === 200) {
+          //const result = await res.json();
+          console.log("noti ok");
+          await PushNotification();
+        } else {
+          console.log("SOMETHING WENT WRONG");
         
-      } else {
-        console.log("SOMETHING WENT WRONG");
-        setIsError(true);
+        }
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err);
-    }
+  }
+  const PushNotification=async()=>
+  {
+    try {
+        const body = {
+          tokens: [data.token_device],
+          title: title,
+          body: content,
+          type: 2,
+        };
+
+        console.log(body);
+        const res = await fetch(
+          process.env.REACT_APP_API_LINK + `/api/push-noti/add-notice`,
+          {
+            method: "POST",
+            mode: "cors",
+            headers: {
+              Authorization: "Bearer " + `${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body),
+          }
+        );
+        if (res.status === 200) {
+          //const result = await res.json();
+          console.log("push noti ok");
+          //history.push(`/admin/reportbill`);
+        } else {
+          console.log("SOMETHING WENT WRONG");
+        }
+      } catch (err) {
+        console.log(err);
+      }
+  }
+  const renderButton = () => {
+    //let str=returnStatus(data.status)
+    return (
+      <Button color="primary" onClick={(e) => handleClickOpen(true)}>
+       Đã xử lý
+      </Button>
+    );
   };
+
   const getUrl = async (key) => {
-    if (key.length > 0) {
+    if (key.length >= 1) {
       try {
         const res = await fetch(
           process.env.REACT_APP_API_LINK + `/api/uploadv2/image-url?key=${key}`,
@@ -198,10 +204,10 @@ export default function DetailReport(props) {
         );
         if (res.status === 200) {
           const result = await res.json();
-          console.log("Vo 200OK");
-          setImage(result.imageUrl);
-          //console.log(result.imageUrl);
-          setIsLoad(false);
+          console.log("get image OK");
+          return result.imageUrl;
+          // setImage(result.imageUrl);
+          // setIsLoad(false);
         } else {
           const result = await res.json();
           alert(result.message);
@@ -220,10 +226,36 @@ export default function DetailReport(props) {
   const handleClose = () => {
     setOpen(false);
   };
+  const getUserAndApart = async (data) => {
+    const res = await fetch(
+      process.env.REACT_APP_API_LINK + `/api/user/${data.author}`,
+      {
+        // get apart
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + `${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (res.status === 200) {
+      const result = await res.json();
+      console.log("user OK");
+      setData(handleData(data, result.data));
+      //setData(result.data);
+      setIsLoad(false);
+    } else {
+      const result = await res.json();
+      alert(result.message);
+    }
+  };
   useEffect(() => {
+    setIsLoad(true);
     const getRes = async () => {
       const res = await fetch(
-        process.env.REACT_APP_API_LINK + `/api/all-bill/${id}`,
+        process.env.REACT_APP_API_LINK +
+          `/api/noti-parking/notice/${notice_id}`,
         {
           // get apart
           method: "GET",
@@ -236,17 +268,17 @@ export default function DetailReport(props) {
 
       if (res.status === 200) {
         const result = await res.json();
-        console.log("Vo 200OK");
-        console.log(result.data);
-        setData(result.data);
-        getUrl(result.data.image);
+        console.log(" useEffect OK");
+        await getUserAndApart(result.data);
+        if (result.data.image !== "") setImage(await getUrl(result.data.image));
+        setIsLoad(false);
       } else {
         const result = await res.json();
         alert(result.message);
       }
     };
     getRes();
-  }, []);
+  }, [reload]);
 
   return (
     <div>
@@ -256,7 +288,12 @@ export default function DetailReport(props) {
             <Card profile>
               <CardAvatar>
                 <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                  <img src={image} alt="..." width="400" height="auto" />
+                  <img
+                    src={image}
+                    alt="Không có ảnh"
+                    width="400"
+                    height="auto"
+                  />
                 </a>
               </CardAvatar>
             </Card>
@@ -264,14 +301,14 @@ export default function DetailReport(props) {
           <GridItem xs={12} sm={12} md={7}>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>
-                {data.report ? "Khiếu nại chưa xử lý" : "Khiếu nại đã xử lý"}
+                Chi tiết khiếu nại bãi xe
               </h4>
             </CardHeader>
             <GridContainer>
               <GridItem xs={12} sm={12} md={12}>
                 <TextField
-                  id="aprt_name"
-                  label="Tên Phòng"
+                  id="author"
+                  label="Người gửi"
                   //style={{ margin: 8 }}
                   fullWidth
                   margin="normal"
@@ -279,10 +316,9 @@ export default function DetailReport(props) {
                     shrink: true,
                   }}
                   variant="outlined"
-                  defaultValue={data.apart_name || ""}
+                  defaultValue={data.author_name}
                   //onChange={(e) => setName(e.target.value)}
                 />
-
                 <TextField
                   id="time"
                   label="Thời gian"
@@ -293,13 +329,13 @@ export default function DetailReport(props) {
                     shrink: true,
                   }}
                   variant="outlined"
-                  defaultValue={data.month + "/" + data.year}
+                  defaultValue={data.time}
                   //onChange={(e) => setName(e.target.value)}
                 />
 
                 <TextField
-                  id="elec"
-                  label="Hóa đơn điện"
+                  id="title"
+                  label="Tiêu đề"
                   //style={{ margin: 8 }}
                   fullWidth
                   margin="normal"
@@ -307,12 +343,12 @@ export default function DetailReport(props) {
                     shrink: true,
                   }}
                   variant="outlined"
-                  defaultValue={data.electric_bill}
+                  defaultValue={data.title}
                   //onChange={(e) => setName(e.target.value)}
                 />
                 <TextField
-                  id="water"
-                  label="Hóa đơn nước"
+                  id="content"
+                  label="Nội dung"
                   //style={{ margin: 8 }}
                   fullWidth
                   margin="normal"
@@ -320,12 +356,12 @@ export default function DetailReport(props) {
                     shrink: true,
                   }}
                   variant="outlined"
-                  defaultValue={data.water_bill}
+                  defaultValue={data.content}
                   //onChange={(e) => setName(e.target.value)}
                 />
                 <TextField
-                  id="other"
-                  label="Hóa đơn khác"
+                  id="status"
+                  label="Trạng thái hiện tại"
                   //style={{ margin: 8 }}
                   fullWidth
                   margin="normal"
@@ -333,35 +369,7 @@ export default function DetailReport(props) {
                     shrink: true,
                   }}
                   variant="outlined"
-                  defaultValue={data.other_bill}
-                  //onChange={(e) => setName(e.target.value)}
-                />
-                <TextField
-                  id="total"
-                  label="Tổng tiền"
-                  //style={{ margin: 8 }}
-                  fullWidth
-                  margin="normal"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  variant="outlined"
-                  defaultValue={data.total_money}
-                  //onChange={(e) => setName(e.target.value)}
-                />
-                <TextField
-                  id="is_pay"
-                  label="Tình trạng"
-                  //style={{ margin: 8 }}
-                  fullWidth
-                  margin="normal"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  variant="outlined"
-                  defaultValue={
-                    data.is_pay ? "Đã thanh toán" : "Chưa thanh toán"
-                  }
+                  defaultValue={data.is_confirm_value}
                   //onChange={(e) => setName(e.target.value)}
                 ></TextField>
               </GridItem>
@@ -369,7 +377,7 @@ export default function DetailReport(props) {
           </GridItem>
           <div />
           <GridItem xs={12} sm={12} md={3} />
-          <GridItem xs={12} sm={12} md={3}>
+          <GridItem xs={12} sm={12} md={6}>
             {/* {isHandle && (
             <div style={{ marginTop: "15px" }}>Đang xử lý, vui lòng chờ...</div>
           )}*/}
@@ -377,19 +385,8 @@ export default function DetailReport(props) {
               <div style={{ marginTop: "15px" }}>Vui lòng thử lại</div>
             )}
           </GridItem>
-          <GridItem xs={12} sm={12} md={6}>
-            {data.report ? (
-              <>
-                <Button color="primary" onClick={(e) => handleClickOpen(true)}>
-                  Chấp nhận
-                </Button>
-                <Button color="primary" onClick={(e) => handleClickOpen(false)}>
-                  Không chấp nhận
-                </Button>
-              </>
-            ) : (
-              <div />
-            )}
+          <GridItem xs={12} sm={12} md={3}>
+            {!data.is_confirm && renderButton()}
           </GridItem>
         </GridContainer>
       ) : (
@@ -403,19 +400,18 @@ export default function DetailReport(props) {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {selected ? "Xác nhận đã xử lý" : "Xác nhận không xử lý"}
+          Xác nhận chuyển trạng thái
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Căn hộ: {data.apart_name}
-            Tổng tiền: {data.total_money}
+            Chuyển từ "Chưa xử lý" thành "Đã xử lý"
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Hủy
           </Button>
-          <Button onClick={handleSubmit} color="primary">
+          <Button onClick={handleChangeStatus} color="primary">
             Xác nhận
           </Button>
         </DialogActions>

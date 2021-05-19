@@ -14,6 +14,7 @@ export const handleData = (apart, block) => {
       };
     }
   }
+  console.log(newApart);
   return newApart;
 };
 const returnStatus = (status) => {

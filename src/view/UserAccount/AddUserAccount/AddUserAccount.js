@@ -72,7 +72,7 @@ export default function ChangeProfile() {
     if (phone !== "" && phone.match(phoneCheck)) {
       setAlertPhone(false);
       setPhone(phone);
-    } else setAlertName(true);
+    } else setAlertPhone(true);
   };
   const checkEmail = (email) => {
     if (email !== "" && email.match(emailCheck)) {

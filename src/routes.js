@@ -16,14 +16,16 @@
 
 */
 // @material-ui/icons
-import Dashboard from "@material-ui/icons/Dashboard";
+//import Dashboard from "@material-ui/icons/Dashboard";
 import Person from "@material-ui/icons/Person";
-//import LibraryBooks from "@material-ui/icons/LibraryBooks";
-//import Notifications from "@material-ui/icons/Notifications";
+import ApartmentIcon from '@material-ui/icons/Apartment';
+import ReceiptIcon from '@material-ui/icons/Receipt';
+import BuildIcon from '@material-ui/icons/Build';
+import DriveEtaIcon from '@material-ui/icons/DriveEta';
+
 // core components/views for Admin layout
 //import Homepage from "./view/Homepage/homepage";
 import UserProfile from "./view/Profile/profile";
-import ListApart from "./view/ListApart/ListApart.js"
 import UserAccount from "./view/UserAccount/UserAccount";
 import AdminAccount from "./view/AdminAccount/AdminAccount";
 import DetailUser from "./view/UserAccount/DetailUser/DetailUser";
@@ -31,35 +33,73 @@ import ImportBill from "./view/Bill/ImportBill/ImportBill.js"
 import Bill from "./view/Bill/Bill.js";
 import ReportBill from "./view/Bill/ReportBill/ReportBill.js";
 import DetailReport from "./view/Bill/ReportBill/DetailReport";
+import DetailAllBill from "./view/Bill/AllBill/DetailAllBill";
+import Apart from "./view/Apart/Apart";
+
+import Block from "./view/Block/Block";
+import EditBlock from "./view/Block/DetailBlock/EditBlock";
+import PublicArea from "./view/Repair/PublicArea/PublicArea";
+import RequestRepair from "./view/Repair/RequestRepair/RequestRepair.js"
+import RequestSelfRepair from "./view/Repair/RequestSelfRepair/RequestSelfRepair.js"
+import DetailPublicArea from "./view/Repair/PublicArea/DetailPublicArea";
+import DetailRequestRepair from "./view/Repair/RequestRepair/DetailRequestRepair";
+import DetailRequestSelfRepair from "./view/Repair/RequestSelfRepair/DetailRequestSelfRepair";
+import Parking from "./view/Parking/Parking.js";
+import DetailParking from "./view/Parking/DetailParking/DetailParking.js";
 //import NotificationsPage from "views/Notifications/Notifications.js";
 // core components/views for RTL layout
 
 
 const dashboardRoutes = [
   {
-    path: "/home",
+    path: "/apart",
     name: "Quản lý căn hộ",
     rtlName: "لوحة القيادة",
-    icon: Dashboard,
-    component: ListApart,
+    icon: ApartmentIcon,
+    component: Apart,
     layout: "/admin"
   },
+ {
+    path: "/block/detail/:id",
+    name: "Quản lý toà nhà",
+    rtlName: "لوحة القيادة",
+    icon: ApartmentIcon,
+    component: EditBlock,
+    layout: "/admin",
+    private: true
+  },
+  {
+    path: "/block",
+    name: "Quản lý toà nhà",
+    rtlName: "لوحة القيادة",
+    icon: ApartmentIcon,
+    component: Block,
+    layout: "/admin"
+  },
+ 
   {
     path: "/bill/importbill",
     name: "Nhập hóa đơn",
     rtlName: "ملف تعريفي للمستخدم",
-    icon: Person,
+    icon: ReceiptIcon,
     component:ImportBill ,
     layout: "/admin",
     private: true
   },
-  
-  
+  {
+    path: "/bill/detail/all/:bill_id",
+    name: "Nhập hóa đơn",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: ReceiptIcon,
+    component:DetailAllBill ,
+    layout: "/admin",
+    private: true
+  },
   {
     path: "/bill",
     name: "Quản lý hóa đơn",
     rtlName: "ملف تعريفي للمستخدم",
-    icon: Person,
+    icon: ReceiptIcon,
     component:Bill ,
     layout: "/admin"
   },
@@ -67,7 +107,7 @@ const dashboardRoutes = [
     path: "/reportbill/:id",
     name: "Khiếu nại hóa đơn",
     rtlName: "ملف تعريفي للمستخدم",
-    icon: Person,
+    icon: ReceiptIcon,
     component:DetailReport ,
     layout: "/admin",
     private: true
@@ -76,18 +116,18 @@ const dashboardRoutes = [
     path: "/reportbill",
     name: "Khiếu nại hóa đơn",
     rtlName: "ملف تعريفي للمستخدم",
-    icon: Person,
+    icon: ReceiptIcon,
     component:ReportBill ,
     layout: "/admin",
   },
-  {
-    path: "/profile",
-    name: "Thông tin tài khoản",
-    rtlName: "ملف تعريفي للمستخدم",
-    icon: Person,
-    component:UserProfile,
-    layout: "/admin"
-  },
+  // {
+  //   path: "/profile",
+  //   name: "Thông tin tài khoản",
+  //   rtlName: "ملف تعريفي للمستخدم",
+  //   icon: Person,
+  //   component:UserProfile,
+  //   layout: "/admin"
+  // },
   {
     path: "/user_account/:id",
     name: "Chi tiet người dùng",
@@ -111,6 +151,76 @@ const dashboardRoutes = [
     rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
     component:AdminAccount ,
+    layout: "/admin"
+  },
+  {
+    path: "/repair/repair/detail/:notice_id",
+    name: "Sửa chữa dịch vụ",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: BuildIcon,
+    component:DetailRequestRepair,
+    layout: "/admin",
+    private: true
+  },
+  {
+    path: "/repair/repair",
+    name: "Sửa chữa dịch vụ",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: BuildIcon,
+    component:RequestRepair,
+    layout: "/admin",
+    private: true
+  },
+  {
+    path: "/repair/self_repair/detail/:notice_id",
+    name: "Tự sửa chữa",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: BuildIcon,
+    component:DetailRequestSelfRepair,
+    layout: "/admin",
+    private: true
+  },
+  {
+    path: "/repair/self_repair",
+    name: "Tự sửa chữa",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: BuildIcon,
+    component:RequestSelfRepair,
+    layout: "/admin",
+    private: true
+  },
+  {
+    path: "/repair/detail/:notice_id",
+    name: "Sửa chữa",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: BuildIcon,
+    component:DetailPublicArea,
+    layout: "/admin",
+    private: true
+  },
+  {
+    path: "/repair",
+    name: "Sửa chữa",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: BuildIcon,
+    component:PublicArea,
+    layout: "/admin"
+  },
+  {
+    path: "/noti_parking/:notice_id",
+    name: "Khiếu nại bãi xe",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: DriveEtaIcon,
+    component:DetailParking,
+    layout: "/admin",
+    private: true
+  },
+  {
+    path: "/noti_parking",
+    name: "Khiếu nại bãi xe",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: DriveEtaIcon,
+    component:Parking,
     layout: "/admin"
   },
 
