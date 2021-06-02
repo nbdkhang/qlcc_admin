@@ -1,7 +1,4 @@
-export const checkUser=()=>
-{
-    
-}
+
 export const directionList =[
     {id:"Bắc"},
     {id:"Tây Bắc"},

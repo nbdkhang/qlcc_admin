@@ -70,13 +70,13 @@ export default function RequestSelfRepair() {
                     <ListRequestSelfRepair type={1} status={1}/>
                 )
               },
-              {
-                tabName: "Đã sửa xong",
-                //tabIcon: Code,
-                tabContent: (
-                  <ListRequestSelfRepair type={1} status={2}/>
-                )
-              },
+              // {
+              //   tabName: "Đã sửa xong",
+              //   //tabIcon: Code,
+              //   tabContent: (
+              //     <ListRequestSelfRepair type={1} status={2}/>
+              //   )
+              // },
               {
                 tabName: "Không duyệt",
                 //tabIcon: Code,

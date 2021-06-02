@@ -7,10 +7,10 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import GridItem from "../../../component/Grid/GridItem.js";
 import GridContainer from "../../../component/Grid/GridContainer.js";
-import Button from "../../../component/CustomButtons/Button.js";
+// import Button from "../../../component/CustomButtons/Button.js";
 import Card from "../../../component/Card/Card.js";
 import CardAvatar from "../../../component/Card/CardAvatar.js";
-import CardBody from "../../../component/Card/CardBody.js";
+// import CardBody from "../../../component/Card/CardBody.js";
 import CustomTabs from "../../../component/CustomTabs/CustomTabs.js";
 import InfoUser from "./InfoUser.js"
 import avatar from "../../../asset/img/faces/marc.jpg";

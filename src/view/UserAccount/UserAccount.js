@@ -17,37 +17,36 @@ const useStyles = makeStyles((theme) => ({
   
 }));
 export default function UserAccount() {
-  const classes = useStyles();
-  const history = useHistory();
+ 
   const token = useSelector((state) => state.user.token);
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
   
   
-  useEffect(() => {
-    const getRes = async () => {
-      const res = await fetch(
-        process.env.REACT_APP_API_LINK + `/api/user/all`,
-        {
-          // get apart
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + `${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (res.status === 200) {
-        //console.log("Vo 200OK");
-        const result = await res.json();
-        setData(await handleData(result.data));
+  // useEffect(() => {
+  //   const getRes = async () => {
+  //     const res = await fetch(
+  //       process.env.REACT_APP_API_LINK + `/api/user/all`,
+  //       {
+  //         // get apart
+  //         method: "GET",
+  //         headers: {
+  //           Authorization: "Bearer " + `${token}`,
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+  //     if (res.status === 200) {
+  //       //console.log("Vo 200OK");
+  //       const result = await res.json();
+  //       setData(await handleData(result.data));
        
-      } else {
-        const result = await res.json();
-        alert(result.message);
-      }
-    };
-    getRes();
-  }, []);
+  //     } else {
+  //       const result = await res.json();
+  //       alert(result.message);
+  //     }
+  //   };
+  //   getRes();
+  // }, []);
   return (
    
       <GridContainer>      

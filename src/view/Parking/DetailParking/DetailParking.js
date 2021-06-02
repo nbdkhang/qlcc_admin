@@ -315,6 +315,9 @@ export default function DetailPublicArea(props) {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  InputProps={{
+                    readOnly: true,
+                  }}
                   variant="outlined"
                   defaultValue={data.author_name}
                   //onChange={(e) => setName(e.target.value)}
@@ -327,6 +330,9 @@ export default function DetailPublicArea(props) {
                   margin="normal"
                   InputLabelProps={{
                     shrink: true,
+                  }}
+                  InputProps={{
+                    readOnly: true,
                   }}
                   variant="outlined"
                   defaultValue={data.time}
@@ -342,6 +348,9 @@ export default function DetailPublicArea(props) {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  InputProps={{
+                    readOnly: true,
+                  }}
                   variant="outlined"
                   defaultValue={data.title}
                   //onChange={(e) => setName(e.target.value)}
@@ -355,6 +364,9 @@ export default function DetailPublicArea(props) {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  InputProps={{
+                    readOnly: true,
+                  }}
                   variant="outlined"
                   defaultValue={data.content}
                   //onChange={(e) => setName(e.target.value)}
@@ -367,6 +379,9 @@ export default function DetailPublicArea(props) {
                   margin="normal"
                   InputLabelProps={{
                     shrink: true,
+                  }}
+                  InputProps={{
+                    readOnly: true,
                   }}
                   variant="outlined"
                   defaultValue={data.is_confirm_value}

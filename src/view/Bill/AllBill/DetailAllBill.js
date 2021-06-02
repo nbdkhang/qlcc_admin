@@ -48,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
     width: "25ch",
   },
+  myButton:{
+     float: "right"
+  }
 }));
 export default function DetailAllBill(props) {
   const classes = useStyles();
@@ -284,6 +287,9 @@ export default function DetailAllBill(props) {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  InputProps={{
+                    readOnly: true,
+                  }}
                   variant="outlined"
                   defaultValue={data.apart_name || ""}
                 />
@@ -295,6 +301,9 @@ export default function DetailAllBill(props) {
                   margin="normal"
                   InputLabelProps={{
                     shrink: true,
+                  }}
+                  InputProps={{
+                    readOnly: true,
                   }}
                   variant="outlined"
                   defaultValue={data.month + "/" + data.year}
@@ -308,6 +317,9 @@ export default function DetailAllBill(props) {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  InputProps={{
+                    readOnly: true,
+                  }}
                   variant="outlined"
                   defaultValue={data.electric_bill}
                 />
@@ -318,6 +330,9 @@ export default function DetailAllBill(props) {
                   margin="normal"
                   InputLabelProps={{
                     shrink: true,
+                  }}
+                  InputProps={{
+                    readOnly: true,
                   }}
                   variant="outlined"
                   defaultValue={data.water_bill}
@@ -331,6 +346,9 @@ export default function DetailAllBill(props) {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  InputProps={{
+                    readOnly: true,
+                  }}
                   variant="outlined"
                   defaultValue={data.other_bill}
                 />
@@ -342,6 +360,9 @@ export default function DetailAllBill(props) {
                   margin="normal"
                   InputLabelProps={{
                     shrink: true,
+                  }}
+                  InputProps={{
+                    readOnly: true,
                   }}
                   variant="outlined"
                   defaultValue={data.total_money}
@@ -355,6 +376,9 @@ export default function DetailAllBill(props) {
                   margin="normal"
                   InputLabelProps={{
                     shrink: true,
+                  }}
+                  InputProps={{
+                    readOnly: true,
                   }}
                   variant="outlined"
                   defaultValue={
@@ -375,28 +399,30 @@ export default function DetailAllBill(props) {
           {/*
           {isError && <div style={{ marginTop: "15px" }}>Vui lòng thử lại</div>} */}
           </GridItem>
+          {data.is_pay ? (
+             <GridItem xs={12} sm={12} md={8}  >
+                <Button  className={classes.myButton} color="primary" onClick={(e) => handleClickOpen()}>
+                Hủy thanh toán
+                </Button>
+              </GridItem>
+            ) :
           <GridItem xs={12} sm={12} md={8}>
-            
-            {isLate && !data.is_pay &&(
-              <Button color="primary" onClick={(e) => handleNoti1()}>
+            <Button  className={classes.myButton} color="primary" onClick={(e) => handleClickOpen()}>
+                Thanh toán
+              </Button>
+            {isLate &&
+              <Button className={classes.myButton} color="primary" onClick={(e) => handleNoti1()}>
                 Thông báo trễ hạn
               </Button>
-            )}
-            {isDenied && !data.is_pay &&(
-              <Button color="primary" onClick={(e) => handleNoti2()}>
+            }
+            {isDenied &&(
+              <Button  className={classes.myButton} color="primary" onClick={(e) => handleNoti2()}>
                 Thông báo cắt điện nước
               </Button>
             )}
-            {data.is_pay ? (
-              <Button color="primary" onClick={(e) => handleClickOpen()}>
-                Hủy thanh toán
-              </Button>
-            ) : (
-              <Button color="primary" onClick={(e) => handleClickOpen()}>
-                Thanh toán
-              </Button>
-            )}
+              
           </GridItem>
+        }
         </GridContainer>
       ) : (
         <div>Đang xử lý, vui lòng chờ...</div>

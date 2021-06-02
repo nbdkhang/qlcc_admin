@@ -278,6 +278,9 @@ export default function DetailReport(props) {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  InputProps={{
+                    readOnly: true,
+                  }}
                   variant="outlined"
                   defaultValue={data.apart_name || ""}
                   //onChange={(e) => setName(e.target.value)}
@@ -291,6 +294,9 @@ export default function DetailReport(props) {
                   margin="normal"
                   InputLabelProps={{
                     shrink: true,
+                  }}
+                  InputProps={{
+                    readOnly: true,
                   }}
                   variant="outlined"
                   defaultValue={data.month + "/" + data.year}
@@ -306,6 +312,9 @@ export default function DetailReport(props) {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  InputProps={{
+                    readOnly: true,
+                  }}
                   variant="outlined"
                   defaultValue={data.electric_bill}
                   //onChange={(e) => setName(e.target.value)}
@@ -318,6 +327,9 @@ export default function DetailReport(props) {
                   margin="normal"
                   InputLabelProps={{
                     shrink: true,
+                  }}
+                  InputProps={{
+                    readOnly: true,
                   }}
                   variant="outlined"
                   defaultValue={data.water_bill}
@@ -332,6 +344,9 @@ export default function DetailReport(props) {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  InputProps={{
+                    readOnly: true,
+                  }}
                   variant="outlined"
                   defaultValue={data.other_bill}
                   //onChange={(e) => setName(e.target.value)}
@@ -345,6 +360,9 @@ export default function DetailReport(props) {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  InputProps={{
+                    readOnly: true,
+                  }}
                   variant="outlined"
                   defaultValue={data.total_money}
                   //onChange={(e) => setName(e.target.value)}
@@ -357,6 +375,9 @@ export default function DetailReport(props) {
                   margin="normal"
                   InputLabelProps={{
                     shrink: true,
+                  }}
+                  InputProps={{
+                    readOnly: true,
                   }}
                   variant="outlined"
                   defaultValue={

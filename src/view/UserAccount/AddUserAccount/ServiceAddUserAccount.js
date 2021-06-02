@@ -1,34 +1,27 @@
 export const checkUser = async()=>
-  {  //console.log("username is ok: "+!userName.match(usernameCheck));
-    // if(userName=="" ||!userName.match(usernameCheck))  
-    // { 
-      
-    //   setContent("Tên đăng nhập rỗng hoặc có kí tự đặc biệt");
-    //   return false;
-    // }
-    // if(password=="" )  
-    // { 
-    //   console.log("run");
-    //   setContent("Mật khẩu rỗng");
-    //   return false;
-    // }
-    // if(name=="" ||!name.match(usernameCheck))  
-    // { 
-      
-    //   setContent("Tên người dùng rỗng hoặc có kí tự đặc biệt");
-    //   return false;
-    // }
-    // if(phone=="" || !phone.match(phoneCheck))
-    // {
-    //   setContent("Số điện thoại rỗng hoặc có kí tự khác số");
-    //   return false;
-    // }
-    // if(email==""|| !email.match(emailCheck))
-    // {
-    //   setContent("Email rỗng hoặc không đúng");
-    //   return false;
-    // }
-    //console.log("true");
+  {  
       return true;
 
   }
+  export const handleRawApart=async(block_id,apartList)=>{
+    let temp=[]
+    //console.log(block_id);
+    for (let i=0;i<apartList.length;i++) {
+      if(apartList[i].block===block_id)
+       {  
+         //console.log("add");
+          temp.push(apartList[i]);
+       }
+  }
+  if(temp.length===0)
+  {
+    temp.push({_id:"",name:"Tòa nhà không có căn hộ"})
+  }
+  //console.log(temp);
+  return temp;
+}
+export const statusList=[
+  {id:1,name:"Còn trống"},
+  {id:2, name:"Đã thuê"},
+  {id:3, name:"Đã bán"}
+]

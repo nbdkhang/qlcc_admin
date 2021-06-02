@@ -17,11 +17,16 @@
 */
 // @material-ui/icons
 //import Dashboard from "@material-ui/icons/Dashboard";
+import HomeIcon from '@material-ui/icons/Home';
 import Person from "@material-ui/icons/Person";
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import ReceiptIcon from '@material-ui/icons/Receipt';
+import AddAlertIcon from '@material-ui/icons/AddAlert';
 import BuildIcon from '@material-ui/icons/Build';
 import DriveEtaIcon from '@material-ui/icons/DriveEta';
+import HomeWorkIcon from '@material-ui/icons/HomeWork';
+import MarkunreadMailboxIcon from '@material-ui/icons/MarkunreadMailbox';
+import AddCommentIcon from '@material-ui/icons/AddComment';
 
 // core components/views for Admin layout
 //import Homepage from "./view/Homepage/homepage";
@@ -35,6 +40,7 @@ import ReportBill from "./view/Bill/ReportBill/ReportBill.js";
 import DetailReport from "./view/Bill/ReportBill/DetailReport";
 import DetailAllBill from "./view/Bill/AllBill/DetailAllBill";
 import Apart from "./view/Apart/Apart";
+import DetailApart from "./view/Apart/DetailApart/DetailApart.js"
 
 import Block from "./view/Block/Block";
 import EditBlock from "./view/Block/DetailBlock/EditBlock";
@@ -46,16 +52,31 @@ import DetailRequestRepair from "./view/Repair/RequestRepair/DetailRequestRepair
 import DetailRequestSelfRepair from "./view/Repair/RequestSelfRepair/DetailRequestSelfRepair";
 import Parking from "./view/Parking/Parking.js";
 import DetailParking from "./view/Parking/DetailParking/DetailParking.js";
+
+import SendNotification from "./view/SendNotifications/SendNotification.js"
+import ServicePlace from "./view/ServicePlace/ServicePlace.js";
+import ServiceRegister from "./view/ServiceRegister/ServiceRegister.js"
+import BrowsePost from "./view/BrowsePost/BrowsePost.js"
+import DetailBrowsePost from "./view/BrowsePost/DetailBrowsePost/DetailBrowsePost.js"
 //import NotificationsPage from "views/Notifications/Notifications.js";
 // core components/views for RTL layout
 
 
 const dashboardRoutes = [
   {
+    path: "/apart/detail/:apart_id",
+    name: "Quản lý căn hộ",
+    rtlName: "لوحة القيادة",
+    icon: HomeIcon,
+    component: DetailApart,
+    layout: "/admin",
+    private: true
+  },
+  {
     path: "/apart",
     name: "Quản lý căn hộ",
     rtlName: "لوحة القيادة",
-    icon: ApartmentIcon,
+    icon: HomeIcon,
     component: Apart,
     layout: "/admin"
   },
@@ -74,6 +95,14 @@ const dashboardRoutes = [
     rtlName: "لوحة القيادة",
     icon: ApartmentIcon,
     component: Block,
+    layout: "/admin"
+  },
+  {
+    path: "/notification",
+    name: "Thông báo chung",
+    rtlName: "لوحة القيادة",
+    icon: AddAlertIcon,
+    component: SendNotification,
     layout: "/admin"
   },
  
@@ -223,6 +252,56 @@ const dashboardRoutes = [
     component:Parking,
     layout: "/admin"
   },
+  {
+    path: "/service_place/detail/:id",
+    name: "Quản lý khu vực dịch vụ ",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: DriveEtaIcon,
+    component:ServicePlace,
+    layout: "/admin",
+    private: true
+  },
+  {
+    path: "/service_place",
+    name: "Quản lý khu vực dịch vụ ",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: HomeWorkIcon,
+    component:ServicePlace,
+    layout: "/admin"
+  },
+  {
+    path: "/service_register",
+    name: "Yêu cầu dùng dịch vụ",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: MarkunreadMailboxIcon,
+    component:ServiceRegister,
+    layout: "/admin"
+  },
+  {
+    path: "/browse_post/detail/:id",
+    name: "Yêu cầu đăng bài",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: DriveEtaIcon,
+    component:DetailBrowsePost,
+    layout: "/admin",
+    private: true
+  },
+  {
+    path: "/browse_post",
+    name: "Yêu cầu đăng bài",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: AddCommentIcon,
+    component:BrowsePost,
+    layout: "/admin"
+  },
+  // {
+  //   path: "/test",
+  //   name: "Test",
+  //   rtlName: "ملف تعريفي للمستخدم",
+  //   icon: DriveEtaIcon,
+  //   component:Test,
+  //   layout: "/admin"
+  // },
 
   
   // {

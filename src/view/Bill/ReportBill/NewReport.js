@@ -126,7 +126,7 @@ export default function NewReport(props) {
        
         const result = await res.json();
         console.log("Vo 200OK");
-        console.log(result);
+        console.log(result.data);
         setData(await handleData(result.data));
         // setStatis();
         //calTotal(result.data)

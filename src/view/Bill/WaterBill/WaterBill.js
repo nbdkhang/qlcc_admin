@@ -137,32 +137,32 @@ export default function WaterBill(props) {
       },
     },
 
-    {
-      name: "",
-      options: {
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return (
-            <div>
-            <Button
-              //className={classes.button}
-              //variant="outlined"
-              color="primary"
-              onClick={() => handleClick(tableMeta.rowData[0])}>
-              Chi tiết
-            </Button>
+    // {
+    //   name: "",
+    //   options: {
+    //     customBodyRender: (value, tableMeta, updateValue) => {
+    //       return (
+    //         <div>
+    //         <Button
+    //           //className={classes.button}
+    //           //variant="outlined"
+    //           color="primary"
+    //           onClick={() => handleClick(tableMeta.rowData[0])}>
+    //           Chi tiết
+    //         </Button>
 
-             <Button
-              className={classes.button}
-             //variant="outlined"
-             color="danger"
-             onClick={() => handleClick(tableMeta.rowData[0])}>
-             Xóa
-           </Button>
-           </div>
-          );
-        },
-      },
-    },
+    //          <Button
+    //           className={classes.button}
+    //          //variant="outlined"
+    //          color="danger"
+    //          onClick={() => handleClick(tableMeta.rowData[0])}>
+    //          Xóa
+    //        </Button>
+    //        </div>
+    //       );
+    //     },
+    //   },
+    // },
   ];
   const handleClick = (id) => {
     console.log(id);
@@ -227,7 +227,7 @@ export default function WaterBill(props) {
       </GridItem>
     </GridContainer>
 
-    <GridContainer xs={12} sm={12} md={12}>
+    {/* <GridContainer xs={12} sm={12} md={12}>
       <GridItem xs={12} sm={12} md={3}>
         <div>Thông kê dữ liệu đã lọc</div>
       </GridItem>
@@ -242,7 +242,7 @@ export default function WaterBill(props) {
           Tiền còn lại: {statisChange.total_not_pay}
         </div>
       </GridItem>
-    </GridContainer>
+    </GridContainer> */}
 
     <GridItem xs={12} sm={12} md={12}>
       <MUIDataTable

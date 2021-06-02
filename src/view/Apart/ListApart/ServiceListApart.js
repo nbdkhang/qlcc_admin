@@ -22,8 +22,6 @@ const returnStatus = (status) => {
     case 1:
       return "Còn trống";
     case 2:
-      return "Đã thuê";
-    case 3:
       return "Đã bán";
     default:
       return "";

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {useSelector } from "react-redux";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
@@ -10,7 +10,7 @@ import GridContainer from "../../../component/Grid/GridContainer.js";
 import Button from "../../../component/CustomButtons/Button.js";
 import { directionList, typeList } from "./ServiceAddApart.js";
 import TextField from "@material-ui/core/TextField";
-import { Block } from "@material-ui/icons";
+
 
 const useStyles = makeStyles((theme) => ({
   cardCategoryWhite: {
@@ -41,12 +41,12 @@ const useStyles = makeStyles((theme) => ({
   alerts: {
     marginTop: "18px",
   },
+  myButton:{
+    float: "right"
+ }
 }));
 export default function AddApart() {
   const classes = useStyles();
-  //   const [open, setOpen] = useState(false);
-  //   const [content, setContent] = useState("");
-  //   const userInfo = useSelector((state) => state.user.info);
   const [blockList, setBlockList] = useState([]);
   const nameCheck = /^[a-zA-Z0-9]+$/;
   const phoneCheck = /^[0-9]+$/;
@@ -70,9 +70,9 @@ export default function AddApart() {
   const [fileExtension, setFileExtenstion] = useState([]);
   const [fileMediaType, setFileMediaType] = useState([]);
   //const [fileData, setFileData] = useState([]);
-  const [review,setReview]=useState([]);
+  const [review,setReview]=useState([{src:""}]);
   const [isSelectFile,setIsSelectFile]=useState(false);
-  
+  const [isLoad,setIsLoad]=useState(true);
 
   const checkApartName = (name) => {
     if (name !== "" && name.match(nameCheck)) {
@@ -94,9 +94,9 @@ export default function AddApart() {
   };
   const checkDirection = (direction) => {
     if (true) {
-      setAlertDescription(false);
+      setAlertDirection(false);
       setDirection(direction);
-    } else setAlertDescription(true);
+    } else setAlertDirection(true);
   };
   const checkType = (Type) => {
     if (true) {
@@ -119,35 +119,27 @@ export default function AddApart() {
     let extension = [];
     let type = [];
     let data = [];
-    let review=[];
+    let reviewImage=[];
     if (file !== undefined) {
       for (let i = 0; i < file.length; i++) {
         let arr = file[i].type.split("/");
         extension.push(arr.pop());
         type.push(arr.pop());
         name.push(file[i].name.split(".").shift());
-
-        let reader = new FileReader();
-        await reader.readAsText(file[i]);
-        reader.onloadend = async () => {
-          //data.push(reader.result);
-          review[i]={
-            src:reader.result
-          }
-          console.log(reader);
-        };
+        reviewImage[i]={
+          src: URL.createObjectURL(file[i])
+  }
       }
-      console.log(name);
-      console.log(extension);
-      console.log(type);
-      //console.log(data);
-      console.log(review);
-      setReview(review);
+      // console.log(name);
+      // console.log(extension);
+      // console.log(type);
+      // console.log(review);
+      setReview(reviewImage);
       setNameFile(name);
       setFileExtenstion(extension);
       setFileMediaType(type);
       //setFileData(data);
-      setIsSelectFile(!isSelectFile); 
+      setIsSelectFile(true); 
       
     }
   };
@@ -176,7 +168,7 @@ export default function AddApart() {
           );
           if (res.status === 200) {
             const result = await res.json();
-            console.log(result.uploadUrl);
+            console.log("image ok" +i);
             url.push(result.uploadUrl);
             key.push(result.key);
           } else if (res.status === 500) {
@@ -198,8 +190,7 @@ export default function AddApart() {
       
       for(let i=0;i<url.length;i++)
      
-      { console.log(fileMediaType[i]+"/"+fileExtension[i]);
-        //console.log(fileData[i]);
+      { 
       const res = await fetch(url[i], {
         method: "PUT",
         headers: { "Content-Type": fileMediaType[i]+"/"+fileExtension[i] },
@@ -214,7 +205,7 @@ export default function AddApart() {
         //setIsError(true);
       }}
       //console.log(key);
-      //addApart(key);
+      addApart(key);
     } catch (err) {
       console.log(err);
     }
@@ -259,6 +250,7 @@ export default function AddApart() {
     }
   };
   useEffect(() => {
+    setIsLoad(true);
     const getRes = async () => {
       const res1 = await fetch(
         process.env.REACT_APP_API_LINK + `/api/block/all`,
@@ -275,10 +267,12 @@ export default function AddApart() {
         console.log("Vo 200OK");
         const result1 = await res1.json();
         console.log(result1.data);
+        console.log(directionList);
         setBlockList(result1.data);
         setBlock(result1.data[0]._id);
         setType(typeList[0]);
         setDirection(directionList[0]);
+        setIsLoad(false);
         // setData(await handleData(result.data, result1.data));
       } else {
         const result = await res1.json();
@@ -291,7 +285,7 @@ export default function AddApart() {
   return (
     <div>
       <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
+        {!isLoad &&<GridItem xs={12} sm={12} md={12}>
           <GridContainer>
             <GridItem xs={12} sm={12} md={9}>
               <TextField
@@ -386,17 +380,17 @@ export default function AddApart() {
               </TextField>
             </GridItem>
             <GridItem xs={12} sm={12} md={3}>
-              {/* {alertBlock && <Alert className={classes.alerts} severity="error">Tòa nhà không hợp lệ</Alert>} */}
+              {alertDirection && <Alert className={classes.alerts} severity="error">Tòa nhà không hợp lệ</Alert>}
             </GridItem>
 
             <GridItem xs={12} sm={12} md={9}>
               <TextField
-                id="direction"
+                id="type"
                 select
                 label="Loại căn hộ"
                 margin="normal"
                 defaultValue={typeList[0]}
-                onChange={(e) => checkDirection(e.target.value)}
+                onChange={(e) => checkType(e.target.value)}
                 SelectProps={{
                   native: true,
                 }}
@@ -411,9 +405,9 @@ export default function AddApart() {
               </TextField>
             </GridItem>
             <GridItem xs={12} sm={12} md={3}>
-              {alertDirection && (
+              {alertType && (
                 <Alert className={classes.alerts} severity="error">
-                  Hướng căn hộ không hợp lệ
+                  Loại căn hộ không hợp lệ
                 </Alert>
               )}
             </GridItem>
@@ -440,30 +434,32 @@ export default function AddApart() {
               )}
             </GridItem>
 
-            <GridItem xs={12} sm={12} md={2}>
-              <label style={{ margin: "15px" }}>Ảnh căn hộ</label>
+            <GridItem xs={12} sm={12} md={2} style={{ marginTop: "15px" }}>
+              <label style={{ marginTop: "50px" }}>Ảnh căn hộ</label>
             </GridItem>
-            <GridItem xs={12} sm={12} md={6}>
+            <GridItem xs={12} sm={12} md={4}>
               <input
-                style={{ margin: "15px" }}
+                style={{ marginTop: "15px" }}
                 type="file"
                 onChange={(e) => handeFile(e.target.files,e.target.value)}
-                 multiple
+                multiple
+                accept="image/*"
               />
             </GridItem>
-            {isSelectFile || <GridItem xs={12} sm={12} md={4}>
-             {   review.map((option) => (
-                  <img src={option.src} alt="Girl in a jacket" style={{width:"30px",height:"30px"}}></img>
+            {<GridItem xs={12} sm={12} md={6}>
+              {isSelectFile && review.map((option) => (
+                  <img src={option.src} alt="Girl in a jacket" style={{width:"50px",height:"50px"}}></img>
                 ))}
-                {/* {<img src={review[0].src} alt="Girl in a jacket" style={{width:"30px",height:"30px"}}></img>}
-                {<img src={review[1].src} alt="Girl in a jacket" style={{width:"30px",height:"30px"}}></img>} */}
+                 {/* {<img src={review[0].src} alt="Girl in a jacket" style={{width:"30px",height:"30px"}}></img>} */}
+               {/* {<img src={review[1].src} alt="Girl in a jacket" style={{width:"30px",height:"30px"}}></img>} */}
             </GridItem>}
           </GridContainer>
-
-          <Button color="primary" onClick={(e) => handleSubmit(e)}>
+          <GridItem xs={12} sm={12} md={9}>
+          <Button className={classes.myButton} color="primary" onClick={(e) => handleSubmit(e)}>
             Lưu lại
           </Button>
-        </GridItem>
+          </GridItem>
+        </GridItem>}
       </GridContainer>
     </div>
   );

@@ -136,34 +136,34 @@ export default function ElectricBill(props) {
       },
     },
 
-    {
-      name: "",
-      options: {
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return (
-            <div>
-              <Button
-                //className={classes.button}
-                //variant="outlined"
-                color="primary"
-                onClick={() => handleClick(tableMeta.rowData[0])}
-              >
-                Chi tiết
-              </Button>
+    // {
+    //   name: "",
+    //   options: {
+    //     customBodyRender: (value, tableMeta, updateValue) => {
+    //       return (
+    //         <div>
+    //           <Button
+    //             //className={classes.button}
+    //             //variant="outlined"
+    //             color="primary"
+    //             onClick={() => handleClick(tableMeta.rowData[0])}
+    //           >
+    //             Chi tiết
+    //           </Button>
 
-              {/* <Button
-                className={classes.button}
-                //variant="outlined"
-                color="danger"
-                onClick={() => handleClick(tableMeta.rowData[0])}
-              >
-                Xóa
-              </Button> */}
-            </div>
-          );
-        },
-      },
-    },
+    //           {/* <Button
+    //             className={classes.button}
+    //             //variant="outlined"
+    //             color="danger"
+    //             onClick={() => handleClick(tableMeta.rowData[0])}
+    //           >
+    //             Xóa
+    //           </Button> */}
+    //         </div>
+    //       );
+    //     },
+    //   },
+    // },
   ];
   const handleClick = (id) => {
     console.log(id);

@@ -144,14 +144,7 @@ export default function DetailRequestSelfRepair(props) {
         console.log(err);
       }
   }
-  const renderButton =()=>
-  { 
-    //let str=returnStatus(data.status)   
-    return(  
-  <Button color="primary" onClick={(e) => handleClickOpen(true)}>
-    {data.next_status_value}
-  </Button>)
-  }
+  
  
   const getUrl = async (key) => {
     if (key.length >=1) {
@@ -191,6 +184,37 @@ export default function DetailRequestSelfRepair(props) {
   const handleClose = () => {
     setOpen(false);
   };
+  const renderButton = () => {
+    console.log(data.status);
+    if (data.status === 0) {
+      return (
+        <div>
+          <Button
+            className={classes.myButton}
+            color="primary"
+            onClick={(e) => handleClickOpen(true)}
+          >
+            {data.next_status_value}
+          </Button>
+          {/* <Button
+            className={classes.myButton}
+            color="primary"
+            onClick={(e) => handleClickOpen1(true)}
+          >
+            Không duyệt
+          </Button> */}
+        </div>
+      );
+    } else if (data.status === 2||data.status === 3) {
+      return <div></div>;
+    } else {
+      return (
+        <Button color="primary" onClick={(e) => handleClickOpen(true)}>
+          {data.next_status_value}
+        </Button>
+      );
+    }
+  }
   const getUserAndApart = async (data)=>
   { 
     const res = await fetch(

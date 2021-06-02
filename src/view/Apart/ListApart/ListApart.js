@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { handleData } from "./ServiceListApart.js";
-import Button from "@material-ui/core/Button";
 import CustomButton from "../../../component/CustomButtons/Button.js"
 import { useHistory } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
-import GridItem from "../../../component/Grid/GridItem.js";
-import GridContainer from "../../../component/Grid/GridContainer.js";
+
 export default function ListApart() {
   const history = useHistory();
-  const userInfo = useSelector((state) => state.user.info);
   const token = useSelector((state) => state.user.token);
   const [data, setData] = useState([]);
 
@@ -78,9 +75,8 @@ export default function ListApart() {
     },
   ];
   const handleClick = (id) => {
-    // e.preventDefault();
-    console.log(id);
-    //history.push(`/userdetails/${id}`);
+
+    history.push(`/admin/apart/detail/${id}`);
   };
 
   useEffect(() => {

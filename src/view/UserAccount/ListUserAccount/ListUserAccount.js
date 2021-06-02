@@ -49,16 +49,16 @@ export default function UserAccount() {
         sort: false,
       },
     },{
-        name: "email",
-        label: "Email",
+        name: "phone",
+        label: "Số điện thoại",
         options: {
           filter: true,
           sort: false,
         },
       },
     {
-        name: "cmnd",
-        label: "Số CMND",
+        name: "license_plates",
+        label: "Biển số xe",
         options: {
           filter: true,
           sort: false,

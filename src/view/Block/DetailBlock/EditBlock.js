@@ -76,7 +76,7 @@ export default function EditBlock() {
         const res = await fetch(
           process.env.REACT_APP_API_LINK + `/api/block/update`,
           {
-            method: "POST",
+            method: "PUT",
             mode: "cors",
             headers: {
               Authorization: "Bearer " + `${token}`,

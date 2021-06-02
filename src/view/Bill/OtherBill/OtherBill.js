@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { handleData ,calTotal, calFilter} from "./ServiceOtherBill";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "../../../component/CustomButtons/Button.js";
+import GridContainer from "../../../component/Grid/GridContainer";
+import GridItem from "../../../component/Grid/GridItem";
 //import { useHistory } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 
@@ -17,6 +19,11 @@ export default function OtherBill(props) {
   const token = useSelector((state) => state.user.token);
   const { selectMonth, selectYear, reLoad } = props;
   const [data, setData] = useState([]);
+  const [statis, setStatis] = useState({
+    total: 0,
+    total_pay: 0,
+    total_not_pay: 0,
+  });
 
   const options = {
     filterType: "dropdown",
@@ -190,8 +197,8 @@ export default function OtherBill(props) {
         // console.log("Vo 200OK");
         console.log(result);
         setData(await handleData(result.data, result1.data));
-        // setStatis();
-        calTotal(result.data)
+        //setStatis(calTotal(result.data));
+        
       } else {
         const result = await res.json();
         alert(result.message);
@@ -201,6 +208,22 @@ export default function OtherBill(props) {
   }, [reLoad]);
   return (
     <div>
+      {/* <GridContainer xs={12} sm={12} md={12}>
+        <GridItem xs={12} sm={12} md={3}>
+          <div>Thông kê toàn dữ liệu</div>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={3}>
+          <div>Tổng tiền : {statis.total}</div>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={3}>
+          <div style={{ color: "green" }}>Tiền đã thu : {statis.total_pay}</div>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={3}>
+          <div style={{ color: "red" }}>
+            Tiền còn lại: {statis.total_not_pay}
+          </div>
+        </GridItem>
+      </GridContainer> */}
       <MUIDataTable
         title={""}
         data={data}
