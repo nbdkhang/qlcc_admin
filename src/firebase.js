@@ -24,10 +24,10 @@ messaging.requestPermission().then(()=>{
   }).then(token_device=>{
     console.log( token_device)
   })
-messaging.onMessage(async (payload) => {
-    console.log('Message received. ', payload);
-    // ...
-  });
+// messaging.onMessage(async (payload) => {
+//     console.log('Message received. ', payload);
+//     // ...
+//   });
 
 // if ('serviceWorker' in navigator) {
 //     console.log("service");

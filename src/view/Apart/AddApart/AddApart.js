@@ -182,7 +182,7 @@ export default function AddApart() {
     }
     else
     {
-        
+      addApart("");
     }
   };
   const upload = async (url,key) => {

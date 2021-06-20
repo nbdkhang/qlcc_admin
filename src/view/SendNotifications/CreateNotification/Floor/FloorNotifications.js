@@ -45,28 +45,19 @@ const useStyles = makeStyles((theme) => ({
     float: "right"
  }
 }));
-export default function AddApart() {
+export default function BlockNotification(props) {
   const token = useSelector((state) => state.user.token);
+  const {setBlock}=props;
   const [isLoad,setIsLoad]=useState(true);
-
+  const [blockList,setBlockList]=useState([]);
+ // console.log("block");
   useEffect(() => {
     setIsLoad(true);
     const getRes = async () => {
-      const res = await fetch(
-        process.env.REACT_APP_API_LINK + `/api/block/all`,
-        {
-          // get content
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + `${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
       const res1 = await fetch(
         process.env.REACT_APP_API_LINK + `/api/block/all`,
         {
-          // get content
+          // get block
           method: "GET",
           headers: {
             Authorization: "Bearer " + `${token}`,
@@ -78,9 +69,9 @@ export default function AddApart() {
         console.log("Vo 200OK");
         const result1 = await res1.json();
         console.log(result1.data);
-       
-        setIsLoad(false)
-      
+        setBlockList(result1.data);
+        setBlock(result1.data[0]._id);
+        setIsLoad(false);
         // setData(await handleData(result.data, result1.data));
       } else {
         const result = await res1.json();
@@ -92,30 +83,26 @@ export default function AddApart() {
 
   return (
       <>
-      {isLoad && <GridContainer>
-            <GridItem xs={12} sm={12} md={9}>
+      {!isLoad &&
               <TextField
                 id="to"
                 select
-                label="Người nhận"
+                label="Tòa nhà"
                 margin="normal"
                 defaultValue={to[0]}
-                onChange={(e) => handleType(e.target.value)}
+                onChange={(e) => setBlock(e.target.value)}
                 SelectProps={{
                   native: true,
                 }}
                 fullWidth
                 variant="outlined"
               >
-                {to.map((option) => (
-                  <option key={option.id} value={option.id}>
-                    {option.value}
+                {blockList.map((option) => (
+                  <option key={option._id} value={option._id}>
+                    {option.name}
                   </option>
                 ))}
-              </TextField>
-               </GridItem>
-     </GridContainer>  }        
-         
+              </TextField>}
     </>
   );
 }

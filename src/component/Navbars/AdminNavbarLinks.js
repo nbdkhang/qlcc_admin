@@ -18,7 +18,7 @@ import Search from "@material-ui/icons/Search";
 // core components
 import CustomInput from "../CustomInput/CustomInput.js";
 import Button from "../CustomButtons/Button.js";
-
+import {firebase} from "../../../src/firebase.js"
 
 import styles from "../../asset/jss/material-dashboard-react/components/headerLinksStyle.js";
 import { addUser } from "../../redux/action/userAction.js";
@@ -61,6 +61,11 @@ export default function AdminNavbarLinks() {
     history.push("/home");
 
   }
+  const messaging = firebase.messaging();
+  messaging.onMessage(async (payload) => {
+    console.log('Message received in noti ', payload);
+    // ...
+  });
   
   return (
     <div>
@@ -138,7 +143,10 @@ export default function AdminNavbarLinks() {
                       onClick={handleCloseNotification}
                       className={classes.dropdownItem}
                     >
-                      Mike John responded to your email
+                      <>
+                     <h3> Mike John responded to your email</h3>
+                      <span className={classes.notifications}>5</span>
+                      </>
                     </MenuItem>
                     <MenuItem
                       onClick={handleCloseNotification}

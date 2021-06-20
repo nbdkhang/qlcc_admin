@@ -1,33 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import EditApart from "./EditApart/EditApart.js"
+import EditOwner from "./EditOwner/EditOwner.js"
 import GridItem from "../../../component/Grid/GridItem.js";
 import GridContainer from "../../../component/Grid/GridContainer.js";
 import TextField from "@material-ui/core/TextField";
+
+
 export default function Edit(props){
+ 
     const {data,isLoad,blockList,setIsHandle}=props;
-    const List =[
-        {id:1,name:"Cập nhật thông tin"},
-        {id:2,name:"Cập nhật chủ căn hộ"},
-    ]
-    const [id,setID]=useState(1);
-    const renderEdit=()=>{
-        if(id===1)
-        return (<EditApart data={data} isLoad={isLoad} blockList={blockList} setIsHandle={setIsHandle}></EditApart>);
-        if(id===2)
-        return (<div></div>)
+    // const List =[
+    //     {id:1,name:"Cập nhật thông tin"},
+    //     // {id:2,name:"Cập nhật chủ căn hộ"},
+    // ]
+    //const [id,setID]=useState(1);
+     const[reload,setReload]=useState(true);
+     const handleChange=(id)=>{
+      console.log(id);
+    
+  }
+    const renderEdit=(id)=>{
+      return (<EditApart data={data} isLoad={isLoad} blockList={blockList} setIsHandle={setIsHandle}></EditApart>);
+        // if(parseInt(id)===1)
+        // return (<EditApart data={data} isLoad={isLoad} blockList={blockList} setIsHandle={setIsHandle}></EditApart>);
+        // if(parseInt(id)===2)
+        // return (<EditOwner  data={data} isLoad={isLoad} blockList={blockList} setIsHandle={setIsHandle}></EditOwner>)
     }
-  
+    
+    console.log("render");
     return(
         <div>
             <GridContainer>
-            <GridItem xs={12} sm={12} md={9}>
+            {/* <GridItem xs={12} sm={12} md={9}>
                 <TextField
                   id="type"
                   select
-                  label="Loại căn hộ"
+                  label="Thông tin chỉnh sửa"
                   margin="normal"
                   defaultValue={List[0]}
-                  onChange={(e) => setID(e.target.value)}
+                  onChange={(e) => {handleChange(e.target.value)}}
                   SelectProps={{
                     native: true,
                   }}
@@ -40,7 +51,7 @@ export default function Edit(props){
                     </option>
                   ))}
                 </TextField>
-              </GridItem>
+              </GridItem> */}
               {renderEdit()}
               </GridContainer>
         </div>

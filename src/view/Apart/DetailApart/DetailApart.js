@@ -17,6 +17,7 @@ import APIDetailApart from "./APIDetailApart.js";
 import Edit from "./Edit.js";
 import InfoApart from "./InfoApart/InfoApart.js";
 import { handleData } from "./ServiceDetailApart.js";
+import Snackbar from "../../../component/SnackBar/Snackbar.js"
 
 const styles = {
   cardCategoryWhite: {
@@ -49,9 +50,30 @@ export default function Apart() {
   const [image, setImage] = useState([]);
   const [isLoad, setIsLoad] = useState(true);
   const [data, setData] = useState([]);
+  const [openSnackBar,setOpenSnackBar]=useState(false);
+  const [snackType,setSnackType]=useState(true);
   const [isHandle,setIsHandle]=useState(false);
 
+  const handleOpenSnackBar = (type) => {
+    if (type) setSnackType(true);
+    else setSnackType(false);
+    setOpenSnackBar(true);
+  };
+  const handleCloseSnackBar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnackBar(false);
+  };
+ const handleOpenLoading=()=>{
+    setIsHandle(true);
+  }
+  const handleCloseLoading=()=>{
+    setIsHandle(false);
+  }
+
   useEffect(() => {
+    handleOpenLoading()
     const getRes = async () => {
       setIsLoad(true);
       try {
@@ -78,17 +100,22 @@ export default function Apart() {
           let user={name:"Không có"};
           let block= await getBlock();
           setBlockList(block);
-          if(result.data.owner.is_active===true)
+          if(result.data.status===2)
             user= await getUser(result.data);
+          else user=null
           setData(await handleData(result.data,user,block))
-         
           setIsLoad(false);
+          handleCloseLoading();
         } else {
           const result = await res.json();
           alert(result.message);
+          handleCloseLoading()
+          handleOpenSnackBar(false)
         }
       } catch (err) {
         console.log(err);
+        handleCloseLoading()
+        handleOpenSnackBar(false)
       }
     };
     getRes();
@@ -123,6 +150,7 @@ export default function Apart() {
         </GridContainer>
       )}
       </LoadingOverlay>
+      <Snackbar open={openSnackBar} type={snackType} handleClose={handleCloseSnackBar}></Snackbar>
     </div>
   );
 }

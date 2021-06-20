@@ -4,7 +4,7 @@ const status = [
 ];
 
 export const handleData = (data, user, block) => {
-  data["owner_name"] = user.name;
+  data["owner_info"] = user;
   data["block_value"] = returnBlock(data.block, block);
   data["status_value"] = returnStatus(data.status);
 

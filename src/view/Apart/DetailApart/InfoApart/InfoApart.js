@@ -112,9 +112,6 @@ export default function InfoApart(props) {
                
               </TextField>
             </GridItem>
-            <GridItem xs={12} sm={12} md={3}>
-              
-            </GridItem>
 
             <GridItem xs={12} sm={12} md={9}>
               <TextField
@@ -132,9 +129,6 @@ export default function InfoApart(props) {
                 defaultValue={data.area}
                 variant="outlined"
               />
-            </GridItem>
-            <GridItem xs={12} sm={12} md={3}>
-              
             </GridItem>
 
             <GridItem xs={12} sm={12} md={9}>
@@ -197,9 +191,44 @@ export default function InfoApart(props) {
                 //defaultValue={address}
               />
             </GridItem>
-            <GridItem xs={12} sm={12} md={3}>
-        
-            </GridItem>           
+            {data.owner_info!==null
+            ?
+              <>
+              <GridItem xs={12} sm={12} md={9}>
+              <TextField
+                id="username"
+                label="Người sở hữu"
+                //style={{ margin: 8 }}
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                InputProps={{
+                  readOnly: true,
+                }}
+                defaultValue={data.owner_info.name}
+                variant="outlined"
+              />
+            </GridItem> 
+            <GridItem xs={12} sm={12} md={9}>
+              <TextField
+                id="cmnd"
+                label="CMND"
+                //style={{ margin: 8 }}
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                InputProps={{
+                  readOnly: true,
+                }}
+                defaultValue={data.owner_info.identify_card}
+                variant="outlined"
+              />
+            </GridItem> 
+            </>:<></>}    
           </GridContainer>
           <GridItem xs={12} sm={12} md={9}>
           {/* <Button className={classes.myButton} color="primary" onClick={(e) => handleSubmit(e)}>

@@ -55,7 +55,7 @@ export default function EditApart(props) {
   const [direction, setDirection] = useState(data.direction);
   const [type, setType] = useState(data.type);
   const [description, setDescription] = useState(data.description);
-
+  console.log("apart");
   const checkApartName = (name) => {
     if (name !== "" && name.match(nameCheck)) {
       setAlertApartName(false);

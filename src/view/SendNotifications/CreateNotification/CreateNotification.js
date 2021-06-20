@@ -16,7 +16,8 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-
+import LoadingOverlay from "react-loading-overlay";
+import Snackbar from "../../../component/SnackBar/Snackbar.js"
 const useStyles = makeStyles((theme) => ({
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -55,8 +56,12 @@ export default function CreateNotification() {
   const [contentList, setContentList] = useState([]);
   const nameCheck = /^[a-zA-Z0-9]+$/;
   const phoneCheck = /^[0-9]+$/;
+
   const token = useSelector((state) => state.user.token);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false); 
+  const [openSnackBar,setOpenSnackBar]=useState(false);
+  const [snackType,setSnackType]=useState(true);
+  const [isHandle,setIsHandle]=useState(false);
   const [alertTitle, setAlertTitle] = useState(false);
   const [alertContent, setAlertContent] = useState(false);
   const [alertLink, setAlertLink] = useState(false);
@@ -75,7 +80,6 @@ export default function CreateNotification() {
   const [review, setReview] = useState([{ src: "" }]);
   const [isSelectFile, setIsSelectFile] = useState(false);
   const [reload, setReload] = useState(false);
-  const [isHandle, setIsHandle] = useState(false);
 
   const checkTitle = (name) => {
     if (name !== "") {
@@ -153,6 +157,7 @@ export default function CreateNotification() {
   const handleSubmit = () => {
     //getlink();
     handleClose();
+    handleOpenLoading()
     getlink();
   };
 
@@ -180,13 +185,17 @@ export default function CreateNotification() {
             console.log("image ok" + i);
             url.push(result.uploadUrl);
             key.push(result.key);
-          } else if (res.status === 500) {
-          } else console.log("SOMETHING WENT WRONG");
+          }  else {
+            console.log("SOMETHING WENT WRONG");
+          handleCloseLoading()
+          handleOpenSnackBar(false)}
         }
         console.log(key);
         upload(url, key);
       } catch (err) {
         console.log(err);
+        handleCloseLoading()
+        handleOpenSnackBar(false)
       }
     } else {
       createBody("");
@@ -209,6 +218,8 @@ export default function CreateNotification() {
           console.log("upload ok" + i);
         } else {
           console.log("SOMETHING WENT WRONG");
+          handleCloseLoading()
+          handleOpenSnackBar(false)
           //setIsError(true);
         }
       }
@@ -216,6 +227,8 @@ export default function CreateNotification() {
       createBody(key);
     } catch (err) {
       console.log(err);
+      handleCloseLoading()
+      handleOpenSnackBar(false)
     }
   };
   const createBody = async (key) => {
@@ -269,11 +282,17 @@ export default function CreateNotification() {
 
         console.log("send notification");
         console.log(result.tokens_device);
-       PushNotification(result.tokens_device)
-      } else if (res.status === 500) {
-      } else console.log("SOMETHING WENT WRONG");
+       await PushNotification(result.tokens_device)
+       handleCloseLoading()
+       handleOpenSnackBar(true);
+      } else {
+        console.log("SOMETHING WENT WRONG")
+        handleCloseLoading()
+        handleOpenSnackBar(false)};
     } catch (err) {
       console.log(err);
+      handleCloseLoading()
+      handleOpenSnackBar(false)
     }
   };
 
@@ -322,9 +341,26 @@ export default function CreateNotification() {
   const handleClose = () => {
     setOpen(false);
   };
+  const handleOpenLoading=()=>{
+    setIsHandle(true);
+  }
+  const handleCloseLoading=()=>{
+    setIsHandle(false);
+  }
+  const handleOpenSnackBar = (type) => {
+    if (type) setSnackType(true);
+    else setSnackType(false);
+    setOpenSnackBar(true);
+  };
+  const handleCloseSnackBar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnackBar(false);
+  };
 
   return (
-    <div>
+    <div> <LoadingOverlay active={isHandle} spinner text="Đang xử lý vui lòng chờ...">
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <GridContainer>
@@ -401,7 +437,7 @@ export default function CreateNotification() {
                 style={{ marginTop: "15px" }}
                 type="file"
                 onChange={(e) => handeFile(e.target.files, e.target.value)}
-               // multiple
+                multiple
                 accept="image/*"
               />
             </GridItem>
@@ -446,7 +482,6 @@ export default function CreateNotification() {
             </GridItem>
           </GridContainer>
           <GridItem xs={12} sm={12} md={3}>
-            {isHandle && <div>Đang xử lý ...</div>}
           </GridItem>
           <GridItem xs={12} sm={12} md={9}>
             <Button
@@ -481,6 +516,8 @@ export default function CreateNotification() {
           </DialogActions>
         </Dialog>
       </GridContainer>
+     </LoadingOverlay>
+      <Snackbar open={openSnackBar} type={snackType} handleClose={handleCloseSnackBar}></Snackbar>
     </div>
   );
 }

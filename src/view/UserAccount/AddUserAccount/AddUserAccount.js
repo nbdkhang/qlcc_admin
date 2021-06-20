@@ -10,7 +10,13 @@ import GridContainer from "../../../component/Grid/GridContainer.js";
 import Button from "../../../component/CustomButtons/Button.js";
 import { handleRawApart } from "./ServiceAddUserAccount.js";
 import TextField from "@material-ui/core/TextField";
-
+import Snackbar from "../../../component/SnackBar/Snackbar.js"
+import LoadingOverlay from "react-loading-overlay";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 const useStyles = makeStyles((theme) => ({
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -40,13 +46,19 @@ const useStyles = makeStyles((theme) => ({
   alerts: {
     marginTop: "18px",
   },
+  myButton:{
+    float: "right"
+ }
+
 }));
 export default function ChangeProfile() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [isHandle, setIsHandle] = useState(false);
   const [isLoad, setIsLoad] = useState(true);
   const [isLoadApart, setIsLoadApart] = useState(false);
+  const [openSnackBar,setOpenSnackBar]=useState(false);
+  const [snackType,setSnackType]=useState(true);
+  const [isHandle,setIsHandle]=useState(false);
   //   const [content, setContent] = useState("");
   //   const userInfo = useSelector((state) => state.user.info);
   const nameCheck = /^[a-zA-Z0-9]+$/;
@@ -73,6 +85,7 @@ export default function ChangeProfile() {
   const [rawApartList, setRawApartList] = useState([]);
   const [apartList, setApartList] = useState([]);
 
+  
   const checkName = (name) => {
     if (name !== "") {
       setAlertName(false);
@@ -152,8 +165,34 @@ export default function ChangeProfile() {
 
     setIsLoadApart(false);
   };
-  const handleSubmit = async () => {
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpenSnackBar = (type) => {
+    if (type) setSnackType(true);
+    else setSnackType(false);
+    setOpenSnackBar(true);
+  };
+  const handleCloseSnackBar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnackBar(false);
+  };
+ const handleOpenLoading=()=>{
     setIsHandle(true);
+  }
+  const handleCloseLoading=()=>{
+    setIsHandle(false);
+  }
+
+  const handleSubmit = async () => {
+    handleClose()
+    handleOpenLoading()
     if (
       checkName(name) &&
       checkPhone(phone) &&
@@ -191,19 +230,29 @@ export default function ChangeProfile() {
 
           console.log("success");
           console.log(result);
-        } else if (res.status === 500) {
-        } else console.log("SOMETHING WENT WRONG");
+          handleCloseLoading()
+        handleOpenSnackBar(true);
+        }  else {
+          console.log("SOMETHING WENT WRONG")
+        handleCloseLoading()
+        handleOpenSnackBar(false);};
       } catch (err) {
         console.log(err);
+        handleCloseLoading()
+        handleOpenSnackBar(false);
       }
     } else {
+      handleCloseLoading()
+      handleOpenSnackBar(false);
     }
-    setIsHandle(false);
+    
   };
 
-  useEffect(() => {
+  useEffect(() => { 
+    handleOpenLoading()
     setIsLoad(true);
     const getRes = async () => {
+      try{
       const res = await fetch(
         process.env.REACT_APP_API_LINK + `/api/block/all`,
         {
@@ -238,20 +287,28 @@ export default function ChangeProfile() {
         const temp = await handleRawApart(result.data[0]._id, result1.data);
         setApartList(temp);
         setApart_id(temp[0]._id);
-
         setIsLoad(false);
-
+        handleCloseLoading()
         // setData(await handleData(result.data, result1.data));
       } else {
         const result = await res1.json();
         alert(result.message);
-      }
+        handleCloseLoading()
+        handleOpenSnackBar(false);
+      }} catch (err) {
+      console.log(err); 
+      handleCloseLoading()
+      handleOpenSnackBar(false);
+     
+    }
+     
     };
     getRes();
   }, []);
 
   return (
     <div>
+      <LoadingOverlay active={isHandle} spinner text="Đang xử lý vui lòng chờ...">
       {!isLoad && (
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
@@ -438,10 +495,10 @@ export default function ChangeProfile() {
 
               <GridItem xs={12} sm={12} md={6}>
              
-                {isHandle && <div>Đang xử lý, vui lòng chờ ...</div>}
+            
               </GridItem>
               <GridItem xs={12} sm={12} md={3}>
-                <Button color="primary" onClick={(e) => handleSubmit(e)}>
+                <Button className={classes.myButton} color="primary" onClick={(e) => handleClickOpen()}>
                   Lưu lại
                 </Button>
               </GridItem>
@@ -449,6 +506,33 @@ export default function ChangeProfile() {
           </GridItem>
         </GridContainer>
       )}
+      </LoadingOverlay>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">
+                  Xác nhận chỉnh sửa
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+           
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Hủy
+          </Button>
+          <Button onClick={(e) => handleSubmit()} color="primary">
+            Xác nhận
+          </Button>
+        </DialogActions>
+      </Dialog>
+		
+  <Snackbar open={openSnackBar} type={snackType} handleClose={handleCloseSnackBar}></Snackbar>
+
     </div>
   );
 }

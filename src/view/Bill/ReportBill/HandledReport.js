@@ -8,6 +8,8 @@ import TextField from "@material-ui/core/TextField";
 import Button from "../../../component/CustomButtons/Button.js";
 import { useHistory } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
+import Snackbar from "../../../component/SnackBar/Snackbar.js"
+import LoadingOverlay from "react-loading-overlay";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -20,6 +22,9 @@ export default function HandledReport(props) {
   const history = useHistory();
   const token = useSelector((state) => state.user.token);
   //   const { selectMonth, selectYear, reLoad } = props;
+  const [isHandle,setIsHandle]=useState(false);
+  const [openSnackBar,setOpenSnackBar]=useState(false);
+  const [snackType,setSnackType]=useState(true);
   const date = new Date();
   const currentMonth = date.getMonth();
   const currentYear = date.getFullYear();
@@ -126,8 +131,28 @@ export default function HandledReport(props) {
      setSelectYear(year)
     setReload(!reload);
    }
+   const handleOpenLoading=()=>{
+    setIsHandle(true);
+  }
+  const handleCloseLoading=()=>{
+    setIsHandle(false);
+  }
+  
+ const handleOpenSnackBar = (type) => {
+  if (type) setSnackType(true);
+  else setSnackType(false);
+  setOpenSnackBar(true);
+};
+const handleCloseSnackBar = (event, reason) => {
+  if (reason === 'clickaway') {
+    return;
+  }
+  setOpenSnackBar(false);
+};
   useEffect(() => {
+    handleOpenLoading()
     const getRes = async () => {
+      try{
       const res = await fetch(
         process.env.REACT_APP_API_LINK +
           `/api/all-bill/all-resolved/${selectMonth}/${selectYear}`,
@@ -146,16 +171,25 @@ export default function HandledReport(props) {
         console.log("Vo 200OK");
         console.log(result);
         setData(await handleData(result.data));
+        handleCloseLoading()
       } else {
         const result = await res.json();
         alert(result.message);
+        handleOpenSnackBar(false)
+        handleCloseLoading()
+      }}
+      catch (err) {
+        console.log(err);
+        handleOpenSnackBar(false)
+        handleCloseLoading()
       }
     };
     getRes();
   }, [reload]);
-  return (
+  return ( 
+  <div>
+    <LoadingOverlay active={isHandle} spinner text="Đang xử lý vui lòng chờ...">
     <GridContainer>
-     
         <GridItem xs={12} sm={12} md={3}>
           <TextField
             id="outlined-select-currency-native"
@@ -205,6 +239,11 @@ export default function HandledReport(props) {
         options={options}
       />
       </GridItem>
-    </GridContainer>
+     
+    
+    </GridContainer> 
+    </LoadingOverlay>
+      <Snackbar open={openSnackBar} type={snackType} handleClose={handleCloseSnackBar}></Snackbar>
+    </div>
   );
 }

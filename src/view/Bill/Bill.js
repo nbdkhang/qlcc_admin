@@ -10,7 +10,7 @@ import CustomTabs from "../../component/CustomTabs/CustomTabs.js";
 import Button from "../../component/CustomButtons/Button.js";
 import ElectricBill from "./ElectricBill/ElectricBill.js";
 import { createTimeChoice } from "./BillService.js";
-import { month,year } from "./BillService";
+//import { month,year } from "./BillService";
 import WaterBill from "./WaterBill/WaterBill.js";
 import OtherBill from "./OtherBill/OtherBill.js";
 import AllBill from "./AllBill/AllBill.js"
@@ -21,9 +21,9 @@ export default function Bill() {
  const currentMonth=date.getMonth();
  const currentYear=date.getFullYear();
  const [reLoad,setReLoad]=useState(true);
- const [selectMonth,setSelectMonth]= useState(currentMonth);
+ const [selectMonth,setSelectMonth]= useState(currentMonth+1);
  const [selectYear,setSelectYear]= useState(currentYear);
- 
+ const {month,year}= createTimeChoice()  
 const changeMonth=async (value)=>
 {
   setReLoad(false);
@@ -45,7 +45,7 @@ const changeYear=(value)=>
               id="outlined-select-currency-native"
               select
               label="Tháng"
-              defaultValue={currentMonth}
+              defaultValue={currentMonth+1}
               onChange={e=>changeMonth(e.target.value)}
               SelectProps={{
                 native: true,
@@ -55,7 +55,7 @@ const changeYear=(value)=>
             >
               {month.map((option) => (
                 <option key={option.id} value={option.id}>
-                  {option.id}
+                  {option.name}
                 </option>
               ))}
             </TextField>

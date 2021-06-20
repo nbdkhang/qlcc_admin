@@ -9,7 +9,8 @@ export default function APIDetailApart(){
         if (key.length >= 1) {
           try {
             for (let i = 0; i < key.length; i++) {
-              const res = await fetch(
+              if(key[i]!=="")
+              {const res = await fetch(
                 process.env.REACT_APP_API_LINK +
                   `/api/uploadv2/image-url?key=${key[i]}`,
                 {
@@ -28,7 +29,7 @@ export default function APIDetailApart(){
               } else {
                 const result = await res.json();
                 alert(result.message);
-              }
+              }}
             }
             console.log(temp);
             return temp;
@@ -40,8 +41,6 @@ export default function APIDetailApart(){
     
       const getUser = async (data) => {
         try {
-          console.log(data.owner.is_active);
-          if (data.owner.is_active === true) {
             const res = await fetch(
               process.env.REACT_APP_API_LINK + `/api/user/${data.owner.id}`,
               {
@@ -62,8 +61,6 @@ export default function APIDetailApart(){
               const result = await res.json();
               alert(result.message);
             }
-          } else {
-          }
         } catch (err) {
           console.log(err);
         }
