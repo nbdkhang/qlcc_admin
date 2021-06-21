@@ -31,8 +31,8 @@ const useStyles = makeStyles((theme) => ({
     float: "right",
   },
 }));
-const is_activeList=[{id:true,name:"Có dùng app"},
-{id:false,name:"Không dùng app"}]
+const is_activeList=[{id:false,name:"Không dùng app"},{id:true,name:"Có dùng app"},
+]
 const statusList=[
   {id:1,name:"Căn hộ trống"},
   {id:2,name:"Đã bán"}
@@ -50,7 +50,7 @@ export default function EditApart(props) {
   const [alertIs_Active, setAlertIs_Active] = useState(false);
   const [alertStatus, setAlertStatus] = useState(false);
   const [alertUserSelected, setAlertUserSelected] = useState(false);
-  const [is_Active, setIs_Active] = useState(true);
+  const [is_Active, setIs_Active] = useState(false);
   const [status,setStatus]=useState(1);
   const [userList,setUserList]=useState();
   const [userSelected,setUserSelected]=useState();

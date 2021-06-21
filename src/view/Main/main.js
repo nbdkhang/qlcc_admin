@@ -6,10 +6,10 @@ import {messaging} from "../../firebase"
 
 export default function Main()
 {   
-  messaging.onMessage(async (payload) => {
-    console.log('Message received. ', payload);
-    // ...
-  });
+  // messaging.onMessage(async (payload) => {
+  //   console.log('Message received. ', payload);
+  //   // ...
+  // });
   console.log("main");
     const LoginContainer = () => (
         <div className="container">

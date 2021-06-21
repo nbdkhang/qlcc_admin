@@ -81,12 +81,12 @@ export default function ListApart() {
           >
             <Fab
               size="small"
-              color="primary"
+              // color="primary"
               aria-label="add"
               className={classes.margin}
               onClick={() => handleClick(tableMeta.rowData[0])}
             >
-              <EditIcon />
+              <EditIcon color="primary"/>
             </Fab>
           </Tooltip>
           </div>

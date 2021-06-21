@@ -220,6 +220,7 @@ export default function InfoBill() {
       else {
        handleOpenSnackBar(false);}
     }
+    else{ handleOpenSnackBar(false);}
     handleCloseLoading();
     
   };

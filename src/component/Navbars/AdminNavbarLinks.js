@@ -64,7 +64,6 @@ export default function AdminNavbarLinks() {
   const messaging = firebase.messaging();
   messaging.onMessage(async (payload) => {
     console.log('Message received in noti ', payload);
-    // ...
   });
   
   return (

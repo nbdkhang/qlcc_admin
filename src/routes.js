@@ -98,6 +98,15 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
+    path: "/notification/detail/:id",
+    name: "Thông báo chung",
+    rtlName: "لوحة القيادة",
+    icon: AddAlertIcon,
+    component: SendNotification,
+    layout: "/admin",
+    private:true
+  },
+  {
     path: "/notification",
     name: "Thông báo chung",
     rtlName: "لوحة القيادة",
