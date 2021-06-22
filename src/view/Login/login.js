@@ -153,9 +153,9 @@ export default function Login() {
           
           const action = addUser(result.infoUser,result.token);
           dispatch(action);
-          changeToken_device(result.infoUser._id,result.token);
+          await changeToken_device(result.infoUser._id,result.token);
 
-          //history.push("/admin");
+          history.push("/admin/apart");
         } else if (res.status === 401) {
           setContent("Tên đăng nhập hoặc mật khẩu sai");
           setOpen(true);

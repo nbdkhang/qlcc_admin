@@ -33,9 +33,11 @@ export default function Main()
         <BrowserRouter>
       
         <div className="main-route-place">
-            <Switch>        
-                <Route exact path="/login" component={LoginContainer}/>
-                <Route component={DefaultContainer}/>
+            <Switch>
+                 <Route  exact path="/" component={Login} /> 
+                {/* <Route path="/" component={LoginContainer}/> */}
+                <Route component={DefaultContainer}/>  
+                    
             </Switch>
         </div>
         

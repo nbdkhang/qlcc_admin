@@ -152,7 +152,7 @@ export default function ListBlock() {
     <div>
       <LoadingOverlay active={isHandle} spinner text="Đang xử lý vui lòng chờ...">
       <MUIDataTable
-        title={"Danh sách tòa nhà "}
+        title={""}
         data={data}
         columns={columns}
         options={options}
