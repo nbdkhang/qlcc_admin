@@ -58,9 +58,13 @@ export default function AdminNavbarLinks() {
     dispatch(action);
     // action= deleteApart(0);
     // dispatch(action);
-    history.push("/home");
+    history.push("/");
 
   }
+ const handleProfile=()=>
+ {history.push("/admin/profile");
+
+ }
   const messaging = firebase.messaging();
   messaging.onMessage(async (payload) => {
     console.log('Message received in noti ', payload);
@@ -142,10 +146,10 @@ export default function AdminNavbarLinks() {
                       onClick={handleCloseNotification}
                       className={classes.dropdownItem}
                     >
-                      <>
-                     <h3> Mike John responded to your email</h3>
-                      <span className={classes.notifications}>5</span>
-                      </>
+                      
+                      Mike John responded to your email
+                    
+                      
                     </MenuItem>
                     <MenuItem
                       onClick={handleCloseNotification}
@@ -218,9 +222,9 @@ export default function AdminNavbarLinks() {
                 <ClickAwayListener onClickAway={handleCloseProfile}>
                   <MenuList role="menu">
                     <MenuItem
-                      onClick={handleCloseProfile}
+                      onClick={handleProfile}
                       className={classes.dropdownItem}
-                      href="/profile"
+                      // href="/admin/profile"
                     >
                       Thông tin cá nhân
                     </MenuItem>

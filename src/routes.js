@@ -158,14 +158,14 @@ const dashboardRoutes = [
     component:ReportBill ,
     layout: "/admin",
   },
-  // {
-  //   path: "/profile",
-  //   name: "Thông tin tài khoản",
-  //   rtlName: "ملف تعريفي للمستخدم",
-  //   icon: Person,
-  //   component:UserProfile,
-  //   layout: "/admin"
-  // },
+  {
+    path: "/profile",
+    name: "Thông tin tài khoản",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: Person,
+    component:UserProfile,
+    layout: "/admin"
+  },
   {
     path: "/user_account/:id",
     name: "Chi tiet người dùng",
@@ -183,14 +183,14 @@ const dashboardRoutes = [
     component:UserAccount ,
     layout: "/admin"
   },
-  // {
-  //   path: "/admin_account",
-  //   name: "Quản lý admin",
-  //   rtlName: "ملف تعريفي للمستخدم",
-  //   icon: Person,
-  //   component:AdminAccount ,
-  //   layout: "/admin"
-  // },
+  {
+    path: "/admin_account",
+    name: "Quản lý admin",
+    rtlName: "ملف تعريفي للمستخدم",
+    icon: Person,
+    component:AdminAccount ,
+    layout: "/admin"
+  },
   {
     path: "/repair/repair/detail/:notice_id",
     name: "Sửa chữa dịch vụ",
