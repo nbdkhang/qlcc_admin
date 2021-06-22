@@ -107,8 +107,9 @@ const [isHandle,setIsHandle]=useState(false);
     },
     {
       name: "is_pay",
-      label: "Tình trạng",
+      label: "Tình trạng.",
       options: {
+        display: "excluded",
         filter: true,
         sort: false,
       },
@@ -122,40 +123,18 @@ const [isHandle,setIsHandle]=useState(false);
         sort: false,
       },
     },
+    {
+      name: "is_pay_value",
+      label: "Tình trạng",
+      options: {
+        
+        filter: false,
+        sort: false,
+      },
+    },
 
-    // {
-    //   name: "",
-    //   options: {
-    //     customBodyRender: (value, tableMeta, updateValue) => {
-    //       return (
-    //         <div>
-    //           <Button
-    //             //className={classes.button}
-    //             //variant="outlined"
-    //             color="primary"
-    //             onClick={() => handleClick(tableMeta.rowData[0])}
-    //           >
-    //             Chi tiết
-    //           </Button>
-
-    //           {/* <Button
-    //             className={classes.button}
-    //             //variant="outlined"
-    //             color="danger"
-    //             onClick={() => handleClick(tableMeta.rowData[0])}
-    //           >
-    //             Xóa
-    //           </Button> */}
-    //         </div>
-    //       );
-    //     },
-    //   },
-    // },
   ];
-  const handleClick = (id) => {
-    console.log(id);
-    //history.push(`/userdetails/${id}`);
-  };
+  
   const handleOpenSnackBar = (type) => {
     if (type) setSnackType(true);
     else setSnackType(false);

@@ -14,10 +14,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import EditIcon from '@material-ui/icons/Edit';
-import Close from "@material-ui/icons/Close";
-import Check from "@material-ui/icons/Check";
 import Tooltip from "@material-ui/core/Tooltip";
 import Fab from '@material-ui/core/Fab';
+import Close from "@material-ui/icons/Close";
+import Check from "@material-ui/icons/Check";
+
 import styles from "../../../asset/jss/material-dashboard-react/components/tasksStyle.js";
 import Snackbar from "../../../component/SnackBar/Snackbar.js"
 import LoadingOverlay from "react-loading-overlay";
@@ -119,8 +120,9 @@ const [isHandle,setIsHandle]=useState(false);
     },
     {
       name: "is_pay",
-      label: "Tình trạng",
+      label: "Tình trạng.",
       options: {
+        display: "excluded",
         filter: true,
         sort: false,
       },
@@ -134,7 +136,15 @@ const [isHandle,setIsHandle]=useState(false);
         sort: false,
       },
     },
-
+    {
+      name: "is_pay_value",
+      label: "Tình trạng",
+      options: {
+        //display: "excluded",
+        filter: false,
+        sort: false,
+      },
+    },
     {
       name: "",
       options: {
@@ -160,7 +170,7 @@ const [isHandle,setIsHandle]=useState(false);
           {  !tableMeta.rowData[9]?
           <Tooltip
           id="tooltip-top"
-          title="Chấp nhận"
+          title="Thanh toán"
           placement="top"
           classes={{ tooltip: classes.tooltip }}
         >
@@ -175,7 +185,7 @@ const [isHandle,setIsHandle]=useState(false);
           </Fab>
         </Tooltip>: <Tooltip
                 id="tooltip-top-start"
-                title="Không chấp nhận"
+                title="Hủy thanh toán"
                 placement="top"
                 classes={{ tooltip: classes.tooltip }}
               >

@@ -1,12 +1,14 @@
+import Fab from '@material-ui/core/Fab';
 import { makeStyles } from "@material-ui/core/styles";
+import Tooltip from "@material-ui/core/Tooltip";
+import EditIcon from '@material-ui/icons/Edit';
 import MUIDataTable from "mui-datatables";
 import React, { useEffect, useState } from "react";
 import LoadingOverlay from "react-loading-overlay";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import Button from "../../../component/CustomButtons/Button.js";
+import Snackbar from "../../../component/SnackBar/Snackbar.js";
 import { handleData } from "./ServiceReportBill.js";
-import Snackbar from "../../../component/SnackBar/Snackbar.js"
 const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
@@ -72,9 +74,18 @@ export default function NewReport(props) {
     },
     {
       name: "is_pay",
+      label: "Tình trạng.",
+      options: {
+        display: "excluded",
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: "is_pay_value",
       label: "Tình trạng",
       options: {
-        filter: true,
+        filter: false,
         sort: false,
       },
     },
@@ -85,14 +96,22 @@ export default function NewReport(props) {
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <div>
-              <Button
-                //className={classes.button}
-                //variant="outlined"
-                color="primary"
-                onClick={() => handleClick(tableMeta.rowData[0])}
-              >
-                Chi tiết
-              </Button>
+              <Tooltip
+            id="tooltip-top"
+            title="Chi tiết"
+            placement="top"
+            classes={{ tooltip: classes.tooltip }}
+          >
+            <Fab
+              size="small"
+              color="red"
+              aria-label="add"
+              className={classes.margin}
+              onClick={() => handleClick(tableMeta.rowData[0])}
+            >
+              <EditIcon color="primary"/>
+            </Fab>
+          </Tooltip>
             </div>
           );
         },
@@ -146,7 +165,7 @@ const handleCloseSnackBar = (event, reason) => {
         handleCloseLoading()
       } else {
         const result = await res.json();
-        alert(result.message);
+        console.log(result.message);
         handleCloseLoading()
         handleOpenSnackBar(false)
       }}

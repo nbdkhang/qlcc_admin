@@ -21,7 +21,7 @@ export default function Bill() {
  const currentMonth=date.getMonth();
  const currentYear=date.getFullYear();
  const [reLoad,setReLoad]=useState(true);
- const [selectMonth,setSelectMonth]= useState(currentMonth+1);
+ const [selectMonth,setSelectMonth]= useState(currentMonth);
  const [selectYear,setSelectYear]= useState(currentYear);
  const {month,year}= createTimeChoice()  
 const changeMonth=async (value)=>
@@ -45,7 +45,7 @@ const changeYear=(value)=>
               id="outlined-select-currency-native"
               select
               label="Tháng"
-              defaultValue={currentMonth+1}
+              defaultValue={currentMonth}
               onChange={e=>changeMonth(e.target.value)}
               SelectProps={{
                 native: true,

@@ -20,7 +20,8 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useParams, useHistory } from "react-router-dom";
 import { handleData, title,content } from "./ServiceDetailParking.js";
-
+import Snackbar from "../../../component/SnackBar/Snackbar.js"
+import LoadingOverlay from "react-loading-overlay";
 
 const useStyles = makeStyles((theme) => ({
   cardCategoryWhite: {
@@ -47,7 +48,10 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     width: "25ch",
-  },
+  },myButton:{
+    float: "right",
+    width:"200px"
+ }
 }));
 export default function DetailPublicArea(props) {
   //const dispatch = useDispatch();
@@ -66,7 +70,9 @@ export default function DetailPublicArea(props) {
     status_value: "",
     next_status_value: "",
   });
-  const [isError, setIsError] = useState(false);
+  const [openSnackBar,setOpenSnackBar]=useState(false);
+  const [snackType,setSnackType]=useState(true);
+const [isHandle,setIsHandle]=useState(false);
   const [image, setImage] = useState();
   const [commentImage, setCommentImage] = useState();
   const [isLoad, setIsLoad] = useState(true);
@@ -78,6 +84,7 @@ export default function DetailPublicArea(props) {
   const handleChangeStatus = async () => {
     try {
       handleClose();
+      handleOpenLoading()
       const body = {
         notice_id: data._id,
         status: data.next_status,
@@ -100,15 +107,18 @@ export default function DetailPublicArea(props) {
         //const result = await res.json();
         console.log(" changestatus ok"); 
         await createNotification();
-        setIsError(false);
-        setReload(!reload);
+        
+        setReload(!reload); handleOpenSnackBar(true)
+        handleCloseLoading()
        
       } else {
         console.log("SOMETHING WENT WRONG");
-        setIsError(true);
+         handleOpenSnackBar(false)
+        handleCloseLoading()
       }
     } catch (err) {
-      console.log(err);
+      console.log(err); handleOpenSnackBar(false)
+      handleCloseLoading()
     }
   };
   const createNotification= async ()=>
@@ -179,10 +189,27 @@ export default function DetailPublicArea(props) {
         console.log(err);
       }
   }
+  const handleOpenSnackBar = (type) => {
+    if (type) setSnackType(true);
+    else setSnackType(false);
+    setOpenSnackBar(true);
+  };
+  const handleCloseSnackBar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnackBar(false);
+  };
+ const handleOpenLoading=()=>{
+    setIsHandle(true);
+  }
+  const handleCloseLoading=()=>{
+    setIsHandle(false);
+  }
   const renderButton = () => {
     //let str=returnStatus(data.status)
     return (
-      <Button color="primary" onClick={(e) => handleClickOpen(true)}>
+      <Button className={classes.myButton} color="primary" onClick={(e) => handleClickOpen(true)}>
        Đã xử lý
       </Button>
     );
@@ -210,7 +237,7 @@ export default function DetailPublicArea(props) {
           // setIsLoad(false);
         } else {
           const result = await res.json();
-          alert(result.message);
+         console.log(result.message);
         }
       } catch (err) {
         console.log(err);
@@ -227,6 +254,7 @@ export default function DetailPublicArea(props) {
     setOpen(false);
   };
   const getUserAndApart = async (data) => {
+    try{
     const res = await fetch(
       process.env.REACT_APP_API_LINK + `/api/user/${data.author}`,
       {
@@ -247,12 +275,18 @@ export default function DetailPublicArea(props) {
       setIsLoad(false);
     } else {
       const result = await res.json();
-      alert(result.message);
+     console.log(result.message);
+     handleOpenSnackBar(false)
+    }}catch (err) {
+      console.log(err);
+      handleOpenSnackBar(false)
+      
     }
   };
   useEffect(() => {
     setIsLoad(true);
     const getRes = async () => {
+      try{
       const res = await fetch(
         process.env.REACT_APP_API_LINK +
           `/api/noti-parking/notice/${notice_id}`,
@@ -272,16 +306,23 @@ export default function DetailPublicArea(props) {
         await getUserAndApart(result.data);
         if (result.data.image !== "") setImage(await getUrl(result.data.image));
         setIsLoad(false);
+       
       } else {
         const result = await res.json();
-        alert(result.message);
+       console.log(result.message);
+       handleOpenSnackBar(false)
+       
+      }}catch (err) {
+        console.log(err);
+        handleOpenSnackBar(false)
+
       }
     };
     getRes();
   }, [reload]);
 
   return (
-    <div>
+    <div><LoadingOverlay active={isHandle} spinner text="Đang xử lý vui lòng chờ...">
       {!isLoad ? (
         <GridContainer>
           <GridItem xs={12} sm={12} md={5}>
@@ -392,15 +433,8 @@ export default function DetailPublicArea(props) {
           </GridItem>
           <div />
           <GridItem xs={12} sm={12} md={3} />
-          <GridItem xs={12} sm={12} md={6}>
-            {/* {isHandle && (
-            <div style={{ marginTop: "15px" }}>Đang xử lý, vui lòng chờ...</div>
-          )}*/}
-            {isError && (
-              <div style={{ marginTop: "15px" }}>Vui lòng thử lại</div>
-            )}
-          </GridItem>
-          <GridItem xs={12} sm={12} md={3}>
+          
+          <GridItem xs={12} sm={12} md={9}>
             {!data.is_confirm && renderButton()}
           </GridItem>
         </GridContainer>
@@ -431,6 +465,11 @@ export default function DetailPublicArea(props) {
           </Button>
         </DialogActions>
       </Dialog>
+
+
+      
+ </LoadingOverlay>
+  <Snackbar open={openSnackBar} type={snackType} handleClose={handleCloseSnackBar}></Snackbar>
     </div>
   );
 }

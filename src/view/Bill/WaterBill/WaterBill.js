@@ -108,8 +108,9 @@ const [isHandle,setIsHandle]=useState(false);
     },
     {
       name: "is_pay",
-      label: "Tình trạng",
+      label: "Tình trạng.",
       options: {
+        display: "excluded",
         filter: true,
         sort: false,
       },
@@ -119,6 +120,15 @@ const [isHandle,setIsHandle]=useState(false);
       label: "flag",
       options: {
         display: "excluded",
+        filter: false,
+        sort: false,
+      },
+    },
+    {
+      name: "is_pay_value",
+      label: "Tình trạng",
+      options: {
+        
         filter: false,
         sort: false,
       },
