@@ -83,30 +83,30 @@ export default function CreateNotification() {
   const [isSelectFile, setIsSelectFile] = useState(false);
   const [reload, setReload] = useState(false);
 
-  const checkTitle = (name) => {
+  const checkTitle = (name) => { 
+    setTitle(name);
     if (name !== "") {
       setAlertTitle(false);
-      setTitle(name);
       return true;
     } else {
       setAlertTitle(true);
       return false;
     }
   };
-  const checkContent = (content) => {
+  const checkContent = (content) => {  
+    setContent(content);
     if (content !== "") {
       setAlertContent(false);
-      setContent(content);
       return true;
     } else {
       setAlertContent(true);
       return false;
     }
   };
-  const checkLink = (link) => {
+  const checkLink = (link) => {  
+    setLink(link);
     if (true) {
       setAlertLink(false);
-      setLink(link);
     } else setAlertLink(true);
   };
 
@@ -415,6 +415,7 @@ export default function CreateNotification() {
                 InputLabelProps={{
                   shrink: true,
                 }}
+                multiline={true}
                 variant="outlined"
                 onChange={(e) => checkContent(e.target.value)}
               />

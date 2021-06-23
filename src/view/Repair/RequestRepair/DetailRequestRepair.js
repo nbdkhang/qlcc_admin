@@ -314,7 +314,7 @@ export default function DetailRequestRepair(props) {
                     src={image}
                     alt="Không có ảnh"
                     width="400"
-                    height="auto"
+                    height="400"
                   />
                 </a>
               </CardAvatar>
@@ -499,7 +499,7 @@ export default function DetailRequestRepair(props) {
                   <img
                     src={commentImage}
                     alt="Không có ảnh"
-                    style={{ width: "50px", height: "50px" }}
+                    style={{ width: "100px", height: "100px" }}
                   ></img>
                 )}
               </GridItem>

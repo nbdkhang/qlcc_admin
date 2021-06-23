@@ -25,9 +25,10 @@ import AddAlertIcon from '@material-ui/icons/AddAlert';
 import BuildIcon from '@material-ui/icons/Build';
 import DriveEtaIcon from '@material-ui/icons/DriveEta';
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
+import DescriptionIcon from '@material-ui/icons/Description';
 import MarkunreadMailboxIcon from '@material-ui/icons/MarkunreadMailbox';
 import AddCommentIcon from '@material-ui/icons/AddComment';
-
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 // core components/views for Admin layout
 //import Homepage from "./view/Homepage/homepage";
 import UserProfile from "./view/Profile/profile";
@@ -154,7 +155,7 @@ const dashboardRoutes = [
     path: "/reportbill",
     name: "Khiếu nại hóa đơn",
     rtlName: "ملف تعريفي للمستخدم",
-    icon: ReceiptIcon,
+    icon: DescriptionIcon,
     component:ReportBill ,
     layout: "/admin",
   },
@@ -164,7 +165,8 @@ const dashboardRoutes = [
     rtlName: "ملف تعريفي للمستخدم",
     icon: Person,
     component:UserProfile,
-    layout: "/admin"
+    layout: "/admin",
+    private: true
   },
   {
     path: "/user_account/:id",
@@ -183,11 +185,12 @@ const dashboardRoutes = [
     component:UserAccount ,
     layout: "/admin"
   },
+
   {
     path: "/admin_account",
     name: "Quản lý admin",
     rtlName: "ملف تعريفي للمستخدم",
-    icon: Person,
+    icon: SupervisorAccountIcon,
     component:AdminAccount ,
     layout: "/admin"
   },

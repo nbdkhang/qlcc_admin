@@ -5,19 +5,18 @@ import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
 //import InputLabel from "@material-ui/core/InputLabel";
 // core components
-import GridItem from "../../../component/Grid/GridItem.js";
-import GridContainer from "../../../component/Grid/GridContainer.js";
-import Button from "../../../component/CustomButtons/Button.js";
-import { handleApart } from "./ServiceAddUserAccount.js";
+import GridItem from "../../component/Grid/GridItem.js";
+import GridContainer from "../../component/Grid/GridContainer.js";
+import Button from "../../component/CustomButtons/Button.js";
 import TextField from "@material-ui/core/TextField";
-import Snackbar from "../../../component/SnackBar/Snackbar.js"
+import Snackbar from "../../component/SnackBar/Snackbar.js"
 import LoadingOverlay from "react-loading-overlay";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import SearchApart from "../DetailUser/SearchApart.js"
+
 const useStyles = makeStyles((theme) => ({
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -52,10 +51,9 @@ const useStyles = makeStyles((theme) => ({
  }
 
 }));
-export default function ChangeProfile() {
+export default function AddAdmin() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [isLoad, setIsLoad] = useState(true);
   const [openSnackBar,setOpenSnackBar]=useState(false);
   const [snackType,setSnackType]=useState(true);
   const [isHandle,setIsHandle]=useState(false);
@@ -68,44 +66,42 @@ export default function ChangeProfile() {
   const [alertName, setAlertName] = useState(false);
   const [alertPhone, setAlertPhone] = useState(false);
   const [alertEmail, setAlertEmail] = useState(false);
-  const [alertID_Card, setAlertID_Card] = useState(false);
-  const [alertAddress, setAlertAddress] = useState(false);
-  const [alertLicense_plates, setAlertLicense_plates] = useState(false);
-  const [alertApart, setAlertApart] = useState(false);
+  const [alertUsername, setAlertUsername] = useState(false);
+  const [alertPassword, setAlertPassword] = useState(false);
+  const [alertConfirm, setAlertConfirm] = useState(false);
+
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [id_card, setId_card] = useState("");
-  const [address, setAddress] = useState("");
-  const [license_plates, setLicense_plates] = useState("");
-  const [block_id, setBlock_id] = useState("");
-  const [apart_id, setApart_id] = useState("");
-  const [apartList, setApartList] = useState({list:[{name:"Không có căn hộ"}],default:[]});
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+ 
 
   
-  const checkName = (name) => { 
-    setName(name);
+  const checkName = (name) => {
     if (name !== "") {
       setAlertName(false);
+      setName(name);
       return true;
     } else {
       setAlertName(true);
       return false;
     }
   };
-  const checkPhone = (phone) => {  
-    setPhone(phone);
+  const checkPhone = (phone) => {
     if (phone !== "" && phone.match(phoneCheck)) {
       setAlertPhone(false);
+      setPhone(phone);
       return true;
     } else {
       setAlertPhone(true);
       return false;
     }
   };
-  const checkEmail = (email) => {  
-     setEmail(email);
+  const checkEmail = (email) => {
+    setEmail(email);
     if (email !== "" && email.match(emailCheck)) {
       setAlertEmail(false);
       return true;
@@ -114,52 +110,38 @@ export default function ChangeProfile() {
       return false;
     }
   };
-  const checkID_Card = (id_card) => {  
-     setId_card(id_card);
-    if (id_card !== "" && id_card.match(nameCheck)) {
-      setAlertID_Card(false);
+  const checkUsername = (value) => { 
+    setUsername(value);
+    if (value !== "" && value.match(nameCheck)) {
+      setAlertUsername(false);
       return true;
     } else {
-      setAlertID_Card(true);
+      setAlertUsername(true);
       return false;
     }
   };
-  const checkAddress = (address) => {
-    if (address !== "") {  
-      setAddress(address);
-      setAlertAddress(false);
+  const checkPassword = (value) => { 
+     setPassword(value);
+    if (value !== "") {
+      setAlertPassword(false);
       return true;
     } else {
-      setAlertAddress(true);
+      setAlertPassword(true);
       return false;
     }
   };
-  const checkLicense_plates = (license_plates) => {
-    if (license_plates !== "") { 
-       setLicense_plates(license_plates);
-      setAlertLicense_plates(false);
+  const checkconfirm = (value) => {
+    setConfirm(value);
+    if (value !== "" && value===password) {
+      setAlertConfirm(false);
       return true;
     } else {
-      setAlertLicense_plates(true);
+      setAlertConfirm(true);
       return false;
     }
   };
-  const checkApart = (apart_id) => {
-    if (apart_id !== "") { 
-       setApart_id(apart_id);
-      setAlertApart(false);
-      return true;
-    } else {
-      setAlertApart(true);
-      return false;
-    }
-  };
-  const changeData=async(apart)=>
-  {
-       let result=await handleApart(apart);
-       setApart_id(result.apart_id)
-       setBlock_id(result.block_id)
-  }
+  
+  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -192,23 +174,22 @@ export default function ChangeProfile() {
       checkName(name) &&
       checkPhone(phone) &&
       checkEmail(email) &&
-      checkID_Card(id_card) &&
-      checkAddress(address) && checkApart(apart_id)
+      checkUsername(username) &&
+      checkPassword(password)&&
+      checkconfirm(confirm)
     ) {
       const body = {
         name: name,
         phone: phone,
         email: email,
-        identify_card: id_card,
-        native_place: address,
-        apartment_id: apart_id, //["6061e00355f5a919c47d3586"]
-        block_id: block_id, //["6051fc3a449d422710797e73"]
-        license_plates: [license_plates], //["78N2-8668"]
+        username: username,
+        password: password,
+        role:1
       };
       console.log(body);
       try {
         const res = await fetch(
-          process.env.REACT_APP_API_LINK + `/api/user/add`,
+          process.env.REACT_APP_API_LINK + `/api/auth/add`,
           {
             method: "POST",
             mode: "cors",
@@ -222,7 +203,6 @@ export default function ChangeProfile() {
 
         if (res.status === 200) {
           const result = await res.json();
-
           console.log("success");
           console.log(result);
           handleCloseLoading()
@@ -243,50 +223,9 @@ export default function ChangeProfile() {
     
   };
 
-  useEffect(() => { 
-    handleOpenLoading()
-    setIsLoad(true);
-    const getRes = async () => {
-      try{
-      const res = await fetch(
-        process.env.REACT_APP_API_LINK + `/api/apart/aparts-empty`,
-        {
-          // get content
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + `${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (res.status === 200) {
-        console.log("Vo 200OK");
-        const result = await res.json();
-        console.log(result.data);
-        setApartList({list:result.data,default:[]})
-        setIsLoad(false);
-        handleCloseLoading()
-        // setData(await handleData(result.data, result1.data));
-      } else {
-        const result = await res.json();
-        alert(result.message);
-        handleCloseLoading()
-        handleOpenSnackBar(false);
-      }} catch (err) {
-      console.log(err); 
-      handleCloseLoading()
-      handleOpenSnackBar(false);
-     
-    }
-     
-    };
-    getRes();
-  }, []);
-
   return (
     <div>
       <LoadingOverlay active={isHandle} spinner text="Đang xử lý vui lòng chờ...">
-   
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <GridContainer>
@@ -356,8 +295,8 @@ export default function ChangeProfile() {
               </GridItem>
               <GridItem xs={12} sm={12} md={9}>
                 <TextField
-                  id="cmnd"
-                  label="Số CMND"
+                  id="username"
+                  label="Tên đăng nhập"
                   //style={{ margin: 8 }}
                   fullWidth
                   margin="normal"
@@ -366,11 +305,11 @@ export default function ChangeProfile() {
                   }}
                   variant="outlined"
                   //defaultValue={cmnd}
-                  onChange={(e) => checkID_Card(e.target.value)}
+                  onChange={(e) => checkUsername(e.target.value)}
                 />
               </GridItem>
               <GridItem xs={12} sm={12} md={3}>
-                {alertID_Card && (
+                {alertUsername && (
                   <Alert className={classes.alerts} severity="error">
                     Số CMND không hợp lệ
                   </Alert>
@@ -378,58 +317,46 @@ export default function ChangeProfile() {
               </GridItem>
               <GridItem xs={12} sm={12} md={9}>
                 <TextField
-                  id="address"
-                  label="Quê quán"
+                  id="pass"
+                  label="Mật khẩu"
                   fullWidth
                   margin="normal"
                   InputLabelProps={{
                     shrink: true,
                   }}
                   variant="outlined"
-                  //defaultValue={address}
-                  onChange={(e) => checkAddress(e.target.value)}
+                  type="password"
+                  onChange={(e) => checkPassword(e.target.value)}
                 />
               </GridItem>
               <GridItem xs={12} sm={12} md={3}>
-                {alertAddress && (
+                {alertPassword && (
                   <Alert className={classes.alerts} severity="error">
-                    Quê quán không hợp lệ
+                    Không hợp lệ
                   </Alert>
                 )}
               </GridItem>
               <GridItem xs={12} sm={12} md={9}>
                 <TextField
-                  id="license_plates"
-                  label="Biển số xe"
+                  id="confirm"
+                  label="Nhập lại mật khẩu"
                   fullWidth
                   margin="normal"
                   InputLabelProps={{
                     shrink: true,
                   }}
                   variant="outlined"
-                  //defaultValue={address}
-                  onChange={(e) => checkLicense_plates(e.target.value)}
+                  type="password"
+                  onChange={(e) => checkconfirm(e.target.value)}
                 />
               </GridItem>
               <GridItem xs={12} sm={12} md={3}>
-                {alertLicense_plates && (
+                {alertConfirm && (
                   <Alert className={classes.alerts} severity="error">
-                    Biển số xe không hợp lệ
+                   Không trùng khớp mật khẩu
                   </Alert>
                 )}
               </GridItem>
-                  {!isLoad && ( <GridItem xs={12} sm={12} md={9}>
-                <SearchApart data={apartList} changeData={changeData}></SearchApart>
-                </GridItem>
-               )}
-              <GridItem xs={12} sm={12} md={3}>
-              {alertApart && (
-                  <Alert className={classes.alerts} severity="error">
-                    Căn hộ không hợp lệ
-                  </Alert>
-                )}
-              </GridItem>
-
               <GridItem xs={12} sm={12} md={6}>
              
             

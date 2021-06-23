@@ -324,7 +324,7 @@ const [isHandle,setIsHandle]=useState(false);
             <Card profile>
               <CardAvatar>
                 <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                  <img src={image} alt="không có ảnh" width="400" height="auto" />
+                  <img src={image} alt="không có ảnh" width="400" height="400" />
                 </a>
               </CardAvatar>
             </Card>

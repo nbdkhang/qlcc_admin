@@ -186,6 +186,7 @@ export default function InfoApart(props) {
                 InputProps={{
                   readOnly: true,
                 }}
+                multiline={true}
                 defaultValue={data.description}
                 variant="outlined"
                 //defaultValue={address}

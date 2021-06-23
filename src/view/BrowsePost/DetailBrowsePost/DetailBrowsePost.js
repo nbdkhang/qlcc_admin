@@ -288,7 +288,7 @@ export default function DetailRequestSelfRepair() {
       if (res.status === 200) {
         const result = await res.json();
         console.log("Vo 200OK");
-        console.log(result.data[0]);
+        console.log(result.data[0].images);
         await getUser(result.data[0]);
         if (result.data[0].images!==[])
           setImage(await getUrl(result.data[0].images));
@@ -350,6 +350,7 @@ export default function DetailRequestSelfRepair() {
                     shrink: true,
                     readOnly: true,
                   }}
+                  multiline={true}
                   variant="outlined"
                   defaultValue={data.content}
                   //onChange={(e) => setName(e.target.value)}
@@ -398,20 +399,7 @@ export default function DetailRequestSelfRepair() {
                   defaultValue={data.contact}
                   //onChange={(e) => setName(e.target.value)}
                 />
-                <TextField
-                  id="content"
-                  label="Nội dung"
-                  //style={{ margin: 8 }}
-                  fullWidth
-                  margin="normal"
-                  InputLabelProps={{
-                    shrink: true,
-                    readOnly: true,
-                  }}
-                  variant="outlined"
-                  defaultValue={data.content}
-                  //onChange={(e) => setName(e.target.value)}
-                />
+                
                 <TextField
                   id="status"
                   label="Trạng thái hiện tại"
