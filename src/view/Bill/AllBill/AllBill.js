@@ -148,6 +148,8 @@ const [isHandle,setIsHandle]=useState(false);
     {
       name: "",
       options: {
+        filter: false,
+        sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <div>
@@ -205,6 +207,7 @@ const [isHandle,setIsHandle]=useState(false);
             
           );
         },
+        
       },
     },
   ];

@@ -227,7 +227,7 @@ const [id,setID]=useState("");
     <div>
       <LoadingOverlay active={isHandle} spinner text="Đang xử lý vui lòng chờ...">
       <MUIDataTable
-        title={"Danh sách căn hộ "}
+        title={""}
         data={data}
         columns={columns}
         options={options}

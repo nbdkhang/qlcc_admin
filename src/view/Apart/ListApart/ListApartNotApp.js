@@ -1,27 +1,25 @@
-import Fab from '@material-ui/core/Fab';
-import { makeStyles } from "@material-ui/core/styles";
-import Tooltip from "@material-ui/core/Tooltip";
-import EditIcon from '@material-ui/icons/Edit';
-import MUIDataTable from "mui-datatables";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { handleData } from "./ServiceListApart.js";
+import CustomButton from "../../../component/CustomButtons/Button.js"
 import { useHistory } from "react-router-dom";
+import MUIDataTable from "mui-datatables";
+import EditIcon from '@material-ui/icons/Edit';
+import Tooltip from "@material-ui/core/Tooltip";
+import Fab from '@material-ui/core/Fab';
 import styles from "../../../asset/jss/material-dashboard-react/components/tasksStyle.js";
-import { handleData } from "../ServiceRepair.js";
- import Snackbar from "../../../component/SnackBar/Snackbar.js"
-  import LoadingOverlay from "react-loading-overlay";
-  import PushNotiAdmin from "../../PushNotiAdmin.js"
+import { makeStyles } from "@material-ui/core/styles";
+import LoadingOverlay from "react-loading-overlay";
+import Snackbar from "../../../component/SnackBar/Snackbar.js"
 const useStyles = makeStyles(styles);
-export default function ListPublicArea(props) {
+export default function ListApart() {
   const classes = useStyles();
   const history = useHistory();
-  const {type,status}=props;
   const token = useSelector((state) => state.user.token);
-  const {PushNotificationAdmin}=PushNotiAdmin()
   const [data, setData] = useState([]);
-   const [openSnackBar,setOpenSnackBar]=useState(false);
-    const [snackType,setSnackType]=useState(true);
   const [isHandle,setIsHandle]=useState(false);
+  const [openSnackBar,setOpenSnackBar]=useState(false);
+  const [snackType,setSnackType]=useState(true);
   const options = {
     filterType: "dropdown",
     responsive: "scroll",
@@ -32,7 +30,7 @@ export default function ListPublicArea(props) {
       name: "id",
       label: "id",
       options: {
-        display: "excluded",
+        display: false,
         filter: false,
         sort: false,
       },
@@ -46,7 +44,7 @@ export default function ListPublicArea(props) {
       },
     },
     {
-      name: "apart",
+      name: "name",
       label: "Tên phòng",
       options: {
         filter: true,
@@ -54,24 +52,15 @@ export default function ListPublicArea(props) {
       },
     },
     {
-      name: "time",
-      label: "Ngày tạo",
+      name: "block",
+      label: "Toà nhà",
       options: {
         filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: "is_read_admin",
-      label: "",
-      options: {
-        display: false,
-        filter: false,
         sort: false,
       },
     },
     {
-      name: "is_read_admin_value",
+      name: "status",
       label: "Tình trạng",
       options: {
         filter: false,
@@ -79,8 +68,8 @@ export default function ListPublicArea(props) {
       },
     },
     {
-      name: "is_read_admin_name",
-      label: "Tình trạng.",
+      name: "status_name",
+      label: "Tình trạng",
       options: {
         display: "excluded",
         filter: true,
@@ -102,56 +91,23 @@ export default function ListPublicArea(props) {
           >
             <Fab
               size="small"
-              color="red"
+              // color="primary"
               aria-label="add"
               className={classes.margin}
-              onClick={() => handleClick(tableMeta.rowData[0],tableMeta.rowData[4])}
+              onClick={() => handleClick(tableMeta.rowData[0])}
             >
               <EditIcon color="primary"/>
             </Fab>
           </Tooltip>
-           </div>
+          </div>
           );
         },
       },
     },
   ];
-  const handleClick = async(id,is_read_admin) => {
-    // e.preventDefault();
-    console.log(is_read_admin);
-    if(!is_read_admin) await handleChangeStatus(id);
-    history.push(`/admin/repair/detail/${id}`);
-  };
-  const handleChangeStatus = async (id) => {
-    try {
-      const body=
-      {
-        notice_id: id,
-        admin_status: true
-      }
-    
-      console.log(body);
-      const res = await fetch(
-        process.env.REACT_APP_API_LINK + `/api/repair/admin/update-is-read`,
-        {
-          method: "PUT",
-          mode: "cors",
-          headers: {
-            Authorization: "Bearer " + `${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        }
-      );
-      if (res.status === 200) {
-        console.log("ok");
-        PushNotificationAdmin()
-      } else {
-        console.log("SOMETHING WENT WRONG");
-      }
-    } catch (err) {
-      console.log(err);
-    }
+  const handleClick = (id) => {
+
+    history.push(`/admin/apart/detail/${id}`);
   };
   const handleOpenSnackBar = (type) => {
     if (type) setSnackType(true);
@@ -164,7 +120,7 @@ export default function ListPublicArea(props) {
     }
     setOpenSnackBar(false);
   };
- const handleOpenLoading=()=>{
+  const handleOpenLoading=()=>{
     setIsHandle(true);
   }
   const handleCloseLoading=()=>{
@@ -172,12 +128,12 @@ export default function ListPublicArea(props) {
   }
 
   useEffect(() => {
-    const getRes = async () => {
-      handleOpenLoading() 
+    handleOpenLoading()
+   
+    const getRes = async () => { 
       try{
       const res = await fetch(
-       
-        process.env.REACT_APP_API_LINK + `/api/repair/notices?type=${type}&status=${status}`,
+        process.env.REACT_APP_API_LINK + `/api/apart/all-aparts?status=2&owner.is_active=false`,
         {
           // get apart
           method: "GET",
@@ -188,9 +144,9 @@ export default function ListPublicArea(props) {
         }
       );
       const res1 = await fetch(
-        process.env.REACT_APP_API_LINK + `/api/apart/all-aparts`,
+        process.env.REACT_APP_API_LINK + `/api/block/all`,
         {
-          // get apart
+          // get block
           method: "GET",
           headers: {
             Authorization: "Bearer " + `${token}`,
@@ -204,30 +160,33 @@ export default function ListPublicArea(props) {
         const result1 = await res1.json();
         console.log(result.data);
         setData(await handleData(result.data, result1.data));
-        
         handleCloseLoading()
       } else {
         const result = await res.json();
-        console.log(result.message);
-        handleOpenSnackBar(false)
+        alert(result.message);
         handleCloseLoading()
-      }}catch (err) {
+        handleOpenSnackBar(false)
+      }}
+      catch (err) {
         console.log(err);
         handleOpenSnackBar(false)
         handleCloseLoading()
       }
-    };
+  }
     getRes();
   }, []);
   return (
-    <div> <LoadingOverlay active={isHandle} spinner text="Đang xử lý vui lòng chờ...">
+    <div>
+      <LoadingOverlay active={isHandle} spinner text="Đang xử lý vui lòng chờ...">
       <MUIDataTable
         title={""}
         data={data}
         columns={columns}
         options={options}
-      /></LoadingOverlay>
-    <Snackbar open={openSnackBar} type={snackType} handleClose={handleCloseSnackBar}></Snackbar>
+      />
+      
+      </LoadingOverlay>
+      <Snackbar open={openSnackBar} type={snackType} handleClose={handleCloseSnackBar}></Snackbar>
     </div>
   );
 }

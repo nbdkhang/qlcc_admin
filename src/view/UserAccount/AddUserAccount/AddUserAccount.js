@@ -59,7 +59,7 @@ export default function ChangeProfile() {
   const [openSnackBar,setOpenSnackBar]=useState(false);
   const [snackType,setSnackType]=useState(true);
   const [isHandle,setIsHandle]=useState(false);
-  //   const [content, setContent] = useState("");
+  const [reload,setReload]=useState(true)
   //   const userInfo = useSelector((state) => state.user.info);
   const nameCheck = /^[a-zA-Z0-9]+$/;
   const phoneCheck = /^[0-9]+$/;
@@ -226,8 +226,13 @@ export default function ChangeProfile() {
           console.log("success");
           console.log(result);
           handleCloseLoading()
-        handleOpenSnackBar(true);
-        }  else {
+          handleOpenSnackBar(true);
+          setReload(!reload)
+        } else if(res.status === 400){
+          setAlertID_Card(true)
+          handleCloseLoading()
+          handleOpenSnackBar(false);
+        } else {
           console.log("SOMETHING WENT WRONG")
         handleCloseLoading()
         handleOpenSnackBar(false);};
@@ -281,7 +286,7 @@ export default function ChangeProfile() {
      
     };
     getRes();
-  }, []);
+  }, [reload]);
 
   return (
     <div>
@@ -306,7 +311,7 @@ export default function ChangeProfile() {
               <GridItem xs={12} sm={12} md={3}>
                 {alertName && (
                   <Alert className={classes.alerts} severity="error">
-                    Tên không hợp lệ
+                    Tên không hợp lệ 
                   </Alert>
                 )}
               </GridItem>
@@ -372,7 +377,7 @@ export default function ChangeProfile() {
               <GridItem xs={12} sm={12} md={3}>
                 {alertID_Card && (
                   <Alert className={classes.alerts} severity="error">
-                    Số CMND không hợp lệ
+                    Số CMND không hợp lệ hoặc đã tồn tại
                   </Alert>
                 )}
               </GridItem>

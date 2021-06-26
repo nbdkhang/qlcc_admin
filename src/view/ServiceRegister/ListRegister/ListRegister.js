@@ -24,11 +24,12 @@ import styles from "../../../asset/jss/material-dashboard-react/components/tasks
 import LoadPlace from "./LoadPlace.js";
 import Snackbar from "../../../component/SnackBar/Snackbar.js"
 import LoadingOverlay from "react-loading-overlay";
+import PushNotiAdmin from "../../PushNotiAdmin.js"
 const useStyles = makeStyles(styles);
 
 export default function ListRegister() {
   const classes = useStyles();
-  
+  const {PushNotificationAdmin}=PushNotiAdmin()
   const history = useHistory();
   const token = useSelector((state) => state.user.token);
   const [data, setData] = useState([]);
@@ -298,6 +299,7 @@ const [isHandle,setIsHandle]=useState(false);
         await PushNotification(token_device);
         setReloadPlace(!reloadPlace)
         //history.push(`/admin/reportbill`);
+        PushNotificationAdmin()
         handleOpenSnackBar(true)
         handleCloseLoading()
       } else {

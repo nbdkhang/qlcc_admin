@@ -19,6 +19,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import LoadingOverlay from "react-loading-overlay";
 import Snackbar from "../../../component/SnackBar/Snackbar.js"
 import FloorNotification from "./Floor/FloorNotifications.js"
+import ApartNotifications from "./Apart/ApartNotifications"
 const useStyles = makeStyles((theme) => ({
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -113,6 +114,7 @@ export default function CreateNotification() {
   const handleType = (value) => {
     console.log(value);
     setType(value);
+    setApart_id("")
     //setReload(!reload);
   };
   const renderTo = () => {
@@ -127,6 +129,10 @@ export default function CreateNotification() {
     if (type==="floor")
     {
       return <FloorNotification setBlock={setBlock} setFloor={setFloor} setApart_id={setApart_id} handleOpenLoading={handleOpenLoading}handleCloseLoading={handleCloseLoading} handleOpenSnackBar={handleOpenSnackBar}/>
+    }
+    if(type==="apart")
+    {
+      return <ApartNotifications setApart_id={setApart_id} handleOpenLoading={handleOpenLoading}handleCloseLoading={handleCloseLoading} handleOpenSnackBar={handleOpenSnackBar} ></ApartNotifications>
     }
   };
   const handeFile = async (file, imageUrl) => {
@@ -279,7 +285,19 @@ export default function CreateNotification() {
           floor: floor,
           apart_id:apart_id
         };
-        
+        console.log(body);
+        sendNotification(body);
+      }
+      if (type === "apart") {
+        //console.log("block true");
+        const body = {
+          title: title,
+          content: content,
+          link: link,
+          type: type,
+          image: key[0],
+          apart_id:apart_id
+        };
         console.log(body);
         sendNotification(body);
       }
@@ -458,7 +476,6 @@ export default function CreateNotification() {
                 style={{ marginTop: "15px" }}
                 type="file"
                 onChange={(e) => handeFile(e.target.files, e.target.value)}
-                multiple
                 accept="image/*"
               />
             </GridItem>

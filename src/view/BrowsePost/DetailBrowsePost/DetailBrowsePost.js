@@ -22,6 +22,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { handleData, title, content } from "./ServiceDetailBrowsePost.js";
 import Snackbar from "../../../component/SnackBar/Snackbar.js"
 import LoadingOverlay from "react-loading-overlay";
+import PushNotiAdmin from "../../PushNotiAdmin.js"
 const useStyles = makeStyles((theme) => ({
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -61,15 +62,9 @@ export default function DetailRequestSelfRepair() {
   const token = useSelector((state) => state.user.token);
   const { id } = useParams();
   const [data, setData] = useState({
-    // id: "",
-    // apart_id: "",
-    // apart_name: "",
-    // electric_bill: 0,
-    // water_bill: 0,
-    // year: 0,
-    // status_value:"",
-    // next_status_value:""
+  
   });
+  const {PushNotificationAdmin}=PushNotiAdmin()
   const [isError, setIsError] = useState(false);
   const [image, setImage] = useState([]);
   const [isLoad, setIsLoad] = useState(true);
@@ -125,6 +120,7 @@ export default function DetailRequestSelfRepair() {
         console.log("ok");
         console.log(result.data)
         await PushNotification();
+        PushNotificationAdmin()
         setReload(!reload);
         handleOpenSnackBar(true)
         handleCloseLoading()

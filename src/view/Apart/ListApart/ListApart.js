@@ -30,7 +30,7 @@ export default function ListApart() {
       name: "id",
       label: "id",
       options: {
-        display: false,
+        display: "excluded",
         filter: false,
         sort: false,
       },
@@ -63,13 +63,23 @@ export default function ListApart() {
       name: "status",
       label: "Tình trạng",
       options: {
+        filter: false,
+        sort: false,
+      },
+    },
+    {
+      name: "status_name",
+      label: "Tình trạng",
+      options: {
+        display: "excluded",
         filter: true,
         sort: false,
       },
     },
     {
       name: "",
-      options: {
+      options: { filter: false,
+        sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <div>

@@ -6,14 +6,12 @@ import SearchApart from "../SearchApart.js";
 
 export default function BlockNotification(props) {
   const token = useSelector((state) => state.user.token);
-  const {setBlock, setFloor,setApart_id, handleOpenLoading,handleCloseLoading,handleOpenSnackBar}=props;
+  const {setApart_id, handleOpenLoading,handleCloseLoading,handleOpenSnackBar}=props;
   const [apartList,setApartList]=useState({list:[{name:"Không có căn hộ"}],default:[]});
  // console.log("block");
  const changeData=(apart)=>
  {
     console.log(apart);
-    setBlock(apart.block)
-    setFloor(apart.floor)
     setApart_id(apart._id)
  }
   useEffect(() => {
@@ -21,7 +19,7 @@ export default function BlockNotification(props) {
     const getRes = async () => {
       try{
       const res = await fetch(
-        process.env.REACT_APP_API_LINK + `/api/apart/all-aparts`,
+        process.env.REACT_APP_API_LINK + `/api/apart/all-aparts?status=2&owner.is_active=true`,
         {
           method: "GET",
           headers: {
@@ -53,7 +51,7 @@ export default function BlockNotification(props) {
   return (
       <>
         <br></br>
-           <SearchApart data={apartList} changeData={changeData} lable={"Căn hộ sửa chữa(chỉ chọn 1)"}></SearchApart>
+           <SearchApart data={apartList} changeData={changeData} lable={"Căn hộ thông báo"}></SearchApart>
     </>
   );
 }

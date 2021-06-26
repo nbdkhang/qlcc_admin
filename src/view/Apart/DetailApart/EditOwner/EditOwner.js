@@ -31,11 +31,11 @@ const useStyles = makeStyles((theme) => ({
     float: "right",
   },
 }));
-const is_activeList=[{id:false,name:"Không dùng app"},{id:true,name:"Có dùng app"},
+const is_activeList=[{id:true,name:"Có dùng app"},{id:false,name:"Không dùng app"},
 ]
-const statusList=[
+const statusList=[{id:2,name:"Đã bán"},
   {id:1,name:"Căn hộ trống"},
-  {id:2,name:"Đã bán"}
+  
 ]
 export default function EditApart(props) {
   const classes = useStyles();
@@ -50,8 +50,8 @@ export default function EditApart(props) {
   const [alertIs_Active, setAlertIs_Active] = useState(false);
   const [alertStatus, setAlertStatus] = useState(false);
   const [alertUserSelected, setAlertUserSelected] = useState(false);
-  const [is_Active, setIs_Active] = useState(false);
-  const [status,setStatus]=useState(1);
+  const [is_Active, setIs_Active] = useState(true);
+  const [status,setStatus]=useState(2);
   const [userList,setUserList]=useState();
   const [userSelected,setUserSelected]=useState();
   
@@ -110,10 +110,11 @@ export default function EditApart(props) {
   const editApart = async () => {
     handleClose();
     setIsHandle(true);
-    if (checkIs_Active(is_Active) && checkUserSelected(userSelected) && checkStatus(status)) {
+    //&& checkUserSelected(userSelected)
+    if (checkIs_Active(is_Active) && checkStatus(status)) { 
       const body = {
         apart_id: data._id,
-        user_id: userSelected.id,
+        user_id: data.owner.id,
         is_active: is_Active===true?true:false,
         status:status
 
@@ -156,49 +157,49 @@ export default function EditApart(props) {
       handleOpenSnackBar(false);
     }
   };
-  const renderValue=(value)=>{
-    if(!value)
-      return ;
-    else 
-      return (<>
-        <GridItem xs={12} sm={12} md={9}>
-                <TextField
-                  id="useername"
-                  label="Tên người dùng"
-                  fullWidth
-                  margin="normal"
-                  value={userSelected.name}
-                  //defaultValue={userSelected.name}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    readOnly: true,
-                  }}
+  // const renderValue=(value)=>{
+  //   if(!value)
+  //     return ;
+  //   else 
+  //     return (<>
+  //       <GridItem xs={12} sm={12} md={9}>
+  //               <TextField
+  //                 id="useername"
+  //                 label="Tên người dùng"
+  //                 fullWidth
+  //                 margin="normal"
+  //                 value={userSelected.name}
+  //                 //defaultValue={userSelected.name}
+  //                 InputLabelProps={{
+  //                   shrink: true,
+  //                 }}
+  //                 InputProps={{
+  //                   readOnly: true,
+  //                 }}
         
-                  variant="outlined"
-                />
-              </GridItem>
-              <GridItem xs={12} sm={12} md={9}>
-                <TextField
-                  id="phone"
-                  label="Số điện thoại"
-                  fullWidth
-                  margin="normal"
-                  value={userSelected.phone}
-                  //defaultValue={userSelected.name}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    readOnly: true,
-                  }}
+  //                 variant="outlined"
+  //               />
+  //             </GridItem>
+  //             <GridItem xs={12} sm={12} md={9}>
+  //               <TextField
+  //                 id="phone"
+  //                 label="Số điện thoại"
+  //                 fullWidth
+  //                 margin="normal"
+  //                 value={userSelected.phone}
+  //                 //defaultValue={userSelected.name}
+  //                 InputLabelProps={{
+  //                   shrink: true,
+  //                 }}
+  //                 InputProps={{
+  //                   readOnly: true,
+  //                 }}
         
-                  variant="outlined"
-                />
-              </GridItem>
-      </>)
-  }
+  //                 variant="outlined"
+  //               />
+  //             </GridItem>
+  //     </>)
+  // }
 
   useEffect(() => {
     setIsHandle(true);
@@ -249,7 +250,7 @@ export default function EditApart(props) {
                   select
                   label="Tình trạng căn hộ"
                   margin="normal"
-                  defaultValue={data.block}
+                  //defaultValue={data.block}
                   onChange={(e) => checkStatus(e.target.value)}
                   SelectProps={{
                     native: true,
@@ -271,7 +272,7 @@ export default function EditApart(props) {
                   select
                   label="Tình trạng chủ căn hộ"
                   margin="normal"
-                  defaultValue={data.block}
+                  //defaultValue={data.block}
                   onChange={(e) => checkIs_Active(e.target.value)}
                   SelectProps={{
                     native: true,
@@ -294,7 +295,7 @@ export default function EditApart(props) {
                 )}
               </GridItem>
                 
-              <GridItem xs={12} sm={12} md={9}>
+              {/* <GridItem xs={12} sm={12} md={9}>
                 <SearchTextField data={userList} setSelected ={setUserSelected}></SearchTextField>
               </GridItem>
               <GridItem xs={12} sm={12} md={3}>
@@ -303,8 +304,8 @@ export default function EditApart(props) {
                     Không hợp lệ
                   </Alert>
                 )}
-              </GridItem>
-              {renderValue(userSelected)}
+              </GridItem> */}
+              {/* {renderValue(userSelected)} */}
             </GridContainer>
             <GridItem xs={12} sm={12} md={9}>
               <Button

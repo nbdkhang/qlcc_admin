@@ -189,7 +189,9 @@ export default function AdminAccount() {
     setIsHandle(false);
   }
   useEffect(() => {
+    handleOpenLoading()
     const getRes = async () => {
+      try{
       const res = await fetch(
         process.env.REACT_APP_API_LINK + `/api/auth/all`,
         {
@@ -207,9 +209,15 @@ export default function AdminAccount() {
         console.log(result.data)
         setData(await handleData(result.data));
        
+        handleCloseLoading()
       } else {
         const result = await res.json();
         console.log(result.message);
+        handleOpenSnackBar(false)
+        handleCloseLoading()
+      }}catch(err){
+        handleOpenSnackBar(false)
+        handleCloseLoading()
       }
     };
     getRes();

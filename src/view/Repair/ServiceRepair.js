@@ -13,7 +13,8 @@ export const handleData = (data, apart) => {
           time: date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear(),
           apart: returnApart(data[i].apart_id, apart),
           is_read_admin:data[i].is_read_admin,
-          is_read_admin_value:(data[i].is_read_admin ?<div style={{color:"green"}}>Đã đọc</div> :<div style={{color:"red"}}>Chưa đọc</div>)
+          is_read_admin_value:(data[i].is_read_admin ?<div style={{color:"green"}}>Đã đọc</div> :<div style={{color:"red"}}>Chưa đọc</div>),
+          is_read_admin_name:(data[i].is_read_admin ?"Đã đọc":"Chưa đọc")
         };
       }
     }

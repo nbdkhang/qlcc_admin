@@ -32,17 +32,17 @@ const [isHandle,setIsHandle]=useState(false);
       name: "id",
       label: "id",
       options: {
-        display: false,
-        filter: true,
-        sort: true,
+        display: "excluded",
+        filter: false,
+        sort: false,
       },
     },
     {
       name: "order",
       label: "Số thứ tự",
       options: {
-        filter: true,
-        sort: false,
+        filter: false,
+        sort: true,
       },
     },
     {
@@ -58,7 +58,7 @@ const [isHandle,setIsHandle]=useState(false);
       label: "Ngày tạo",
       options: {
         filter: true,
-        sort: false,
+        sort: true,
       },
     },
     {
@@ -66,7 +66,7 @@ const [isHandle,setIsHandle]=useState(false);
       label: "",
       options: {
         display: false,
-        filter: true,
+        filter: false,
         sort: false,
       },
     },
@@ -74,13 +74,23 @@ const [isHandle,setIsHandle]=useState(false);
       name: "is_read_admin_value",
       label: "Tình trạng",
       options: {
+        filter: false,
+        sort: false,
+      },
+    },
+    {
+      name: "is_read_admin_name",
+      label: "Tình trạng.",
+      options: {
+        display: "excluded",
         filter: true,
         sort: false,
       },
     },
     {
       name: "Chi tiết",
-      options: {
+      options: {filter: false,
+        sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           return (
             <div>

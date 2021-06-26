@@ -7,16 +7,15 @@ import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
 import GridItem from "../../component/Grid/GridItem.js";
 import GridContainer from "../../component/Grid/GridContainer.js";
-import CustomInput from "../../component/CustomInput/CustomInput.js";
 import Button from "../../component/CustomButtons/Button.js";
-import Card from "../../component/Card/Card.js";
-import CardHeader from "../../component/Card/CardHeader.js";
-import CardBody from "../../component/Card/CardBody.js";
-import CardFooter from "../../component/Card/CardFooter.js";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
-
-import avatar from "../../asset/img/faces/marc.jpg";
-
+import Snackbar from "../../component/SnackBar/Snackbar.js"
+import LoadingOverlay from "react-loading-overlay";
 const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -41,73 +40,133 @@ const useStyles = makeStyles(styles);
 export default function ChangePassword() {
   const classes = useStyles();
   const userInfo=useSelector(state=>state.user.info);
-  const token=useSelector(state=>state.user.token);
-  const [newPass,setNewPass]= useState();
+  const token=useSelector(state=>state.user.token); 
   const [oldPass,setOldPass]= useState();
-  const [confirm, setConFirm]= useState();
-  const [alert,setAlert]= useState(false);
-
-
-  const checkOldPass= async (data)=>
+  const [password,setPassword]= useState();
+  const [confirm, setConfirm]= useState();
+  const [alertOld,setAlertOld]= useState(false);
+  const [alertPassword, setAlertPassword] = useState(false);
+  const [alertConfirm, setAlertConfirm] = useState(false);
+  const [openSnackBar,setOpenSnackBar]=useState(false);
+  const [snackType,setSnackType]=useState(true);
+const [isHandle,setIsHandle]=useState(false);
+const [open, setOpen] = useState(false);
+const handleClickOpen = () => {
+   setOpen(true);
+ };
+ const handleClose = () => {
+   setOpen(false);
+ };
+  const checkOldPass=  (data)=>
   {
-    await setOldPass(data);
-    console.log(data)
-    if(data=="")
-    await setAlert(true);
+     setOldPass(data);
+    if(data!=="")
+     {  setAlertOld(false);
+    return true}
     else
-    await setAlert(false);
+   {setAlertOld(true);
+    
+  return false}
   }
-  const checkNewPass= async (data)=>
-  {
-    await setNewPass(data);
-    if(data=="")
-      await setAlert(true);
-    else
-      await setAlert(false);
+  const checkPassword = (value) => { 
+    setPassword(value);
+      checkConfirm(confirm,value)
+   if (value !== "") {
+     setAlertPassword(false);
+   
+     return true;
+   } else {
+     setAlertPassword(true);
+     return false;
+   }
+   
+ };
+ const checkConfirm = (value,password) => {
+   setConfirm(value);
+   if (value !== "" && value===password) {
+     setAlertConfirm(false);
+     return true;
+   } else {
+     setAlertConfirm(true);
+     return false;
+   }
+ };
+ const handleOpenSnackBar = (type) => {
+  if (type) setSnackType(true);
+  else setSnackType(false);
+  setOpenSnackBar(true);
+};
+const handleCloseSnackBar = (event, reason) => {
+  if (reason === 'clickaway') {
+    return;
   }
-  const checkComfirm =async (data)=>
-  {
-    await setConFirm(data);
-    if(data!==newPass||data=="")
-    {
-        await setAlert(true);
-    }
-    else
-    setAlert(false);
-  }
-
+  setOpenSnackBar(false);
+};
+const handleOpenLoading=()=>{
+  setIsHandle(true);
+}
+const handleCloseLoading=()=>{
+  setIsHandle(false);
+}
   const handleSubmit = async()=>
-  {
-    if(oldPass!=""&& newPass!=""&& confirm!="")
+  {handleOpenLoading()
+    handleClose()
+    if(await checkOldPass(oldPass) && await checkPassword(password)&& await checkConfirm(confirm,password))
     {
-    // const body ={
-    //   ID_User:localStorage.getItem('id'),
-    //   Name:data
-    // }
-    // const token=JSON.parse(localStorage.getItem('token'));
-    
-    // const res =await fetch(linkurl+`boards/add`,
-    // {
-    //   method: "POST",
-    //   mode: "cors",
-    //   headers: {
-    //      Authorization:'Bearer '+ `${token}`,
-    //      'Content-Type': 'application/json',
-    // },
-    // body: JSON.stringify(body)
-    
-    // });
-    
+    const body ={
+      user_id:userInfo._id,
+      new_pass:password,
+      old_pass: oldPass
+    }
+    console.log(body);
+    try {
+      const res = await fetch(
+        process.env.REACT_APP_API_LINK + `/api/auth/change-pass`,
+        {
+          method: "PUT",
+          mode: "cors",
+          headers: {
+            Authorization: "Bearer " + `${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      );
+
+      if (res.status === 200) {
+        const result = await res.json();
+        console.log("success");
+        console.log(result);
+        handleCloseLoading()
+        handleOpenSnackBar(true);
+        setAlertOld(false);
+      } else if(res.status === 400){
+        setAlertOld(true);
+        handleCloseLoading()
+        handleOpenSnackBar(false);;
+      } 
+      else {
+        console.log("SOMETHING WENT WRONG")
+      handleCloseLoading()
+      handleOpenSnackBar(false);};
+    } catch (err) {
+      console.log(err);
+      handleCloseLoading()
+      handleOpenSnackBar(false);
+    }
+  } else {
+    handleCloseLoading()
+    handleOpenSnackBar(false);
   }
 }
 
   return (
-    <div>
+    <div><LoadingOverlay active={isHandle} spinner text="Đang xử lý vui lòng chờ...">
       <GridContainer>
-        <GridItem xs={12} sm={12} md={8}>
+        <GridItem xs={12} sm={12} md={12}>
           
           <GridContainer>
-            <GridItem xs={12} sm={12} md={12}>
+            <GridItem xs={12} sm={12} md={9}>
               <TextField
                 id="old_pass"
                 label="Mật khẩu cũ"
@@ -118,12 +177,16 @@ export default function ChangePassword() {
                   shrink: true,
                 }}
                 variant="outlined"
-             
+                type="password"
                 onChange={(e) => checkOldPass(e.target.value)}
               />
             </GridItem>
-
-            <GridItem xs={12} sm={12} md={12}>
+            {alertOld && (
+                  <Alert className={classes.alerts} severity="error">
+                    Không hợp lệ
+                  </Alert>
+                )}
+            <GridItem xs={12} sm={12} md={9}>
             <TextField
                 id="new_pass"
                 label="Mật khẩu mới"
@@ -132,12 +195,17 @@ export default function ChangePassword() {
                 margin="normal"
                 InputLabelProps={{
                   shrink: true,
-                }}
+                }}type="password"
                 variant="outlined"   
-                onChange={(e) => checkNewPass(e.target.value)}
+                onChange={(e) => checkPassword(e.target.value)}
               />
             </GridItem>
-            <GridItem xs={12} sm={12} md={12}>
+              {alertPassword && (
+                  <Alert className={classes.alerts} severity="error">
+                    Không hợp lệ
+                  </Alert>
+                )}
+            <GridItem xs={12} sm={12} md={9}>
             <TextField
                 id="phone"
                 label="Nhập lại mật khẩu mới"
@@ -146,16 +214,44 @@ export default function ChangePassword() {
                 margin="normal"
                 InputLabelProps={{
                   shrink: true,
-                }}
+                }}type="password"
                 variant="outlined"
-                onChange={(e) => checkComfirm(e.target.value)}
+                onChange={(e) => checkConfirm(e.target.value,password)}
               />
-            </GridItem>
+            </GridItem>{alertConfirm && (
+                  <Alert className={classes.alerts} severity="error">
+                   Không trùng khớp mật khẩu
+                  </Alert>
+                )}
           </GridContainer>
-          <Button color="primary" onClick={e=>handleSubmit(e)}>Lưu lại</Button>
+          <Button color="primary" onClick={e=>handleClickOpen(e)}>Lưu lại</Button>
         </GridItem>
-       { alert && <Alert severity="error">This is an error alert — check it out!</Alert>}
       </GridContainer>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">
+                  Xác nhận chỉnh sửa
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+           
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Hủy
+          </Button>
+          <Button onClick={(e) => handleSubmit(e)} color="primary">
+            Xác nhận
+          </Button>
+        </DialogActions>
+      </Dialog>
+      </LoadingOverlay>
+  <Snackbar open={openSnackBar} type={snackType} handleClose={handleCloseSnackBar}></Snackbar>
     </div>
   );
 }

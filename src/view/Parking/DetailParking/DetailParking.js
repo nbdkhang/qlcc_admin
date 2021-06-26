@@ -26,6 +26,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import IconButton from "@material-ui/core/IconButton";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import SearchIcon from '@material-ui/icons/Search';
+import PushNotiAdmin from "../../PushNotiAdmin.js"
 const useStyles = makeStyles((theme) => ({
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -64,6 +65,7 @@ export default function DetailPublicArea(props) {
   const history = useHistory();
   const token = useSelector((state) => state.user.token);
   const { notice_id } = useParams();
+  const {PushNotificationAdmin}=PushNotiAdmin()
   const [data, setData] = useState({
     id: "",
     apart_id: "",
@@ -111,7 +113,7 @@ export default function DetailPublicArea(props) {
         //const result = await res.json();
         console.log(" changestatus ok");
         await createNotification();
-
+        PushNotificationAdmin()
         setReload(!reload);
         handleOpenSnackBar(true);
         handleCloseLoading();
