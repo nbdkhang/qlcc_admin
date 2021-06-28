@@ -348,6 +348,7 @@ export default function ChangeProfile() {
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  type="number"
                   variant="outlined"
                   onChange={(e) => checkPhone(e.target.value)}
                 />
@@ -362,7 +363,7 @@ export default function ChangeProfile() {
               <GridItem xs={12} sm={12} md={9}>
                 <TextField
                   id="cmnd"
-                  label="Số CMND"
+                  label="Số CMND/CCCD"
                   //style={{ margin: 8 }}
                   fullWidth
                   margin="normal"
@@ -454,7 +455,7 @@ export default function ChangeProfile() {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle id="alert-dialog-slide-title">
-                  Xác nhận chỉnh sửa
+              Xác nhận tạo tài khoản
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">

@@ -12,7 +12,10 @@ export default function BlockNotification(props) {
  const changeData=(apart)=>
  {
     console.log(apart);
+    if(apart!==null)
     setApart_id(apart._id)
+    else 
+    setApart_id("")
  }
   useEffect(() => {
     handleOpenLoading()

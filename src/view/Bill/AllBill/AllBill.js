@@ -375,8 +375,8 @@ const [isHandle,setIsHandle]=useState(false);
         <DialogTitle id="alert-dialog-slide-title">{selectedRow[9]||false?"Xác nhận hủy thanh toán":"Xác nhận thanh toán"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Căn hộ: {selectedRow[2]}       
-            Tổng tiền: {selectedRow[7]}
+           <div>Căn hộ: {selectedRow[2]} </div> 
+            <div>Tổng tiền: {selectedRow[7]}</div>
           </DialogContentText>
         </DialogContent>
         <DialogActions>

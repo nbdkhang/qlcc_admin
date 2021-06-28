@@ -141,6 +141,7 @@ const handleCloseLoading=()=>{
         handleOpenSnackBar(true);
         setAlertOld(false);
       } else if(res.status === 400){
+        console.log("400");
         setAlertOld(true);
         handleCloseLoading()
         handleOpenSnackBar(false);;
@@ -155,6 +156,7 @@ const handleCloseLoading=()=>{
       handleOpenSnackBar(false);
     }
   } else {
+    console.log("else cuoi")
     handleCloseLoading()
     handleOpenSnackBar(false);
   }

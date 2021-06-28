@@ -278,7 +278,7 @@ const [reload,setReload]=useState(true)
                 margin="normal"
                 InputLabelProps={{
                   shrink: true,
-                }}
+                }}type="number"
                 variant="outlined"
                 defaultValue={phone}
                 onChange={(e) =>checkPhone(e.target.value)}

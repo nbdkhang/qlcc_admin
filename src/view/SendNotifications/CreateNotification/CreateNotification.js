@@ -302,6 +302,10 @@ export default function CreateNotification() {
         sendNotification(body);
       }
     }
+    else {
+      handleCloseLoading()
+      handleOpenSnackBar(false)
+    }
   };
   const sendNotification = async (body) => {
     try {
@@ -418,7 +422,7 @@ export default function CreateNotification() {
             <GridItem xs={12} sm={12} md={3}>
               {alertTitle && (
                 <Alert className={classes.alerts} severity="error">
-                  Tiêu đề hộ không hợp lệ
+                  Tiêu đề không hợp lệ
                 </Alert>
               )}
             </GridItem>

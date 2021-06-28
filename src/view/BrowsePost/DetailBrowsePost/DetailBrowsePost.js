@@ -332,6 +332,10 @@ export default function DetailRequestSelfRepair() {
                     shrink: true,
                     readOnly: true,
                   }}
+                  InputProps={{
+                              readOnly: true,
+                            }}
+                  
                   variant="outlined"
                   defaultValue={data.title || ""}
                   //onChange={(e) => setName(e.target.value)}
@@ -346,6 +350,10 @@ export default function DetailRequestSelfRepair() {
                     shrink: true,
                     readOnly: true,
                   }}
+                  InputProps={{
+                              readOnly: true,
+                            }}
+                  
                   multiline={true}
                   variant="outlined"
                   defaultValue={data.content}
@@ -361,6 +369,10 @@ export default function DetailRequestSelfRepair() {
                     shrink: true,
                     readOnly: true,
                   }}
+                  InputProps={{
+                              readOnly: true,
+                            }}
+                  
                   variant="outlined"
                   defaultValue={data.user_name}
                   //onChange={(e) => setName(e.target.value)}
@@ -376,6 +388,10 @@ export default function DetailRequestSelfRepair() {
                     shrink: true,
                     readOnly: true,
                   }}
+                  InputProps={{
+                              readOnly: true,
+                            }}
+                  
                   variant="outlined"
                   defaultValue={data.time}
                   //onChange={(e) => setName(e.target.value)}
@@ -391,6 +407,10 @@ export default function DetailRequestSelfRepair() {
                     shrink: true,
                     readOnly: true,
                   }}
+                  InputProps={{
+                              readOnly: true,
+                            }}
+                  
                   variant="outlined"
                   defaultValue={data.contact}
                   //onChange={(e) => setName(e.target.value)}
@@ -406,6 +426,10 @@ export default function DetailRequestSelfRepair() {
                     shrink: true,
                     readOnly: true,
                   }}
+                  InputProps={{
+                              readOnly: true,
+                            }}
+                  
                   variant="outlined"
                   defaultValue={data.status_value}
                   //onChange={(e) => setName(e.target.value)}

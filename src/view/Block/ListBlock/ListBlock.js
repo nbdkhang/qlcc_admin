@@ -31,7 +31,7 @@ export default function ListBlock() {
       name: "id",
       label: "id",
       options: {
-        display: false,
+        display: "excluded",
         filter: false,
         sort: false,
       },
@@ -46,7 +46,7 @@ export default function ListBlock() {
     },
     {
       name: "name",
-      label: "Tên phòng",
+      label: "Tên tòa nhà",
       options: {
         filter: true,
         sort: false,

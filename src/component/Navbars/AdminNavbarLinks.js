@@ -107,7 +107,7 @@ export default function AdminNavbarLinks() {
           }
         );
         const res2 = await fetch(
-          process.env.REACT_APP_API_LINK + `/api/repair/count-notices?type=1&status=0`,
+          process.env.REACT_APP_API_LINK + `/api/repair/count-notices?type=2&status=0`,
           {
             // get block
             method: "GET",
@@ -118,7 +118,7 @@ export default function AdminNavbarLinks() {
           }
         );
         const res3 = await fetch(
-          process.env.REACT_APP_API_LINK + `/api/repair/count-notices?type=2&status=0`,
+          process.env.REACT_APP_API_LINK + `/api/repair/count-notices?type=1&status=0`,
           {
             // get block
             method: "GET",

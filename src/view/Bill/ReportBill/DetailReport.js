@@ -406,7 +406,7 @@ const [token_device,setToken_device]=useState("");
                     readOnly: true,
                   }}
                   variant="outlined"
-                  defaultValue={data.apart_name || ""}
+                  value={data.apart_name || ""}
                   //onChange={(e) => setName(e.target.value)}
                 />
 
@@ -423,7 +423,7 @@ const [token_device,setToken_device]=useState("");
                     readOnly: true,
                   }}
                   variant="outlined"
-                  defaultValue={data.month + "/" + data.year}
+                  value={data.month + "/" + data.year}
                   //onChange={(e) => setName(e.target.value)}
                 />
 
@@ -439,7 +439,7 @@ const [token_device,setToken_device]=useState("");
                     readOnly: true,
                   }}
                   variant="outlined"
-                  defaultValue={value}
+                 value={value}
                 />} />
                 <NumberFormat value={data.water_bill} className="foo" displayType={'text'} thousandSeparator={true} suffix={' VND'} renderText={(value, props) =>  <TextField
                   id="water"
@@ -453,7 +453,7 @@ const [token_device,setToken_device]=useState("");
                     readOnly: true,
                   }}
                   variant="outlined"
-                  defaultValue={value}
+                value={value}
                 />} />
                <NumberFormat value={data.other_bill} className="foo" displayType={'text'} thousandSeparator={true} suffix={' VND'} renderText={(value, props) =>  <TextField
                   id="other"
@@ -468,7 +468,7 @@ const [token_device,setToken_device]=useState("");
                     readOnly: true,
                   }}
                   variant="outlined"
-                  defaultValue={value}
+                  value={value}
                 />} />
                <NumberFormat value={data.total_money} className="foo" displayType={'text'} thousandSeparator={true} suffix={' VND'} renderText={(value, props) =>  
                <TextField
@@ -484,7 +484,7 @@ const [token_device,setToken_device]=useState("");
                     readOnly: true,
                   }}
                   variant="outlined"
-                  defaultValue={value}
+                  value={value}
                   //onChange={(e) => setName(e.target.value)}
                 />} />
                 <TextField
@@ -500,7 +500,7 @@ const [token_device,setToken_device]=useState("");
                     readOnly: true,
                   }}
                   variant="outlined"
-                  defaultValue={
+                  value={
                     data.is_pay ? "Đã thanh toán" : "Chưa thanh toán"
                   }
                   //onChange={(e) => setName(e.target.value)}
