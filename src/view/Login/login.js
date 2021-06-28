@@ -168,11 +168,12 @@ export default function Login() {
     <Container component="main" maxWidth="xs">  
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
+        {/* <Avatar className={classes.avatar}> */}
+          {/* <LockOutlinedIcon /> */}
+          <img style={{width:"100px"}} src={process.env.PUBLIC_URL + '/logo.PNG'}></img>
+        {/* </Avatar> */}
         <Typography component="h1" variant="h5">
-          Sign in
+         Đăng nhập
         </Typography>
         <form className={classes.form} noValidate>
           <TextField

@@ -20,6 +20,9 @@ import LoadingOverlay from "react-loading-overlay";
 import Snackbar from "../../../component/SnackBar/Snackbar.js"
 import FloorNotification from "./Floor/FloorNotifications.js"
 import ApartNotifications from "./Apart/ApartNotifications"
+
+import Zoom from 'react-medium-image-zoom'
+import 'react-medium-image-zoom/dist/styles.css'
 const useStyles = makeStyles((theme) => ({
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -487,11 +490,12 @@ export default function CreateNotification() {
               <GridItem xs={12} sm={12} md={6}>
                 {isSelectFile &&
                   review.map((option) => (
+                    <Zoom zoomMargin={40}>
                     <img
                       src={option.src}
                       alt="Girl in a jacket"
                       style={{ width: "100px", height: "100px" }}
-                    ></img>
+                    ></img></Zoom>
                   ))}
                 {/* {<img src={review[0].src} alt="Girl in a jacket" style={{width:"30px",height:"30px"}}></img>} */}
                 {/* {<img src={review[1].src} alt="Girl in a jacket" style={{width:"30px",height:"30px"}}></img>} */}
