@@ -28,6 +28,7 @@ const [isHandle,setIsHandle]=useState(false);
     filterType: "dropdown",
     responsive: "scroll",
     selectableRows: false,
+    download: false,
   };
   const columns = [
     {

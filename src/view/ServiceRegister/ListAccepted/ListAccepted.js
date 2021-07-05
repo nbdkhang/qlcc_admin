@@ -30,6 +30,7 @@ const {PushNotificationAdmin}=PushNotiAdmin()
     filterType: "dropdown",
     responsive: "scroll",
     selectableRows: false,
+    download: false,
   };
   const columns = [
     {

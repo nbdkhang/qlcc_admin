@@ -17,7 +17,11 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import SearchTextField from "../../../../component/SearchTextField/SearchTextField.js"
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 const useStyles = makeStyles((theme) => ({
   textField: {
     marginLeft: theme.spacing(1),
@@ -50,15 +54,16 @@ export default function EditApart(props) {
   const [alertIs_Active, setAlertIs_Active] = useState(false);
   const [alertStatus, setAlertStatus] = useState(false);
   const [alertUserSelected, setAlertUserSelected] = useState(false);
-  const [is_Active, setIs_Active] = useState(true);
+  const [is_Active, setIs_Active] = useState("true");
   const [status,setStatus]=useState(2);
   const [userList,setUserList]=useState();
   const [userSelected,setUserSelected]=useState();
   
-  const checkIs_Active = (value) => {
+  
+  const checkIs_Active = (value) => { 
+    setIs_Active(value);
     if (value !== "") {
       setAlertIs_Active(false);
-      setIs_Active(value);
       return true;
     } else {
       setAlertIs_Active(true);
@@ -115,7 +120,7 @@ export default function EditApart(props) {
       const body = {
         apart_id: data._id,
         user_id: data.owner.id,
-        is_active: is_Active===true?true:false,
+        is_active: is_Active==="true"?true:false,
         status:status
 
       };
@@ -157,49 +162,7 @@ export default function EditApart(props) {
       handleOpenSnackBar(false);
     }
   };
-  // const renderValue=(value)=>{
-  //   if(!value)
-  //     return ;
-  //   else 
-  //     return (<>
-  //       <GridItem xs={12} sm={12} md={9}>
-  //               <TextField
-  //                 id="useername"
-  //                 label="Tên người dùng"
-  //                 fullWidth
-  //                 margin="normal"
-  //                 value={userSelected.name}
-  //                 //defaultValue={userSelected.name}
-  //                 InputLabelProps={{
-  //                   shrink: true,
-  //                 }}
-  //                 InputProps={{
-  //                   readOnly: true,
-  //                 }}
-        
-  //                 variant="outlined"
-  //               />
-  //             </GridItem>
-  //             <GridItem xs={12} sm={12} md={9}>
-  //               <TextField
-  //                 id="phone"
-  //                 label="Số điện thoại"
-  //                 fullWidth
-  //                 margin="normal"
-  //                 value={userSelected.phone}
-  //                 //defaultValue={userSelected.name}
-  //                 InputLabelProps={{
-  //                   shrink: true,
-  //                 }}
-  //                 InputProps={{
-  //                   readOnly: true,
-  //                 }}
-        
-  //                 variant="outlined"
-  //               />
-  //             </GridItem>
-  //     </>)
-  // }
+  
 
   useEffect(() => {
     setIsHandle(true);
@@ -244,30 +207,9 @@ export default function EditApart(props) {
       {!isLoad && (
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
-            <GridContainer><GridItem xs={12} sm={12} md={9}>
-                <TextField
-                  id="outlined-select-currency-native"
-                  select
-                  label="Tình trạng căn hộ"
-                  margin="normal"
-                  //defaultValue={data.block}
-                  onChange={(e) => checkStatus(e.target.value)}
-                  SelectProps={{
-                    native: true,
-                  }}
-                  fullWidth
-                  variant="outlined"
-                >
-                  {statusList.map((option) => (
-                    <option key={option.id} value={option.id}>
-                      {option.name}
-                    </option>
-                  ))}
-                </TextField>
-              </GridItem>
+            <GridContainer>
               <GridItem xs={12} sm={12} md={9}>
-              
-                <TextField
+                {/* <TextField
                   id="outlined-select-currency-native"
                   select
                   label="Tình trạng chủ căn hộ"
@@ -285,7 +227,14 @@ export default function EditApart(props) {
                       {option.name}
                     </option>
                   ))}
-                </TextField>
+                </TextField> */}
+                <FormControl component="fieldset" style={{marginTop:"20px", marginLeft:"10px"}}>
+      <FormLabel component="legend">Tình trạng chủ căn hộ</FormLabel>
+      <RadioGroup aria-label="gender" name="gender1" value={is_Active} onChange={e=>checkIs_Active(e.target.value)}>
+        <FormControlLabel value="true" control={<Radio />} label="Có sử dụng app" />
+        <FormControlLabel value="false" control={<Radio />} label="Không sử dụng app" />
+      </RadioGroup>
+    </FormControl>
               </GridItem>
               <GridItem xs={12} sm={12} md={3}>
                 {alertIs_Active && (

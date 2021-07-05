@@ -25,6 +25,7 @@ export default function ListApart() {
     filterType: "dropdown",
     responsive: "scroll",
     selectableRows: false,
+    downloadOptions:{filterOptions:{useDisplayedRowsOnly:true}}
   };
   const columns = [
     {
@@ -34,6 +35,7 @@ export default function ListApart() {
         display: "excluded",
         filter: false,
         sort: false,
+        download:false
       },
     },
     {
@@ -42,6 +44,7 @@ export default function ListApart() {
       options: {
         filter: false,
         sort: true,
+        download:false
       },
     },
     {
@@ -50,6 +53,7 @@ export default function ListApart() {
       options: {
         filter: true,
         sort: false,
+        download:false
       },
     },
     {
@@ -58,6 +62,7 @@ export default function ListApart() {
       options: {
         filter: true,
         sort: false,
+        download:false
       },
     },
     {
@@ -66,6 +71,7 @@ export default function ListApart() {
       options: {
         filter: false,
         sort: false,
+        download:false
       },
     },
     {
@@ -75,6 +81,45 @@ export default function ListApart() {
         display: "excluded",
         filter: true,
         sort: false,
+        download:false
+      },
+    },
+    {
+      name: "order",
+      label: "Order",
+      options: {
+        filter: false,
+        sort: true,
+        display: "excluded",
+      },
+    },
+    {
+      name: "name",
+      label: "Apart Name",
+      options: {
+        filter: false,
+        sort: false,
+        display: "excluded",
+      },
+    },
+    {
+      name: "block",
+      label: "Block",
+      options: {
+        filter: false,
+        sort: false,
+        display: "excluded",
+      },
+    },
+   
+    {
+      name: "status_name_download",
+      label: "Status",
+      options: {
+        display: "excluded",
+        filter: false,
+        sort: false,
+       
       },
     },
     {

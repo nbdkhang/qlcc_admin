@@ -25,6 +25,7 @@ export default function ListBlock() {
     filterType: "dropdown",
     responsive: "scroll",
     selectableRows: false,
+    download:false
   };
   const columns = [
     {
@@ -75,12 +76,12 @@ export default function ListBlock() {
           >
             <Fab
               size="small"
-              color="primary"
+              
               aria-label="add"
               className={classes.margin}
               onClick={() => handleClick(tableMeta.rowData[0])}
             >
-              <EditIcon />
+              <EditIcon  color="primary"/>
             </Fab>
           </Tooltip>
           </div>

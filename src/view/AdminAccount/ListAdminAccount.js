@@ -38,6 +38,7 @@ export default function AdminAccount() {
     filterType: "dropdown",
     responsive: "scroll",
     selectableRows: false,
+    download: false,
   };
   const columns = [
     {

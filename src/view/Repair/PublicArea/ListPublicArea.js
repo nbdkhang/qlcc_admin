@@ -26,6 +26,7 @@ export default function ListPublicArea(props) {
     filterType: "dropdown",
     responsive: "scroll",
     selectableRows: false,
+    download: false,
   };
   const columns = [
     {

@@ -40,6 +40,7 @@ const [id,setID]=useState("");
     filterType: "dropdown",
     responsive: "scroll",
     selectableRows: false,
+    download: false,
   };
   const columns = [
     {
