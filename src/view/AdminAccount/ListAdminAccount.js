@@ -75,7 +75,7 @@ export default function AdminAccount() {
       },
       {
         name: "phone",
-        label: "Phone",
+        label: "Số điện thoại",
         options: {
           filter: true,
           sort: false,

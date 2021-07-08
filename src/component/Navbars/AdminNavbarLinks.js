@@ -74,6 +74,7 @@ export default function AdminNavbarLinks() {
     history.push("/");
   };
   const handleProfile = () => {
+    handleCloseProfile()
     history.push("/admin/profile");
   };
   const messaging = firebase.messaging();

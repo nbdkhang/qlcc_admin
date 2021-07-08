@@ -92,6 +92,7 @@ export default function DetailAllBill(props) {
   const handleSubmit = async () => {
     console.log("submit");
     handleClose();
+    handleOpenLoading()
     try {
       const body = {
         bill_id: data.id,
@@ -113,10 +114,16 @@ export default function DetailAllBill(props) {
       if (res.status === 200) {
         //const result = await res.json();
         console.log("ok");
+        handleOpenSnackBar(true)
+        handleCloseLoading()
         setReload(!reload);
-      } else console.log("SOMETHING WENT WRONG");
+      } else {console.log("SOMETHING WENT WRONG")
+      handleOpenSnackBar(false)
+      handleCloseLoading()};
     } catch (err) {
       console.log(err);
+      handleOpenSnackBar(false)
+      handleCloseLoading()
     }
   };
   const handleNoti1 = async() => {

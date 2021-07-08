@@ -114,7 +114,7 @@ export default function Sidebar(props) {
   );
   var brand = (
     <div className={classes.logo}>
-      {/* <a
+      <a
         href="https://www.creative-tim.com?ref=mdr-sidebar"
         className={classNames(classes.logoLink, {
           [classes.logoLinkRTL]: props.rtlActive
@@ -122,10 +122,10 @@ export default function Sidebar(props) {
         target="_blank"
       >
         <div className={classes.logoImage}>
-          <img src={logo} alt="logo" className={classes.img} />
+          <img src={process.env.PUBLIC_URL + '/logo2.png'} alt="logo" className={classes.img} />
         </div>
-        {logoText}
-      </a> */}
+        ManBuilding
+      </a>
     </div>
   );
   return (

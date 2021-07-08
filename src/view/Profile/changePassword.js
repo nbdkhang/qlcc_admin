@@ -35,6 +35,9 @@ const styles = {
     marginBottom: "3px",
     textDecoration: "none",
   },
+  myButton:{
+    float:"right"
+  }
 };
 
 const useStyles = makeStyles(styles);
@@ -79,7 +82,7 @@ export default function ChangePassword() {
   const checkPassword = (value,score) => {
     setPassword(value);
     checkConfirm(confirm, value);
-    if (value !== "" && score>3 ) {
+    if (value !== "" && score>=3 ) {
       setAlertPassword(false);
 
       return true;
@@ -118,6 +121,7 @@ export default function ChangePassword() {
   const handleSubmit = async () => {
     handleOpenLoading();
     handleClose();
+    console.log();
     if (
       (await checkOldPass(oldPass)) &&
       (await checkPassword(password,scorePass)) &&
@@ -144,9 +148,9 @@ export default function ChangePassword() {
         );
 
         if (res.status === 200) {
-          const result = await res.json();
+          //const result = await res.json();
           console.log("success");
-          console.log(result);
+          //console.log(result);
           handleCloseLoading();
           handleOpenSnackBar(true);
           setAlertOld(false);
@@ -205,7 +209,7 @@ export default function ChangePassword() {
               <GridItem xs={12} sm={12} md={9}>
                 <TextField
                   id="new_pass"
-                  label="Mật khẩu mới"
+                  label="Mật khẩu mới (nên bao gồm cả chữ, số và kí tự đặc biệt)"
                   //style={{ margin: 8 }}
                   fullWidth
                   margin="normal"
@@ -223,7 +227,8 @@ export default function ChangePassword() {
                 </Alert>
               )}
               <GridItem xs={12} sm={12} md={9}>
-                <PasswordStrengthBar password={password} scoreWords={['yếu','yếu','thấp', 'tốt', 'mạnh']} shortScoreWord='quá ngắn' onChangeScore={score=>checkScore(score)} />
+                <PasswordStrengthBar password={password} scoreWords={['yếu','yếu','thấp', 'tốt', 'mạnh']} 
+                shortScoreWord='quá ngắn' onChangeScore={score=>checkScore(score)} />
               </GridItem>
               <GridItem xs={12} sm={12} md={9}>
                 <TextField
@@ -246,9 +251,10 @@ export default function ChangePassword() {
                 </Alert>
               )}
             </GridContainer>
-            <Button color="primary" onClick={(e) => handleClickOpen(e)}>
+            <GridItem xs={12} sm={12} md={9}>
+            <Button className={classes.myButton} color="primary" onClick={(e) => handleClickOpen(e)}>
               Lưu lại
-            </Button>
+            </Button></GridItem>
           </GridItem>
         </GridContainer>
         <Dialog
@@ -267,7 +273,7 @@ export default function ChangePassword() {
             <Button onClick={handleClose} color="primary">
               Hủy
             </Button>
-            <Button onClick={(e) => handleSubmit(e)} color="primary">
+            <Button  onClick={(e) => handleSubmit(e)} color="primary">
               Xác nhận
             </Button>
           </DialogActions>

@@ -486,7 +486,6 @@ export default function CreateNotification() {
                 accept="image/*"
               />
             </GridItem>
-            {
               <GridItem xs={12} sm={12} md={6}>
                 {isSelectFile &&
                   review.map((option) => (
@@ -497,10 +496,8 @@ export default function CreateNotification() {
                       style={{ width: "100px", height: "100px" }}
                     ></img></Zoom>
                   ))}
-                {/* {<img src={review[0].src} alt="Girl in a jacket" style={{width:"30px",height:"30px"}}></img>} */}
-                {/* {<img src={review[1].src} alt="Girl in a jacket" style={{width:"30px",height:"30px"}}></img>} */}
+                
               </GridItem>
-            }
 
             <GridItem xs={12} sm={12} md={9}>
               <TextField

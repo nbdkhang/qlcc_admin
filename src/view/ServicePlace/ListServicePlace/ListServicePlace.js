@@ -60,37 +60,37 @@ const [isHandle,setIsHandle]=useState(false);
         sort: false,
       },
     },
-    // {
-    //   name: "Chi tiết",
-    //   options: {
-    //     customBodyRender: (value, tableMeta, updateValue) => {
-    //       return (
-    //         <div>
-    //         <Tooltip
-    //         id="tooltip-top"
-    //         title="Chi tiết"
-    //         placement="top"
-    //         classes={{ tooltip: classes.tooltip }}
-    //       >
-    //         <Fab
-    //           size="small"
-    //           color="primary"
-    //           aria-label="add"
-    //           className={classes.margin}
-    //           onClick={() => handleClick(tableMeta.rowData[0])}
-    //         >
-    //           <EditIcon />
-    //         </Fab>
-    //       </Tooltip>
-    //       </div>
-    //       );
-    //     },
-    //   },
-    // },
+    {
+      name: "Chi tiết",
+      options: {
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return (
+            <div>
+            <Tooltip
+            id="tooltip-top"
+            title="Chi tiết"
+            placement="top"
+            classes={{ tooltip: classes.tooltip }}
+          >
+            <Fab
+              size="small"
+              
+              aria-label="add"
+              className={classes.margin}
+              onClick={() => handleClick(tableMeta.rowData[0])}
+            >
+              <EditIcon color="primary" />
+            </Fab>
+          </Tooltip>
+          </div>
+          );
+        },
+      },
+    },
   ];
   const handleClick = (id) => {
 
-    //history.push(`/admin/apart/detail/${id}`);
+    history.push(`/admin/service_place/detail/${id}`);
   };
   const handleOpenSnackBar = (type) => {
     if (type) setSnackType(true);

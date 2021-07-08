@@ -59,7 +59,7 @@ import ServicePlace from "./view/ServicePlace/ServicePlace.js";
 import ServiceRegister from "./view/ServiceRegister/ServiceRegister.js"
 import BrowsePost from "./view/BrowsePost/BrowsePost.js"
 import DetailBrowsePost from "./view/BrowsePost/DetailBrowsePost/DetailBrowsePost.js"
-//import NotificationsPage from "views/Notifications/Notifications.js";
+import DetailServicePlace from "./view/ServicePlace/DetailServicePlace/DetailServicePlace.js"
 // core components/views for RTL layout
 import { useSelector } from 'react-redux';
 export default function RenderRoute()
@@ -271,7 +271,7 @@ export default function RenderRoute()
       name: "Khu vực dịch vụ ",
       rtlName: "ملف تعريفي للمستخدم",
       icon: DriveEtaIcon,
-      component:ServicePlace,
+      component:DetailServicePlace,
       layout: "/admin",
       private: true
     },
@@ -534,7 +534,7 @@ export default function RenderRoute()
       name: "Khu vực dịch vụ ",
       rtlName: "ملف تعريفي للمستخدم",
       icon: DriveEtaIcon,
-      component:ServicePlace,
+      component:DetailServicePlace,
       layout: "/admin",
       private: true
     },

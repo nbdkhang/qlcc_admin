@@ -93,8 +93,9 @@ export default function InfoBill() {
     //console.log("fileExtension: " + arr.pop()); //fileExtension
     //console.log("fileMediaType: " + arr.pop()); //fileMediaType
     //console.log(path);
-    // console.log(fileName);
-    const reader = new FileReader();
+     console.log(file.length);
+    if(file.length>0)
+    {const reader = new FileReader();
     await reader.readAsText(file[0]);
     reader.onloadend = async () => {
       switch (type) {
@@ -120,6 +121,7 @@ export default function InfoBill() {
           break;
       }
     };
+  }
   };
   const handleSelectMonth = async (month) => {
     setSelectMonth(month);
